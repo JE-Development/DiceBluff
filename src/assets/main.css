@@ -1,35 +1,142 @@
-@import './base.css';
+body{
+    width: 100vw;
+    height: 100vh;
+    background: #0090c0;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
+    font-family: "Arial";
 }
 
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
+.background-image{
+    width: 100%;
+    height: 100%;
 }
 
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
+.absolute{
+    position: absolute;
 }
 
-@media (min-width: 1024px) {
-  body {
+.relative{
+    position: relative;
+}
+
+.full-size{
+    width: 100vw;
+    height: 100vh;
+}
+
+.max-width{
+    width: 100%;
+}
+
+.center-horizontal{
     display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+    justify-content: center;
 }
+
+.center{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left{
+    display: flex;
+    justify-content: start;
+}
+
+.time{
+    font-size: 50px;
+    color: #ffffff;
+}
+
+.bold{
+    font-weight: bold;
+}
+
+.temp-min-color{
+    color: #00ffff;
+}
+
+.temp-max-color{
+    color: #ff0f0f;
+}
+
+.temp-current-color{
+    color: #00ff00;
+}
+
+.weather-margin{
+    margin-left: 20px;
+}
+
+.white{
+    color: #ffffff;
+}
+
+.orange{
+    color: #ff7300;
+}
+
+.scroll{
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.dc-border{
+    width: 300px;
+    height: 70px;
+
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+
+
+    border-radius: 10px;
+    background: #222222;
+}
+
+.stock-border-red{
+    width: 150px;
+    height: 100px;
+
+    margin-left: 0px;
+    margin-right: 10px;
+
+
+    border-radius: 10px;
+    background: #ff0000;
+}
+
+.stock-border-green{
+    width: 150px;
+    height: 100px;
+
+
+    margin-left: 0px;
+    margin-right: 10px;
+
+
+    border-radius: 10px;
+    background: #00ff00;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 20px;
+    align-items: center;
+    justify-items: center;
+}
+
+.flex{
+    display: flex;
+}
+
+.green{
+    color: #00ff00;
+}
+
+.blue{
+    color: #00ffff;
+}
+

@@ -1,13 +1,12 @@
 <script>
 
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-import WebSocket from "@/components/WebSocket.vue";
+import Register from "@/components/Register.vue";
+import GamePage from "@/components/GamePage.vue";
 
 export default {
   //npm run dev | npm run build
   name: "App",
-  components: {WebSocket, HelloWorld, TheWelcome},
+  components: {GamePage, Register, WebSocket},
 
   created() {
   },
@@ -33,7 +32,7 @@ export default {
 <template>
 
   <main>
-    <WebSocket/>
+      <router-view />
   </main>
 </template>
 
