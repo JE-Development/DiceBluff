@@ -26,14 +26,20 @@
         />
     </div>
 
-    <div class="relative center-horizontal">
-        <div class="absolute">
+    <div class="relative">
+      <div class="absolute" v-if="playerTurn">
+        <DiceLayout/>
+      </div>
+        <div class="center-horizontal">
+          <div class="absolute">
             <img :src="src1" class="dice-image"/>
             <img :src="src2" class="dice-image"/>
-        </div>
-        <div :class="shakeAnimationActive ? 'shake' : ''">
+          </div>
+          <div :class="shakeAnimationActive ? 'shake' : ''">
             <img src="../assets/cup.png" class="cup-image" ref="cup" />
+          </div>
         </div>
+
     </div>
 
     <div class="relative" v-if="playerTurn">
@@ -73,9 +79,6 @@
             </div>
         </div>
 
-        <div class="absolute">
-            <DiceLayout/>
-        </div>
 
     </div>
 
@@ -102,9 +105,9 @@ export default {
             dice: "null",
             shakeAnimationActive: false,
             isDrop: true,
-            isReveal: true,
-            isView: true,
-            isMove: true,
+            isReveal: false,
+            isView: false,
+            isMove: false,
             isDiceVisible: false,
             src1: "",
             src2: "",
@@ -114,15 +117,45 @@ export default {
             globalDice: "",
             globalMode: "",
             selfTurn: true,
-            allowedLookedAnim: true
+            allowedLookedAnim: true,
+          next: false,
+          allNums: []
         };
     },
 
     created() {
 
+      this.allNums.push([31,1])
+      this.allNums.push([32,2])
+      this.allNums.push([41,3])
+      this.allNums.push([42,4])
+      this.allNums.push([43,5])
+      this.allNums.push([51,6])
+      this.allNums.push([52,7])
+      this.allNums.push([53,8])
+      this.allNums.push([54,9])
+      this.allNums.push([61,10])
+      this.allNums.push([62,11])
+      this.allNums.push([63,12])
+      this.allNums.push([64,13])
+      this.allNums.push([65,14])
+      this.allNums.push([11,15])
+      this.allNums.push([22,16])
+      this.allNums.push([33,17])
+      this.allNums.push([44,18])
+      this.allNums.push([55,19])
+      this.allNums.push([66,20])
+      this.allNums.push([21,21])
+
         EventBus.addEventListener('dice-num', (event) => {
             this.loggedDiceNum = event.data
-            this.isMove = true
+            if(this.next){
+              this.isMove = true
+            }else{
+              if(!this.isDrop){
+                this.isMove = true
+              }
+            }
             this.error = ""
         })
         EventBus.addEventListener('dice-mode', (event) => {
@@ -177,9 +210,6 @@ export default {
                         this.stopGame()
                     }
                 }else if(check[1] === "turn"){
-                    if(check[2] === "undefined"){
-                        this.socket.send("engine;;;setTurnFirst");
-                    }
                     this.setTurn(check[2])
                 }else if(check[1] === "dice"){
                     if(check[2] === "undefined"){
@@ -201,15 +231,8 @@ export default {
                         this.globalMode = trim[1]
                     }
                 }else if(check[1] === "next"){
-                    if(check[2] === "true"){
-                        if(this.isDrop){
-                            this.isReveal = true
-                        }
-                        if(this.selfTurn){
-                            this.selfTurn = false
-                            this.isDrop = true
-                        }
-                    }
+                  this.next = true
+                  this.isReveal = true
                 }else if(check[1] === "looked"){
                     if(!this.playerTurn){
                         if(check[2] === "true"){
@@ -234,6 +257,8 @@ export default {
                     }
                 }else if(check[1] === "shake"){
                     this.startShakeAnimation()
+                }else if(check[1] === "reveal"){
+                  this.handleReveal()
                 }
             }
         });
@@ -254,12 +279,9 @@ export default {
         },
 
         startCall(){
-            this.getPlayers()
-            this.isStop()
-            this.isTurn()
-            this.isDice()
-            this.isDiceVote()
-            this.hasLooked()
+          this.socket.send("engine;;;setTurnFirst");
+          //this.isTurn()
+          //this.isDice()
         },
 
         onClickStop(){
@@ -300,6 +322,10 @@ export default {
             if(this.getCookies("username") === player){
                 this.playerTurn = true
                 this.selfTurn = false
+              this.isDrop = true
+              if(this.next){
+                this.isReveal = true
+              }
             }else{
                 this.playerTurn = false
                 this.selfTurn = true
@@ -357,6 +383,7 @@ export default {
                 this.socket.send("engine;;;setPlayerTurn;;;" + newName);
                 this.isDiceVisible = false
                 this.isMove = false
+                this.isView = false
                 this.loggedDiceMode = ""
                 this.loggedDiceNum = ""
 
@@ -428,8 +455,94 @@ export default {
 
         },
 
-        onClickReveal(){
+      handleReveal(){
 
+        let base = "../src/assets/dice_"
+        let name1 = ""
+        let name2 = ""
+
+        console.log("dice: " + this.dice)
+
+        let d1 = this.dice.charAt(0) + ""
+        let d2 = this.dice.charAt(1) + ""
+        let num1 = 0
+        let num2 = 0
+
+        if(d1 === "1"){
+          name1 = "one"
+          num1 = 1
+        }else if(d1 === "2"){
+          name1 = "two"
+          num1 = 2
+        }else if(d1 === "3"){
+          name1 = "three"
+          num1 = 3
+        }else if(d1 === "4"){
+          name1 = "four"
+          num1 = 4
+        }else if(d1 === "5"){
+          name1 = "five"
+          num1 = 5
+        }else if(d1 === "6"){
+          name1 = "six"
+          num1 = 6
+        }
+
+        if(d2 === "1"){
+          name2 = "one"
+          num2 = 1
+        }else if(d2 === "2"){
+          name2 = "two"
+          num2 = 2
+        }else if(d2 === "3"){
+          name2 = "three"
+          num2 = 3
+        }else if(d2 === "4"){
+          name2 = "four"
+          num2 = 4
+        }else if(d2 === "5"){
+          name2 = "five"
+          num2 = 5
+        }else if(d2 === "6"){
+          name2 = "six"
+          num2 = 6
+        }
+
+        let sum = num1 * 10 + num2
+        let glNum = Number(this.globalDice)
+        let sumId = 0
+        let glId = 0
+        for(let i = 0; i < this.allNums.length; i++){
+          let n = this.allNums[i]
+          if(n === sum){
+            sumId = n
+          }
+          if(n === glNum){
+            glId = n
+          }
+        }
+        if(sumId < glId){
+          //es wurde gelogen
+        }else{
+          //es wurde die wahrheit gesagt
+        }
+
+        this.src1 = base + name1 + ".png"
+        this.src2 = base + name2 + ".png"
+
+        this.isDiceVisible = true
+        if(this.$refs.cup.className.includes("cup-look-close")){
+          this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-close", "cup-look")
+        }else{
+          this.$refs.cup.className = this.$refs.cup.className + " cup-look"
+        }
+
+
+      },
+
+        onClickReveal(){
+          this.socket.send("engine;;;reveal");
+          this.playerTurn = false
         },
 
         startShakeAnimation() {
