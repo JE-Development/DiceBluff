@@ -1,4 +1,9 @@
 <template>
+    <div class="button-layout center-horizontal">
+        <button class="register-button center-horizontal" @click="onClickLeave">
+            <p style="margin-top: 5px">Spiel verlassen</p>
+        </button>
+    </div>
 
 <div class="center-horizontal">
     <PlayerView
@@ -23,7 +28,6 @@
 <script>
 import EventBus from "./code/EventBusEvent";
 import PlayerView from "@/components/views/PlayerView.vue";
-import {Engine} from "@/components/code/Engine";
 
 export default {
     //npm run dev | npm run build
@@ -31,25 +35,14 @@ export default {
     components: {PlayerView},
     data() {
         return {
-            engine: new Engine(),
             names: [],
-            isHost: false
+            isHost: false,
+            socket: null
         };
     },
 
     created() {
 
-        EventBus.addEventListener('players', (event) => {
-            this.names = event.data
-        })
-
-        EventBus.addEventListener('game-start', (event) => {
-            if(event.data){
-                this.startGame()
-            }else{
-                //console.log("not started: " + event.data)
-            }
-        })
     },
     mounted() {
         if(this.getCookies("host") === "true"){
@@ -57,9 +50,34 @@ export default {
         }
 
         window.addEventListener('beforeunload', this.eventClose);
-        this.getPlayers()
 
-        this.startInterval()
+
+        this.socket = new WebSocket('ws://212.227.183.160:3000');
+
+        this.socket.addEventListener('open', (event) => {
+            console.log('WebSocket-Verbindung geöffnet');
+            this.getPlayers()
+
+            this.startCall()
+
+        });
+
+        this.socket.addEventListener('message', (event) => {
+            const message = event.data;
+            let check = message.split("---")
+            if(check[0] === "engine"){
+                if(check[1] === "players"){
+                    let split =  check[2].split(";;;")
+                    this.names = split
+                }else if(check[1] === "start"){
+                    if(check[2] === "true"){
+                        this.startGame()
+                    }else if(check[2] === "false"){
+
+                    }
+                }
+            }
+        });
 
     },
 
@@ -68,40 +86,31 @@ export default {
     },
 
 
-    unmounted() {
-        this.startInterval()
-    },
-
-
     methods: {
 
         getPlayers(){
-            this.engine.getPlayers()
-        },
-        isStarted(){
-            this.engine.isStarted()
+            this.socket.send("ping;;;getPlayers");
         },
         startGame(){
             this.$router.push('/game');
         },
 
-        eventClose(){
-            this.stopInterval()
-            this.engine.removePlayer(this.getCookies("username"))
+        startCall(){
+            this.getPlayers()
         },
 
-        startInterval(){
-            this.playerInterval = setInterval(this.getPlayers, 5000)
-            this.stInterval = setInterval(this.isStarted, 5000)
-        },
-
-        stopInterval() {
-            clearInterval(this.playerInterval);
-            clearInterval(this.stInterval);
-        },
         onClickStart(){
             this.$router.push('/game');
-            this.engine.startGame()
+            this.socket.send("engine;;;startGame");
+        },
+
+        eventClose(){
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+        },
+
+        onClickLeave(){
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+            window.open("http://127.0.0.1:5173/#/", '_self');
         },
 
 

@@ -57,7 +57,7 @@ body{
     color: #00ffff;
 }
 
-.temp-max-color{
+.red{
     color: #ff0f0f;
 }
 
@@ -138,5 +138,14 @@ body{
 
 .blue{
     color: #00ffff;
+}
+
+.cup-image{
+    transform: translateY(55px);
+    width: 250px;
+}
+
+.pointer{
+    cursor: pointer;
 }
 

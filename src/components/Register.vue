@@ -2,6 +2,7 @@
 
 <div class="center full-size">
     <div style="margin-bottom: 300px">
+
         <div class="center-horizontal">
             <h1>Dice Bluff</h1>
         </div>
@@ -26,6 +27,7 @@
                 <p style="margin-top: 5px">Spiel beitreten</p>
             </button>
         </div>
+        <h2 class="red">{{unableMessage}}</h2>
     </div>
 </div>
 
@@ -33,7 +35,6 @@
 
 
 <script>
-import {Engine} from "@/components/code/Engine";
 
 export default {
     //npm run dev | npm run build
@@ -42,19 +43,72 @@ export default {
         return {
             username: "",
             pass: "",
-            engine: new Engine()
+
+
+            socket: null,
+            messages: [],
+            newMessage: '',
+            unableMessage: "",
+            clicked: false
         };
     },
 
     created() {
 
     },
+
+    beforeUnmount() {
+        window.removeEventListener('beforeunload', this.eventClose);
+    },
+
+
+    unmounted() {
+        this.socket.close()
+    },
+
     mounted() {
+        window.addEventListener('beforeunload', this.eventClose);
+
+        this.socket = new WebSocket('ws://212.227.183.160:3000');
+
+        this.socket.addEventListener('open', (event) => {
+            console.log('WebSocket-Verbindung geöffnet');
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+        });
+
+
+        this.socket.addEventListener('message', (event) => {
+            const message = event.data;
+            let check = message.split("---")
+            console.log(message)
+            if(check[0] === "engine"){
+                if(check[1] === "start"){
+                    if(check[2] === "true"){
+                        this.joinUnable()
+                        this.clicked = false
+                    }else if(check[2] === "false" || check[2] === "undefined"){
+                        if(this.clicked){
+                            this.join()
+                        }
+                    }
+                }
+            }
+        });
+
         this.username = this.getCookies("username")
         this.pass = this.getCookies("pass")
+
     },
     methods: {
+
         onClickJoin(){
+            this.clicked = true
+            this.socket.send("ping;;;isStarted");
+        },
+
+        join(){
+            this.unableMessage = ""
+
             let username = this.$refs.usernameinput.value;
             let pass = this.$refs.passinput.value;
 
@@ -77,8 +131,12 @@ export default {
             }
         },
 
+        joinUnable(){
+            this.unableMessage = "Spiel ist bereits gestartet."
+        },
+
         registerPlayer(){
-            this.engine.registerPlayer(this.getCookies("username"))
+            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value);
         },
 
         getCookies(key){
@@ -87,6 +145,9 @@ export default {
         setCookies(key, value){
             return this.$cookies.set(key, value, 2147483647);
         },
+        eventClose(){
+            this.socket.close()
+        }
     }
 }
 </script>

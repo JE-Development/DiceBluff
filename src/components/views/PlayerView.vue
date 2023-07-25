@@ -4,7 +4,8 @@
     <div>
         <div class="center-horizontal"><img src="../../assets/default_pb.png" class="profile-picture"/></div>
         <div class="center-horizontal">
-            <h3>{{name}}</h3>
+            <h3 v-if="turn" class="green">{{name}}</h3>
+            <h3 v-else>{{name}}</h3>
         </div>
         <h1 class="orange">{{dice}}</h1>
     </div>
@@ -24,12 +25,14 @@ export default {
     props:{
         name: String,
         dice: String,
+        turn: Boolean,
     },
 
     created() {
 
     },
     mounted() {
+
     },
     methods: {
 
