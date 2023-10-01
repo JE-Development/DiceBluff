@@ -16,6 +16,8 @@
             v-for="(dat) in names"
             :name="dat.name"
             :turn="dat.turn"
+            :loose="dat.loose"
+            :heart="dat.heart"
         />
     </div>
 
@@ -32,7 +34,7 @@
       </div>
         <div class="center-horizontal">
           <div class="absolute">
-            <img :src="src1" class="dice-image"/>
+            <img :src="src1" class="dice-image" style="margin-right: 10px"/>
             <img :src="src2" class="dice-image"/>
           </div>
           <div :class="shakeAnimationActive ? 'shake' : ''">
@@ -40,6 +42,10 @@
           </div>
         </div>
 
+    </div>
+
+    <div class="center-horizontal" v-if="youWin">
+        <h1 class="green">Du hast gewonnen!</h1>
     </div>
 
     <div class="relative" v-if="playerTurn">
@@ -90,6 +96,9 @@ import PlayerView from "@/components/views/PlayerView.vue";
 import EventBus from "@/components/code/EventBusEvent";
 import DiceLayout from "@/components/views/DiceLayout.vue";
 import Dice from "@/components/views/Dice.vue";
+import dice from "@/components/views/Dice.vue";
+import {toUnicode} from "punycode";
+import {nextTick} from "vue";
 
 export default {
     //npm run dev | npm run build
@@ -98,6 +107,7 @@ export default {
     data() {
         return {
             names: [],
+            loosers: [],
             isHost: false,
             socket: null,
             turn: "",
@@ -119,7 +129,9 @@ export default {
             selfTurn: true,
             allowedLookedAnim: true,
           next: false,
-          allNums: []
+          allNums: [],
+            loose: false,
+            youWin: false,
         };
     },
 
@@ -178,6 +190,10 @@ export default {
 
             this.startCall()
 
+          if(Number(this.getCookies("hearts")) > 0 && this.isHost){
+            this.socket.send("engine;;;defaultheart;;;" + Number(this.getCookies("hearts")))
+          }
+
         });
 
         this.socket.addEventListener('message', (event) => {
@@ -187,29 +203,51 @@ export default {
             if(check[0] === "engine"){
                 if(check[1] === "players"){
                     let split =  check[2].split(";;;")
-                    this.names = []
+                  let collect = []
                     for(let i = 0; i < split.length; i++){
                         let data
                         if(this.turn === split[i]){
                             data = {
                                 name: split[i],
-                                turn: true
+                                turn: true,
+                                loose: false,
+                                heart: this.getHeart(split[i])
                             }
                         }else{
                             data = {
                                 name: split[i],
-                                turn: false
+                                turn: false,
+                                loose: false,
+                                heart: this.getHeart(split[i])
                             }
                         }
-                        this.names.push(data)
+                        if(this.loosers.includes(split[i])){
+                            data.loose = true
+                        }
+                        collect.push(data)
                     }
+                    this.names = collect
+                  console.log("got names")
                 }else if(check[1] === "start"){
                     if(check[2] === "true"){
 
                     }else if(check[2] === "false"){
                         this.stopGame()
                     }
+                }else if(check[1] === "looser"){
+                  if(check[2] === "undefined"){
+                    this.loosers = []
+                  }else{
+                    this.loosers.push(check[2])
+                  }
                 }else if(check[1] === "turn"){
+                    console.log("in looked close turn")
+                    if(!this.allowedLookedAnim){
+                        if(!this.$refs.cup.className.includes("cup-look-close")){
+                            this.$refs.cup.className = this.$refs.cup.className.replace("cup-look", "cup-look-close")
+                        }
+                        this.allowedLookedAnim = true
+                    }
                     this.setTurn(check[2])
                 }else if(check[1] === "dice"){
                     if(check[2] === "undefined"){
@@ -224,20 +262,48 @@ export default {
                     }
                 }else if(check[1] === "vote"){
                     if(check[2] === "undefined"){
-
+                        this.globalDice = ""
+                        this.globalMode = ""
                     }else{
                         let trim = check[2].split(";")
                         this.globalDice = trim[0]
                         this.globalMode = trim[1]
                     }
                 }else if(check[1] === "next"){
-                  this.next = true
-                  this.isReveal = true
+                    if(check[2] === "true"){
+                        this.next = true
+                        this.isReveal = true
+                    }else{
+                        this.next = false
+                        this.isReveal = false
+                    }
+                }else if(check[1] === "heart"){
+                  for(let i = 0; i < this.names.length; i++){
+                    if(this.names[i].name === check[2]){
+                      this.names[i].heart = Number(check[3])
+                    }
+                  }
+                  let names1 = this.names
+                  this.names = []
+                  nextTick().then(() =>{
+                    this.names = names1
+                  })
+                }else if(check[1] === "defaultheart"){
+                  for(let i = 0; i < this.names.length; i++){
+                    this.names[i].heart = Number(check[2])
+                  }
+                  let names1 = this.names
+                  this.names = []
+                  nextTick().then(() =>{
+                    this.names = names1
+                  })
+                  this.setCookies("hearts", check[2])
                 }else if(check[1] === "looked"){
                     if(!this.playerTurn){
                         if(check[2] === "true"){
                             if(this.allowedLookedAnim){
                                 this.allowedLookedAnim = false
+                                console.log("in looked open")
                                 if(this.$refs.cup.className.includes("cup-look-close")){
                                     this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-close", "cup-look")
                                 }else{
@@ -249,7 +315,8 @@ export default {
                         }
                     }else{
                         if(!this.allowedLookedAnim){
-                            if(this.$refs.cup.className.includes("cup-look")){
+                            console.log("in looked code")
+                            if(!this.$refs.cup.className.includes("cup-look-close")){
                                 this.$refs.cup.className = this.$refs.cup.className.replace("cup-look", "cup-look-close")
                             }
                             this.allowedLookedAnim = true
@@ -285,40 +352,22 @@ export default {
         },
 
         onClickStop(){
-            this.$router.push('/player');
+          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
             this.socket.send("engine;;;stopGame");
         },
 
-        hasLooked(){
-            this.socket.send("ping;;;hasLooked");
-        },
-
-        isDice(){
-            this.socket.send("ping;;;getDice");
-        },
-
-        isDiceVote(){
-            this.socket.send("ping;;;getVotedDice");
-        },
-
-        isStop(){
-            this.socket.send("ping;;;isStarted");
-        },
-
-        isTurn(){
-            this.socket.send("ping;;;getTurn");
-        },
 
         stopGame(){
-            this.$router.push('/player');
+          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
         },
 
         onClickLeave(){
             this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
-            this.$router.push('/');
+          window.open(document.baseURI.split("/#/")[0], '_self');
         },
 
         setTurn(player){
+            console.log("player turn: " + player)
             if(this.getCookies("username") === player){
                 this.playerTurn = true
                 this.selfTurn = false
@@ -326,11 +375,25 @@ export default {
               if(this.next){
                 this.isReveal = true
               }
+                if(this.globalDice === "21"){
+                    this.onClickReveal()
+                }
             }else{
                 this.playerTurn = false
                 this.selfTurn = true
             }
+            //this.getPlayers()
             this.turn = player
+          for(let i = 0; i < this.names.length; i++){
+            if(this.names[i].name === player){
+              this.names[i].turn = true
+            }else{
+              this.names[i].turn = false
+            }
+          }
+            if(this.loosers.length === this.names.length -1){
+              this.socket.send("engine;;;resetgame;;;" + this.getCookies("hearts"));
+            }
         },
 
 
@@ -362,23 +425,14 @@ export default {
             if(this.loggedDiceNum === ""){
                 this.error = "Du hast keine Zahl ausgewählt"
             }else{
+
+              if(this.checkIsBigger()){
                 this.error = ""
                 let voted = this.loggedDiceNum + ";" + this.loggedDiceMode
                 this.socket.send("engine;;;setVotedDice;;;" + voted);
 
-                let newName = ""
-
-                for(let i = 0; i < this.names.length; i++){
-                    let name = this.names[i].name
-                    if(name === this.turn){
-                        if(i === this.names.length-1){
-                            newName = this.names[0].name
-                        }else{
-                            let index = i + 1
-                            newName = this.names[index].name
-                        }
-                    }
-                }
+                console.log("in move reset")
+                let newName = this.getNewName()
 
                 this.socket.send("engine;;;setPlayerTurn;;;" + newName);
                 this.isDiceVisible = false
@@ -387,14 +441,71 @@ export default {
                 this.loggedDiceMode = ""
                 this.loggedDiceNum = ""
 
-                if(this.$refs.cup.className.includes("cup-look")){
-                    this.$refs.cup.className = this.$refs.cup.className.replace("cup-look", "cup-look-close")
+                if(!this.$refs.cup.className.includes("cup-look-close")){
+                  console.log("in move")
+                  this.$refs.cup.className = this.$refs.cup.className.replace("cup-look", "cup-look-close")
                 }
 
                 this.socket.send("engine;;;setLooked;;;false");
+              }else{
+                this.error = "Die Zahl muss größer sein als vorher gesagt."
+              }
+
+
 
 
             }
+        },
+
+        getNewName() {
+            let currentIndex = 0
+            for(let i = 0; i < this.names.length; i++){
+                if(this.names[i].name === this.turn){
+                    currentIndex = i
+                }
+            }
+            let next
+            let searchIndex = currentIndex+1
+            for(let i = 0; i < this.names.length; i++){
+                if(searchIndex === this.names.length){
+                    searchIndex = 0
+                }
+                next = this.names[searchIndex].name
+                if(this.loosers.includes(next)){
+                    searchIndex = searchIndex + 1
+                }else{
+                    break
+                }
+            }
+
+            console.log("next --------------------: " + next)
+
+            return next;
+        },
+        getPrevName() {
+            let currentIndex = 0
+            for(let i = 0; i < this.names.length; i++){
+                if(this.names[i].name === this.turn){
+                    currentIndex = i
+                }
+            }
+            let next
+            let searchIndex = currentIndex-1
+            for(let i = 0; i < this.names.length; i++){
+                if(searchIndex === -1){
+                    searchIndex = this.names.length-1
+                }
+                next = this.names[searchIndex].name
+                if(this.loosers.includes(next)){
+                    searchIndex = searchIndex - 1
+                }else{
+                    break
+                }
+            }
+
+            console.log("prev --------------------: " + next)
+
+            return next;
         },
 
         onClickView(){
@@ -444,6 +555,7 @@ export default {
             this.src2 = base + name2 + ".png"
 
             this.isDiceVisible = true
+            console.log("in view")
             if(this.$refs.cup.className.includes("cup-look-close")){
                 this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-close", "cup-look")
             }else{
@@ -509,36 +621,109 @@ export default {
         }
 
         let sum = num1 * 10 + num2
-        let glNum = Number(this.globalDice)
+          let gl = this.globalDice
+
+          if(gl === "1 Pasch"){
+              gl = "11"
+          }else if(gl === "2 Pasch"){
+              gl = "22"
+          }else if(gl === "3 Pasch"){
+              gl = "33"
+          }else if(gl === "4 Pasch"){
+              gl = "44"
+          }else if(gl === "5 Pasch"){
+              gl = "55"
+          }else if(gl === "6 Pasch"){
+              gl = "66"
+          }
+
+        let glNum = Number(gl)
         let sumId = 0
         let glId = 0
         for(let i = 0; i < this.allNums.length; i++){
           let n = this.allNums[i]
-          if(n === sum){
-            sumId = n
+          if(n[0] === sum){
+            sumId = n[1]
           }
-          if(n === glNum){
-            glId = n
+          if(n[0] === glNum){
+            glId = n[1]
           }
         }
-        if(sumId < glId){
-          //es wurde gelogen
-        }else{
-          //es wurde die wahrheit gesagt
+        if(this.turn === this.getCookies("username")){
+            if(sumId < glId){
+                let nextLooser = this.getPrevName()
+                //this.socket.send("engine;;;ingame;;;" + newGame.join(";-;"));
+                console.log("another looser: " + nextLooser)
+              let heart
+              for(let i = 0; i < this.names.length; i++){
+                if(this.names[i].name === nextLooser){
+                  heart = this.names[i].heart
+
+                }
+              }
+              heart = heart - 1
+              if(heart === 0){
+                this.socket.send("engine;;;looser;;;" + nextLooser);
+                this.socket.send("engine;;;heart;;;" + nextLooser + ";;;" + heart);
+              }else{
+                this.socket.send("engine;;;heart;;;" + nextLooser + ";;;" + heart);
+              }
+                setTimeout(this.reset, 2000)
+            }else{
+
+                let myName = this.getCookies("username")
+                //this.socket.send("engine;;;ingame;;;" + newGame.join("---"));
+              let heart
+              for(let i = 0; i < this.names.length; i++){
+                if(this.names[i].name === myName){
+                  heart = this.names[i].heart
+
+                }
+              }
+              heart = heart - 1
+              if(heart === 0){
+                this.socket.send("engine;;;looser;;;" + myName);
+                this.socket.send("engine;;;heart;;;" + myName + ";;;" + heart);
+              }else{
+                this.socket.send("engine;;;heart;;;" + myName + ";;;" + heart);
+              }
+
+                setTimeout(this.resetAfter, 2000)
+            }
         }
 
         this.src1 = base + name1 + ".png"
         this.src2 = base + name2 + ".png"
 
         this.isDiceVisible = true
+          console.log("in reveal")
         if(this.$refs.cup.className.includes("cup-look-close")){
-          this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-close", "cup-look")
+          this.$refs.cup.className = "cup-image cup-look"
+            console.log("replace: " + this.$refs.cup.className)
         }else{
+            console.log("add")
           this.$refs.cup.className = this.$refs.cup.className + " cup-look"
         }
 
 
       },
+
+        reset(){
+            this.playerTurn = true
+            this.socket.send("engine;;;reset");
+          this.socket.send("engine;;;setPlayerTurn;;;" + this.turn);
+        },
+
+        resetAfter(){
+          this.playerTurn = true
+          this.socket.send("engine;;;reset");
+
+            console.log("reset after")
+            let newName = this.getNewName()
+
+            this.socket.send("engine;;;setPlayerTurn;;;" + newName);
+
+        },
 
         onClickReveal(){
           this.socket.send("engine;;;reveal");
@@ -551,6 +736,134 @@ export default {
                 this.shakeAnimationActive = false;
             }, 1000);
         },
+      getHeart(name){
+          if(this.names.length > 0){
+            for(let i = 0; i < this.names.length; i++){
+              if(this.names[i].name === name){
+                if(this.names[i].heart === undefined){
+                  return this.getCookies("hearts")
+                }else{
+                  return this.names[i].heart
+                }
+              }
+            }
+          }else{
+            return this.getCookies("hearts")
+          }
+
+      },
+
+      checkIsBigger(){
+        let name1 = ""
+        let name2 = ""
+
+        let d1 = this.loggedDiceNum.charAt(0) + ""
+        let d2 = this.loggedDiceNum.charAt(1) + ""
+        let num1 = 0
+        let num2 = 0
+
+        console.log("logged dice mode: " + this.loggedDiceMode)
+
+        console.log("dice id 1: " + d1)
+        console.log("dice id 2: " + d2)
+
+        if(d1 === "1"){
+          name1 = "one"
+          num1 = 1
+        }else if(d1 === "2"){
+          name1 = "two"
+          num1 = 2
+        }else if(d1 === "3"){
+          name1 = "three"
+          num1 = 3
+        }else if(d1 === "4"){
+          name1 = "four"
+          num1 = 4
+        }else if(d1 === "5"){
+          name1 = "five"
+          num1 = 5
+        }else if(d1 === "6"){
+          name1 = "six"
+          num1 = 6
+        }
+
+        if(d2 === "1"){
+          name2 = "one"
+          num2 = 1
+        }else if(d2 === "2"){
+          name2 = "two"
+          num2 = 2
+        }else if(d2 === "3"){
+          name2 = "three"
+          num2 = 3
+        }else if(d2 === "4"){
+          name2 = "four"
+          num2 = 4
+        }else if(d2 === "5"){
+          name2 = "five"
+          num2 = 5
+        }else if(d2 === "6"){
+          name2 = "six"
+          num2 = 6
+        }
+
+        let sum = num1 * 10 + num2
+        let checksum = this.loggedDiceNum
+        let gl = this.globalDice
+
+        if(checksum === "1 Pasch"){
+          sum = "11"
+        }else if(checksum === "2 Pasch"){
+          sum = "22"
+        }else if(checksum === "3 Pasch"){
+          sum = "33"
+        }else if(checksum === "4 Pasch"){
+          sum = "44"
+        }else if(checksum === "5 Pasch"){
+          sum = "55"
+        }else if(checksum === "6 Pasch"){
+          sum = "66"
+        }
+
+        sum = Number(sum)
+
+        if(gl === "1 Pasch"){
+          gl = "11"
+        }else if(gl === "2 Pasch"){
+          gl = "22"
+        }else if(gl === "3 Pasch"){
+          gl = "33"
+        }else if(gl === "4 Pasch"){
+          gl = "44"
+        }else if(gl === "5 Pasch"){
+          gl = "55"
+        }else if(gl === "6 Pasch"){
+          gl = "66"
+        }
+
+        let glNum = Number(gl)
+        let sumId = 0
+        let glId = 0
+        for(let i = 0; i < this.allNums.length; i++){
+          let n = this.allNums[i]
+          if(n[0] === sum){
+            sumId = n[1]
+          }
+          if(n[0] === glNum){
+            glId = n[1]
+          }
+        }
+
+        console.log("sumid in check: " + sumId)
+        console.log("glid in check: " + glId)
+
+        if(sumId <= glId){
+          return false
+        }else{
+          return true
+        }
+
+      },
 
 
         getCookies(key){

@@ -14,9 +14,15 @@
 </div>
 
     <div class="button-layout center-horizontal" v-if="isHost">
-        <button class="register-button center-horizontal" @click="onClickStart">
+        <div>
+          <button class="register-button center-horizontal" @click="onClickStart">
             <p style="margin-top: 5px">Spiel starten</p>
-        </button>
+          </button>
+          <div class="center-horizontal center">
+              <h2 class="white">Herzenanzahl:</h2>
+              <input ref="input" placeholder="herzenanzahl" value="3" style="width: 20px">
+          </div>
+        </div>
     </div>
     <div v-else class="center-horizontal">
         <h1>Warte auf Spieler...</h1>
@@ -92,7 +98,7 @@ export default {
             this.socket.send("ping;;;getPlayers");
         },
         startGame(){
-            this.$router.push('/game');
+          window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
         },
 
         startCall(){
@@ -100,17 +106,19 @@ export default {
         },
 
         onClickStart(){
-            this.$router.push('/game');
+          this.setCookies("hearts", this.$refs.input.value)
+          window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
             this.socket.send("engine;;;startGame");
         },
 
         eventClose(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
         },
 
         onClickLeave(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
-            window.open("http://127.0.0.1:5173/#/", '_self');
+          console.log(this.getCookies("username") + ",,," + this.getCookies("pb"))
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
+            window.open(document.baseURI.split("/#/")[0], '_self');
         },
 
 

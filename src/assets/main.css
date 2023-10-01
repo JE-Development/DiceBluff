@@ -149,3 +149,19 @@ body{
     cursor: pointer;
 }
 
+.pb{
+    width: 80px;
+    border-radius: 50%;
+}
+
+.pb-select{
+    margin: 10px;
+}
+
+.main-grid {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 0fr);
+    gap: 10px;
+}
+

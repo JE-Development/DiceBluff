@@ -1,11 +1,15 @@
 <template>
-
+  <ProfilePopup :show="pbShow" @close="pbClose"/>
 <div class="center full-size">
     <div style="margin-bottom: 300px">
 
         <div class="center-horizontal">
             <h1>Dice Bluff</h1>
         </div>
+      <div class="center-horizontal">
+        <img :src="srcPb" class="pb pointer" @click="pbShow = true"/>
+      </div>
+      <div style="height: 20px"></div>
         <div>
             <input
                 ref="usernameinput"
@@ -36,25 +40,30 @@
 
 <script>
 
+import ProfilePopup from "@/components/views/ProfilePopup.vue";
+
 export default {
     //npm run dev | npm run build
     name: "Register",
+  components: {ProfilePopup},
     data() {
         return {
             username: "",
             pass: "",
-
-
+          srcPb: "",
+          baseSrc: "../src/assets/pb/",
+          pbList: ["bugs.png", "dog.png", "glow.png", "mike.png", "sigma.png", "sponge.png", "squid.png", "stick.png", "stick.png", "stonks.png", "sus.png"],
             socket: null,
             messages: [],
             newMessage: '',
             unableMessage: "",
-            clicked: false
+            clicked: false,
+          pbShow: false
         };
     },
 
     created() {
-
+      this.setPb()
     },
 
     beforeUnmount() {
@@ -73,7 +82,7 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
         });
 
 
@@ -136,7 +145,7 @@ export default {
         },
 
         registerPlayer(){
-            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value);
+            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
         },
 
         getCookies(key){
@@ -147,7 +156,21 @@ export default {
         },
         eventClose(){
             this.socket.close()
+        },
+      setPb(){
+        if(this.getCookies("pb") === null){
+          let random = Math.floor(Math.random() * this.pbList.length)
+          let item = this.pbList[random]
+          this.srcPb = this.baseSrc + item
+          this.setCookies("pb", this.pbList[random].split(".")[0])
+        }else{
+          this.srcPb = this.baseSrc + this.getCookies("pb") + ".png"
         }
+      },
+      pbClose(){
+          this.pbShow = false
+        this.setPb()
+      }
     }
 }
 </script>

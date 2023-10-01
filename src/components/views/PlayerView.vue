@@ -2,11 +2,17 @@
 
 <div class="player-card center-horizontal">
     <div>
-        <div class="center-horizontal"><img src="../../assets/default_pb.png" class="profile-picture"/></div>
+        <div class="center-horizontal"><img :src="pb" class="pb" style="width: 50px"/></div>
         <div class="center-horizontal">
-            <h3 v-if="turn" class="green">{{name}}</h3>
-            <h3 v-else>{{name}}</h3>
+            <h3 v-if="loose" class="red">{{username}}</h3>
+            <h3 v-else-if="turn" class="green">{{username}}</h3>
+            <h3 v-else>{{username}}</h3>
         </div>
+      <div class="center-horizontal">
+        <img
+            v-for="(dat) in heartlenght"
+            src="../../assets/heart.png" style="width: 30px; margin: 5px">
+      </div>
         <h1 class="orange">{{dice}}</h1>
     </div>
 </div>
@@ -19,6 +25,9 @@ export default {
     name: "PlayerView",
     data() {
         return {
+          heartlenght: [],
+          username: "",
+          pb: ""
         };
     },
 
@@ -26,13 +35,22 @@ export default {
         name: String,
         dice: String,
         turn: Boolean,
+        loose: Boolean,
+      heart: Number
     },
 
-    created() {
+  created() {
 
     },
     mounted() {
 
+      this.username = this.name.split(",,,")[0]
+      this.pb = "../../src/assets/pb/" + this.name.split(",,,")[1] + ".png"
+
+      this.heartlenght = []
+      for(let i = 0; i < this.heart; i++){
+        this.heartlenght.push("sampel")
+      }
     },
     methods: {
 
