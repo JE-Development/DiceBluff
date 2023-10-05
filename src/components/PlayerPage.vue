@@ -8,7 +8,8 @@
 <div class="center-horizontal">
     <PlayerView
         v-for="(dat) in names"
-        :name="dat"
+        :name="dat.name"
+        :img="dat.pb"
 
     />
 </div>
@@ -34,6 +35,7 @@
 <script>
 import EventBus from "./code/EventBusEvent";
 import PlayerView from "@/components/views/PlayerView.vue";
+import {nextTick} from "vue";
 
 export default {
     //npm run dev | npm run build
@@ -43,7 +45,8 @@ export default {
         return {
             names: [],
             isHost: false,
-            socket: null
+            socket: null,
+          pb: []
         };
     },
 
@@ -62,9 +65,8 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
-            this.getPlayers()
-
-            this.startCall()
+            //this.getPlayers()
+          this.getPb()
 
         });
 
@@ -73,14 +75,34 @@ export default {
             let check = message.split("---")
             if(check[0] === "engine"){
                 if(check[1] === "players"){
-                    let split =  check[2].split(";;;")
-                    this.names = split
+                  this.names = []
+                    let split = check[2].split(";;;")
+                  for(let i = 0; i < split.length; i++){
+                    let dat = {
+                      name: split[i],
+                      pb: this.getPbByName(split[i])
+                    }
+                    this.names.push(dat)
+                  }
+
+
+                  let names1 = this.names
+                  this.names = []
+                  nextTick().then(() =>{
+                    this.names = names1
+                  })
+
                 }else if(check[1] === "start"){
                     if(check[2] === "true"){
                         this.startGame()
                     }else if(check[2] === "false"){
 
                     }
+                }else if(check[1] === "pb"){
+
+                  this.pb = check[2].split(";-;")
+
+                  this.getPlayers()
                 }
             }
         });
@@ -97,6 +119,9 @@ export default {
         getPlayers(){
             this.socket.send("ping;;;getPlayers");
         },
+      getPb(){
+        this.socket.send("ping;;;getPb");
+      },
         startGame(){
           window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
         },
@@ -112,14 +137,25 @@ export default {
         },
 
         eventClose(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
         },
 
         onClickLeave(){
-          console.log(this.getCookies("username") + ",,," + this.getCookies("pb"))
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
+          console.log(this.getCookies("username"))
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
             window.open(document.baseURI.split("/#/")[0], '_self');
         },
+
+      getPbByName(name){
+          console.log(this.pb)
+          for(let i = 0; i < this.pb.length; i++){
+            let n = this.pb[i].split(",,,")[0]
+            let img = this.pb[i].split(",,,")[1]
+            if(n === name){
+              return img
+            }
+          }
+      },
 
 
 

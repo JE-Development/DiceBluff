@@ -4,26 +4,30 @@
     <div style="margin-bottom: 300px">
 
         <div class="center-horizontal">
-            <h1>Dice Bluff</h1>
+          <img src="../assets/logo.gif"/>
         </div>
       <div class="center-horizontal">
         <img :src="srcPb" class="pb pointer" @click="pbShow = true"/>
       </div>
       <div style="height: 20px"></div>
-        <div>
-            <input
-                ref="usernameinput"
-                :value="username"
-                placeholder="Nutzername"
-                class="register-input"/>
-        </div>
-        <div style="margin-top: 10px"/>
-        <div>
-            <input
-                ref="passinput"
-                :value="pass"
-                placeholder="Passwort"
-                class="register-input"/>
+        <div class="center-horizontal">
+          <div>
+            <div>
+              <input
+                  ref="usernameinput"
+                  :value="username"
+                  placeholder="Nutzername"
+                  class="register-input"/>
+            </div>
+            <div style="margin-top: 10px"/>
+            <div>
+              <input
+                  ref="passinput"
+                  :value="pass"
+                  placeholder="Passwort"
+                  class="register-input"/>
+            </div>
+          </div>
         </div>
         <div style="margin-top: 10px"/>
         <div class="button-layout center-horizontal">
@@ -82,7 +86,8 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username") + ",,," + this.getCookies("pb"));
+            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+          this.socket.send("register;;;removePb;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
         });
 
 
@@ -145,7 +150,8 @@ export default {
         },
 
         registerPlayer(){
-            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
+            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value);
+            this.socket.send("register;;;addPb;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
         },
 
         getCookies(key){

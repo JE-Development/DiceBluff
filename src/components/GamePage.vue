@@ -18,6 +18,7 @@
             :turn="dat.turn"
             :loose="dat.loose"
             :heart="dat.heart"
+            :img="dat.pb"
         />
     </div>
 
@@ -132,6 +133,8 @@ export default {
           allNums: [],
             loose: false,
             youWin: false,
+          einmal: true,
+          pbs: []
         };
     },
 
@@ -225,6 +228,11 @@ export default {
                             data.loose = true
                         }
                         collect.push(data)
+                    }
+                    if(this.einmal){
+                      this.einmal = false
+                      //this.setPb()
+                      this.callPb()
                     }
                     this.names = collect
                   console.log("got names")
@@ -326,6 +334,9 @@ export default {
                     this.startShakeAnimation()
                 }else if(check[1] === "reveal"){
                   this.handleReveal()
+                }else if(check[1] === "pb"){
+                  this.pbs = check[2].split(";-;")
+                  this.setPb()
                 }
             }
         });
@@ -358,7 +369,7 @@ export default {
 
 
         stopGame(){
-          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
+          window.open(document.baseURI.split("/#/")[0] + "/#/", '_self');
         },
 
         onClickLeave(){
@@ -705,6 +716,8 @@ export default {
           this.$refs.cup.className = this.$refs.cup.className + " cup-look"
         }
 
+        this.setPb()
+
 
       },
 
@@ -863,6 +876,27 @@ export default {
           return true
         }
 
+      },
+
+      callPb(){
+        this.socket.send("ping;;;getPb");
+      },
+
+      setPb(){
+          for(let i = 0; i < this.names.length; i++){
+            for(let j = 0; j < this.pbs.length; j++){
+              let n = this.pbs[j].split(",,,")[0]
+              let img = this.pbs[j].split(",,,")[1]
+              if(n === this.names[i].name){
+                this.names[i].pb = img
+              }
+            }
+          }
+        let names1 = this.names
+        this.names = []
+        nextTick().then(() =>{
+          this.names = names1
+        })
       },
 
 
