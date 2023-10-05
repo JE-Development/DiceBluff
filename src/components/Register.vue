@@ -35,7 +35,9 @@
                 <p style="margin-top: 5px">Spiel beitreten</p>
             </button>
         </div>
-        <h2 class="red">{{unableMessage}}</h2>
+        <div class="center-horizontal">
+          <h2 class="red">{{unableMessage}}</h2>
+        </div>
     </div>
 </div>
 
@@ -62,7 +64,8 @@ export default {
             newMessage: '',
             unableMessage: "",
             clicked: false,
-          pbShow: false
+          pbShow: false,
+          isStarted: false,
         };
     },
 
@@ -85,16 +88,34 @@ export default {
         this.socket = new WebSocket('ws://212.227.183.160:3000');
 
         this.socket.addEventListener('open', (event) => {
-            console.log('WebSocket-Verbindung geöffnet');
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
-          this.socket.send("register;;;removePb;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
+
+          const message = {
+            type: "ping",
+            func: "isStarted"
+          };
+          this.socket.send(JSON.stringify(message));
+
         });
 
 
         this.socket.addEventListener('message', (event) => {
-            const message = event.data;
-            let check = message.split("---")
-            console.log(message)
+
+          const message = JSON.parse(event.data)
+
+          console.log(message)
+          if(message.func === "error"){
+            console.error(message.text)
+          }else if(message.func === "isStarted"){
+            if(message.text === true){
+              this.isStarted = true
+            }else if(message.text === false || message.text === "undefined"){
+              this.isStarted = false
+            }
+          }
+
+
+
+          /*
             if(check[0] === "engine"){
                 if(check[1] === "start"){
                     if(check[2] === "true"){
@@ -106,7 +127,7 @@ export default {
                         }
                     }
                 }
-            }
+            }*/
         });
 
         this.username = this.getCookies("username")
@@ -117,8 +138,25 @@ export default {
 
         onClickJoin(){
             this.clicked = true
-            this.socket.send("ping;;;isStarted");
+          if(this.isStarted === true){
+            this.joinUnable()
+            this.clicked = false
+          }else{
+            if(this.clicked){
+              this.join()
+            }
+          }
         },
+
+      addPlayer(){
+        const message = {
+          type: "register",
+          func: "addPlayer",
+          player: this.getCookies("username"),
+          pb: this.getCookies("pb")
+        };
+        this.socket.send(JSON.stringify(message));
+      },
 
         join(){
             this.unableMessage = ""
@@ -126,12 +164,12 @@ export default {
             let username = this.$refs.usernameinput.value;
             let pass = this.$refs.passinput.value;
 
+          this.addPlayer()
+
             if(pass === "lost mafia"){
                 this.setCookies("username", username)
                 this.setCookies("pass", pass)
                 this.setCookies("host", "false")
-
-                this.registerPlayer()
 
                 this.$router.push('/player');
             }else if(pass === "lost mafia host"){
@@ -139,19 +177,14 @@ export default {
                 this.setCookies("pass", pass)
                 this.setCookies("host", "true")
 
-                this.registerPlayer()
 
                 this.$router.push('/player');
             }
+
         },
 
         joinUnable(){
             this.unableMessage = "Spiel ist bereits gestartet."
-        },
-
-        registerPlayer(){
-            this.socket.send("register;;;addPlayer;;;" + this.$refs.usernameinput.value);
-            this.socket.send("register;;;addPb;;;" + this.$refs.usernameinput.value + ",,," + this.getCookies("pb"));
         },
 
         getCookies(key){

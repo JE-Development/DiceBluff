@@ -189,17 +189,33 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
-            this.getPlayers()
+            //this.getPlayers()
 
-            this.startCall()
+            //this.startCall()
 
-          if(Number(this.getCookies("hearts")) > 0 && this.isHost){
+          /*if(Number(this.getCookies("hearts")) > 0 && this.isHost){
             this.socket.send("engine;;;defaultheart;;;" + Number(this.getCookies("hearts")))
-          }
+          }*/
 
         });
 
         this.socket.addEventListener('message', (event) => {
+          const message = JSON.parse(event.data)
+          console.log(message)
+          if(message.func === "error"){
+
+            console.error(message.text)
+
+          }else if(message.func === "stop"){
+
+            this.stopGame()
+
+          }
+
+
+
+
+          /*
             const message = event.data;
             let check = message.split("---")
             console.log(message)
@@ -338,7 +354,7 @@ export default {
                   this.pbs = check[2].split(";-;")
                   this.setPb()
                 }
-            }
+            }*/
         });
 
     },
@@ -353,7 +369,13 @@ export default {
             this.socket.send("ping;;;getPlayers");
         },
         eventClose(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+          let dat = {
+            type: "register",
+            func: "removePlayer",
+            player: this.getCookies("username"),
+            pb: this.getCookies("pb")
+          }
+          this.socket.send(JSON.stringify(dat))
         },
 
         startCall(){
@@ -363,17 +385,27 @@ export default {
         },
 
         onClickStop(){
+          let dat = {
+            type: "engine",
+            func: "stop"
+          }
+          this.socket.send(JSON.stringify(dat))
           window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
-            this.socket.send("engine;;;stopGame");
         },
 
 
         stopGame(){
-          window.open(document.baseURI.split("/#/")[0] + "/#/", '_self');
+          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
         },
 
         onClickLeave(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
+          let dat = {
+            type: "register",
+            func: "removePlayer",
+            player: this.getCookies("username"),
+            pb: this.getCookies("pb")
+          }
+          this.socket.send(JSON.stringify(dat))
           window.open(document.baseURI.split("/#/")[0], '_self');
         },
 

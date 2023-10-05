@@ -64,33 +64,43 @@ export default {
         this.socket = new WebSocket('ws://212.227.183.160:3000');
 
         this.socket.addEventListener('open', (event) => {
-            console.log('WebSocket-Verbindung geöffnet');
-            //this.getPlayers()
-          this.getPb()
+          console.log("socket connected")
+          const message = {
+            type: "ping",
+            func: "getPlayers"
+          };
+          this.socket.send(JSON.stringify(message));
 
         });
 
         this.socket.addEventListener('message', (event) => {
-            const message = event.data;
+          const message = JSON.parse(event.data)
+          console.log(message)
+          if(message.func === "error"){
+
+            console.error(message.text)
+
+          }else if(message.func === "allPlayers"){
+            this.names = []
+
+            let allPlayers = message.players
+            for(let i = 0; i < allPlayers.length; i++){
+              let dat = {
+                name: allPlayers[i].name,
+                pb: allPlayers[i].pb
+              }
+              this.names.push(dat)
+            }
+
+          }else if(message.func === "start"){
+            this.startGame()
+
+          }
+/*
+
             let check = message.split("---")
             if(check[0] === "engine"){
-                if(check[1] === "players"){
-                  this.names = []
-                    let split = check[2].split(";;;")
-                  for(let i = 0; i < split.length; i++){
-                    let dat = {
-                      name: split[i],
-                      pb: this.getPbByName(split[i])
-                    }
-                    this.names.push(dat)
-                  }
 
-
-                  let names1 = this.names
-                  this.names = []
-                  nextTick().then(() =>{
-                    this.names = names1
-                  })
 
                 }else if(check[1] === "start"){
                     if(check[2] === "true"){
@@ -98,63 +108,58 @@ export default {
                     }else if(check[2] === "false"){
 
                     }
-                }else if(check[1] === "pb"){
-
-                  this.pb = check[2].split(";-;")
-
-                  this.getPlayers()
                 }
-            }
+            }/*/
         });
 
     },
 
     beforeUnmount() {
-        window.removeEventListener('beforeunload', this.eventClose);
+      window.removeEventListener('beforeunload', this.eventClose);
     },
 
 
     methods: {
 
-        getPlayers(){
+
+      getPlayers(){
             this.socket.send("ping;;;getPlayers");
-        },
+      },
+
       getPb(){
         this.socket.send("ping;;;getPb");
       },
-        startGame(){
-          window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
-        },
+      startGame(){
+        window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
+      },
 
-        startCall(){
-            this.getPlayers()
-        },
+      startCall(){
+        this.getPlayers()
+      },
 
-        onClickStart(){
-          this.setCookies("hearts", this.$refs.input.value)
-          window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
-            this.socket.send("engine;;;startGame");
-        },
+      onClickStart(){
+        this.setCookies("hearts", this.$refs.input.value)
+        window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
+        let dat = {
+          type: "engine",
+          func: "start"
+        }
+        this.socket.send(JSON.stringify(dat));
+      },
 
-        eventClose(){
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
-        },
+      eventClose(){
+        let dat = {
+          type: "register",
+          func: "removePlayer",
+          player: this.getCookies("username"),
+          pb: this.getCookies("pb")
+        }
+        this.socket.send(JSON.stringify(dat));
+      },
 
-        onClickLeave(){
-          console.log(this.getCookies("username"))
-            this.socket.send("register;;;removePlayer;;;" + this.getCookies("username"));
-            window.open(document.baseURI.split("/#/")[0], '_self');
-        },
-
-      getPbByName(name){
-          console.log(this.pb)
-          for(let i = 0; i < this.pb.length; i++){
-            let n = this.pb[i].split(",,,")[0]
-            let img = this.pb[i].split(",,,")[1]
-            if(n === name){
-              return img
-            }
-          }
+      onClickLeave(){
+        this.eventClose()
+        window.open(document.baseURI.split("/#/")[0], '_self');
       },
 
 
@@ -162,12 +167,12 @@ export default {
 
 
 
-        getCookies(key){
-            return this.$cookies.get(key);
-        },
-        setCookies(key, value){
-            return this.$cookies.set(key, value, 2147483647);
-        },
+      getCookies(key){
+        return this.$cookies.get(key);
+      },
+      setCookies(key, value){
+        return this.$cookies.set(key, value, 2147483647);
+      },
     }
 }
 </script>
