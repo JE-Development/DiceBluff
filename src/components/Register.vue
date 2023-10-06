@@ -116,24 +116,8 @@ export default {
             console.error(message.text)
           }else if(message.func === "isStarted"){
             console.log(message.text)
-
           }
-
-
-
-          /*
-            if(check[0] === "engine"){
-                if(check[1] === "start"){
-                    if(check[2] === "true"){
-                        this.joinUnable()
-                        this.clicked = false
-                    }else if(check[2] === "false" || check[2] === "undefined"){
-                        if(this.clicked){
-                            this.join()
-                        }
-                    }
-                }*/
-            }
+          }
         });
 
         this.username = this.getCookies("username")

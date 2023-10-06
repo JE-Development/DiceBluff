@@ -1,56 +1,111 @@
 <template>
 
-    <div>
-        <div class="flex">
+    <div v-if="center">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line1"
                     :num="dat"
                     mode="1"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line2"
                     :num="dat"
                     mode="2"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line3"
                     :num="dat"
                     mode="3"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line4"
                     :num="dat"
                     mode="4"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line5"
                     :num="dat"
                     mode="5"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                 v-for="(dat) in line51"
                 :num="dat"
                 mode="5"
             />
         </div>
-        <div class="flex">
+        <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line6"
                     :num="dat"
                     mode="6"
             />
         </div>
+
     </div>
+
+
+  <div v-else>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line1"
+          :num="dat"
+          mode="1"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line2"
+          :num="dat"
+          mode="2"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line3"
+          :num="dat"
+          mode="3"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line4"
+          :num="dat"
+          mode="4"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line5"
+          :num="dat"
+          mode="5"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line51"
+          :num="dat"
+          mode="5"
+      />
+    </div>
+    <div class="flex">
+      <Dice
+          v-for="(dat) in line6"
+          :num="dat"
+          mode="6"
+      />
+    </div>
+
+  </div>
 
 </template>
 
@@ -75,6 +130,7 @@ export default {
     },
 
     props:{
+      center: Boolean
     },
 
     created() {
@@ -109,7 +165,6 @@ export default {
 
     },
     methods: {
-
 
         getCookies(key){
             return this.$cookies.get(key);

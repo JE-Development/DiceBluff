@@ -65,9 +65,15 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
-          const message = {
+          let dat = {
             type: "ping",
             func: "getPlayers"
+          };
+          this.socket.send(JSON.stringify(dat));
+
+          const message = {
+            type: "engine",
+            func: "clearGameEngine"
           };
           this.socket.send(JSON.stringify(message));
 
@@ -102,20 +108,6 @@ export default {
             this.startGame()
 
           }
-/*
-
-            let check = message.split("---")
-            if(check[0] === "engine"){
-
-
-                }else if(check[1] === "start"){
-                    if(check[2] === "true"){
-                        this.startGame()
-                    }else if(check[2] === "false"){
-
-                    }
-                }
-            }/*/
         });
 
     },

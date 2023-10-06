@@ -165,3 +165,24 @@ body{
     gap: 10px;
 }
 
+.dice-big-layout{
+    visibility: visible;
+}
+
+
+.dice-small-layout{
+    height: 0px;
+    overflow: hidden;
+    visibility: collapse;
+}
+
+@media (max-width: 800px) {
+    .dice-big-layout{
+        visibility: hidden;
+    }
+
+    .dice-small-layout{
+        height: auto;
+        visibility: visible;
+    }
+}
