@@ -111,6 +111,12 @@ export default {
             }else if(message.text === false || message.text === "undefined"){
               this.isStarted = false
             }
+
+          if(message.func === "error"){
+            console.error(message.text)
+          }else if(message.func === "isStarted"){
+            console.log(message.text)
+
           }
 
 
@@ -126,14 +132,15 @@ export default {
                             this.join()
                         }
                     }
-                }
-            }*/
+                }*/
+            }
         });
 
         this.username = this.getCookies("username")
         this.pass = this.getCookies("pass")
 
     },
+
     methods: {
 
         onClickJoin(){
