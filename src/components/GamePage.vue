@@ -30,7 +30,7 @@
     </div>
 
     <div class="relative">
-      <div class="absolute" v-if="playerTurn">
+      <div class="absolute" v-if="isDiceMenu">
         <DiceLayout/>
       </div>
         <div class="center-horizontal">
@@ -39,7 +39,7 @@
             <img :src="src2" class="dice-image"/>
           </div>
           <div :class="shakeAnimationActive ? 'shake' : ''">
-            <img src="../assets/cup.png" class="cup-image" ref="cup" />
+            <img src="../assets/cup.png" class="cup-image cup-look-close" ref="cup" />
           </div>
         </div>
 
@@ -49,7 +49,7 @@
         <h1 class="green">Du hast gewonnen!</h1>
     </div>
 
-    <div class="relative" v-if="playerTurn">
+    <div class="relative">
 
         <div class="absolute center-horizontal" style="width: 100%; margin-top: 50px;">
             <div>
@@ -115,7 +115,8 @@ export default {
             playerTurn: false,
             dice: "null",
             shakeAnimationActive: false,
-            isDrop: true,
+            isDiceMenu: false,
+            isDrop: false,
             isReveal: false,
             isView: false,
             isMove: false,
@@ -189,7 +190,8 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
-            //this.getPlayers()
+            this.getPlayers()
+            this.startSession()
 
             //this.startCall()
 
@@ -204,18 +206,56 @@ export default {
           console.log(message)
           if(message.func === "error"){
 
-            console.error(message.text)
+            if(message.player === this.getCookies("username")){
+              this.error = message.text
+            }
 
           }else if(message.func === "stop"){
 
             this.stopGame()
 
+          }else if(message.func === "allPlayers"){
+            this.handlePlayers(message)
+
+          }else if(message.func === "visSettings"){
+            this.updateSettings(message)
+
+          }else if(message.func === "anim"){
+            switch (message.type){
+              case "cupShake":
+                this.shakeCup()
+                break;
+              case "cupUp":
+                this.upCup()
+                break;
+              case "cupDown":
+                this.downCup()
+                break;
+            }
+
+          }else if(message.func === "showDice"){
+            let base = "../src/assets/dice_"
+            if(message.player === this.getCookies("username")){
+              let word = message.dice.split(";")
+
+
+              this.src1 = base + word[0] + ".png"
+              this.src2 = base + word[1] + ".png"
+            }else{
+              this.src1 = base + "default.png"
+              this.src2 = base + "default.png"
+            }
+
+          }else if(message.func === "setGlobalDice"){
+            this.globalDice = message.dice
+            this.globalMode = message.mode
+
           }
 
 
+/*
 
 
-          /*
             const message = event.data;
             let check = message.split("---")
             console.log(message)
@@ -366,8 +406,31 @@ export default {
 
     methods: {
         getPlayers(){
-            this.socket.send("ping;;;getPlayers");
+          const message = {
+            type: "engine",
+            func: "getAllPlayersInfo"
+          };
+          this.socket.send(JSON.stringify(message));
         },
+
+      handlePlayers(message){
+        let allPlayers = message.players
+        let collect = []
+        for(let i = 0; i < allPlayers.length; i++){
+          let p = allPlayers[i]
+          let data = {
+            name: p.name,
+            turn: p.turn,
+            loose: p.looser,
+            heart: p.heart,
+            pb: p.pb
+          }
+
+          collect.push(data)
+        }
+        this.names = collect
+      },
+
         eventClose(){
           let dat = {
             type: "register",
@@ -377,6 +440,43 @@ export default {
           }
           this.socket.send(JSON.stringify(dat))
         },
+
+      startSession(){
+        let dat = {
+          type: "engine",
+          func: "startSession"
+        }
+        this.socket.send(JSON.stringify(dat))
+      },
+
+      updateSettings(message){
+          if(message.player === this.getCookies("username")){
+            this.isDiceMenu = message.diceMenu
+            this.isDrop = message.dropButton
+            this.isMove = message.moveButton
+            this.isView = message.viewButton
+            this.isReveal = message.revealButton
+          }
+      },
+
+      upCup(){
+        this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-close", "cup-look-open")
+      },
+
+      downCup(){
+        this.$refs.cup.className = this.$refs.cup.className.replace("cup-look-open", "cup-look-close")
+      },
+
+
+
+
+
+
+
+
+
+
+
 
         startCall(){
           this.socket.send("engine;;;setTurnFirst");
@@ -442,29 +542,34 @@ export default {
 
 
         onClickDrop(){
-            this.socket.send("engine;;;shake")
-            this.isDrop = false
-            this.isView = true
-            this.isReveal = false
+          let dat = {
+            type: "engine",
+            func: "buttonClicked",
+            args: ["drop"]
+          }
 
-            let num1 = Math.floor(Math.random() * 6)+1;
-            let num2 = Math.floor(Math.random() * 6)+1;
-
-            let pos1 = num1
-            let pos2 = num2
-
-            if(num1 < num2){
-                pos2 = num1
-                pos1 = num2
-            }
-
-            let sum = pos1 + "" + pos2
-
-            this.socket.send("engine;;;setDice;;;" + sum);
+            this.socket.send(JSON.stringify(dat));
 
         },
 
         onClickMove(){
+          if(this.loggedDiceNum === ""){
+            this.error = "Du hast keine Zahl ausgewählt"
+          }else{
+            let dat = {
+              type: "engine",
+              func: "buttonClicked",
+              args: ["move", this.loggedDiceNum]
+            }
+
+            this.loggedDiceNum = ""
+
+            this.socket.send(JSON.stringify(dat));
+          }
+
+          /*
+
+
             if(this.loggedDiceNum === ""){
                 this.error = "Du hast keine Zahl ausgewählt"
             }else{
@@ -497,7 +602,7 @@ export default {
 
 
 
-            }
+            }*/
         },
 
         getNewName() {
@@ -520,8 +625,6 @@ export default {
                     break
                 }
             }
-
-            console.log("next --------------------: " + next)
 
             return next;
         },
@@ -552,7 +655,17 @@ export default {
         },
 
         onClickView(){
-            this.isView = false
+
+          let dat = {
+            type: "engine",
+            func: "buttonClicked",
+            args: ["view"]
+          }
+
+          this.socket.send(JSON.stringify(dat));
+
+
+            /*this.isView = false
             this.isDiceVisible = true
 
             console.log("clicked view")
@@ -605,7 +718,7 @@ export default {
                 this.$refs.cup.className = this.$refs.cup.className + " cup-look"
             }
 
-            this.socket.send("engine;;;setLooked;;;true");
+            this.socket.send("engine;;;setLooked;;;true");*/
 
 
         },
@@ -771,11 +884,16 @@ export default {
         },
 
         onClickReveal(){
-          this.socket.send("engine;;;reveal");
-          this.playerTurn = false
+          let dat = {
+            type: "engine",
+            func: "buttonClicked",
+            args: ["reveal"]
+          }
+
+          this.socket.send(JSON.stringify(dat));
         },
 
-        startShakeAnimation() {
+        shakeCup() {
             this.shakeAnimationActive = true;
             setTimeout(() => {
                 this.shakeAnimationActive = false;
@@ -947,7 +1065,7 @@ export default {
     animation: shakeAnim 1s;
 }
 
-.cup-look{
+.cup-look-open{
     transform: translateY(55px);
     animation: lookAnim 1s;
     animation-fill-mode: forwards;

@@ -92,6 +92,12 @@ export default {
               this.names.push(dat)
             }
 
+            let names1 = this.names
+            this.names = []
+            nextTick().then(() =>{
+              this.names = names1
+            })
+
           }else if(message.func === "start"){
             this.startGame()
 
@@ -142,7 +148,8 @@ export default {
         window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
         let dat = {
           type: "engine",
-          func: "start"
+          func: "start",
+          args: [this.$refs.input.value]
         }
         this.socket.send(JSON.stringify(dat));
       },
