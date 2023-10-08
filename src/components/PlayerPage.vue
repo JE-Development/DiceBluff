@@ -16,13 +16,16 @@
 
     <div class="button-layout center-horizontal" v-if="isHost">
         <div>
-          <button class="register-button center-horizontal" @click="onClickStart">
-            <p style="margin-top: 5px">Spiel starten</p>
-          </button>
+          <div class="center-horizontal">
+            <button class="register-button center-horizontal" @click="onClickStart">
+              <p style="margin-top: 5px">Spiel starten</p>
+            </button>
+          </div>
           <div class="center-horizontal center">
               <h2 class="white">Herzenanzahl:</h2>
-              <input ref="input" placeholder="herzenanzahl" value="3" style="width: 20px">
+              <input ref="input" class="heart-input" value="3">
           </div>
+          <h2 class="red">{{errorText}}</h2>
         </div>
     </div>
     <div v-else class="center-horizontal">
@@ -46,7 +49,8 @@ export default {
             names: [],
             isHost: false,
             socket: null,
-          pb: []
+          pb: [],
+          errorText: ""
         };
     },
 
@@ -131,19 +135,26 @@ export default {
         window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
       },
 
-      startCall(){
-        this.getPlayers()
-      },
-
       onClickStart(){
-        this.setCookies("hearts", this.$refs.input.value)
-        window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
-        let dat = {
-          type: "engine",
-          func: "start",
-          args: [this.$refs.input.value]
+        if(this.$refs.input.value !== ""){
+          let checker = Number(this.$refs.input.value)
+          if(isNaN(checker)){
+            this.errorText = "Der Wert für die Herzenanzahl ist ungültig."
+          }else if(checker < 1){
+            this.errorText = "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein."
+          }else{
+            this.setCookies("hearts", this.$refs.input.value)
+            window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
+            let dat = {
+              type: "engine",
+              func: "start",
+              args: [this.$refs.input.value]
+            }
+            this.socket.send(JSON.stringify(dat));
+          }
+        }else{
+          this.errorText = "Das Textfeld für die Herzenanzahl darf nicht leer sein."
         }
-        this.socket.send(JSON.stringify(dat));
       },
 
       eventClose(){
