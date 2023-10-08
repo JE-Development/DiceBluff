@@ -2,7 +2,17 @@
 
 <div class="player-card center-horizontal">
     <div>
-        <div class="center-horizontal"><img :src="pb" class="pb" style="width: 50px" @click="cl"/></div>
+      <div class="center-horizontal">
+        <div>
+          <div class="center-horizontal">
+            <img src="../../assets/crown.png" class="crown" v-if="winner"/>
+            <div style="height: 20px" v-else></div>
+          </div>
+          <div>
+            <img :src="pb" class="pb" style="width: 50px" @click="cl"/>
+          </div>
+        </div>
+      </div>
         <div class="center-horizontal">
             <h3 v-if="loose" class="red">{{name}}</h3>
             <h3 v-else-if="turn" class="green">{{name}}</h3>
@@ -26,7 +36,7 @@ export default {
     data() {
         return {
           heartlenght: [],
-          pb: ""
+          pb: "",
         };
     },
 
@@ -36,7 +46,8 @@ export default {
         turn: Boolean,
         loose: Boolean,
       heart: Number,
-      img: String
+      img: String,
+      winner: Boolean
     },
 
   created() {

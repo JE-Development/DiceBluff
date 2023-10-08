@@ -19,6 +19,7 @@
             :loose="dat.loose"
             :heart="dat.heart"
             :img="dat.pb"
+            :winner="dat.winner"
         />
     </div>
 
@@ -244,7 +245,8 @@ export default {
             turn: p.turn,
             loose: p.looser,
             heart: p.heart,
-            pb: p.pb
+            pb: p.pb,
+            winner: p.winner
           }
 
           collect.push(data)
