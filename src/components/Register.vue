@@ -4,7 +4,7 @@
     <div style="margin-bottom: 300px">
 
         <div class="center-horizontal">
-          <img src="../assets/logo.gif"/>
+          <img src="../assets/logo.png" style="width: 400px"/>
         </div>
       <div class="center-horizontal">
         <img :src="srcPb" class="pb pointer" @click="pbShow = true"/>
@@ -58,8 +58,8 @@ export default {
             pass: "",
           srcPb: "",
           baseSrc: "../src/assets/pb/",
-          pbList: ["bugs.png", "dog.png", "glow.png", "mike.png", "sigma.png", "sponge.png", "squid.png", "stick.png",
-            "stick.png", "stonks.png", "sus.png", "calling.png", "pou.png", "futurama.png", "sweat.png", "confused.png"],
+          pbList: ["bugs", "dog", "glow", "mike", "sigma", "sponge", "squid", "stick",
+            "stick", "stonks", "sus", "calling", "pou", "futurama", "sweat", "confused"],
             socket: null,
             messages: [],
             newMessage: '',
@@ -89,6 +89,14 @@ export default {
         this.socket = new WebSocket('ws://212.227.183.160:3000');
 
         this.socket.addEventListener('open', (event) => {
+
+          let dat = {
+            type: "register",
+            func: "removePlayer",
+            player: this.getCookies("username"),
+            pb: this.getCookies("pb")
+          }
+          this.socket.send(JSON.stringify(dat));
 
           const message = {
             type: "ping",
@@ -192,7 +200,7 @@ export default {
         if(this.getCookies("pb") === null){
           let random = Math.floor(Math.random() * this.pbList.length)
           let item = this.pbList[random]
-          this.srcPb = this.baseSrc + item
+          this.srcPb = this.baseSrc + item + ".png"
           this.setCookies("pb", this.pbList[random].split(".")[0])
         }else{
           this.srcPb = this.baseSrc + this.getCookies("pb") + ".png"

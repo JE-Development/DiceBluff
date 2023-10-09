@@ -20,6 +20,7 @@
             :heart="dat.heart"
             :img="dat.pb"
             :winner="dat.winner"
+            :isSad="dat.sad"
         />
     </div>
 
@@ -216,6 +217,9 @@ export default {
             this.globalDice = message.dice
             this.globalMode = message.mode
 
+          }else if(message.func === "setSad"){
+            this.handleSad(message.player)
+
           }
         });
 
@@ -246,12 +250,39 @@ export default {
             loose: p.looser,
             heart: p.heart,
             pb: p.pb,
-            winner: p.winner
+            winner: p.winner,
+            sad: false
           }
 
           collect.push(data)
         }
         this.names = collect
+      },
+
+      handleSad(player){
+        for(let i = 0; i < this.names.length; i++){
+          if(this.names[i].name === player){
+            this.names[i].sad = true
+          }
+        }
+
+        let names1 = this.names
+        this.names = []
+        nextTick().then(() =>{
+          this.names = names1
+        })
+
+        setTimeout(() => {
+          for(let i = 0; i < this.names.length; i++){
+            this.names[i].sad = false
+          }
+          let names1 = this.names
+          this.names = []
+          nextTick().then(() =>{
+            this.names = names1
+          })
+        }, 2000)
+
       },
 
         eventClose(){

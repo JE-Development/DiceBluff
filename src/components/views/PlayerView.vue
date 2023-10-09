@@ -9,7 +9,8 @@
             <div style="height: 20px" v-else></div>
           </div>
           <div>
-            <img :src="pb" class="pb" style="width: 50px" @click="cl"/>
+            <img :src="pb" class="pb absolute" style="width: 50px" v-if="!isSad"/>
+            <img :src="pbSad" class="pb" style="width: 50px"/>
           </div>
         </div>
       </div>
@@ -37,6 +38,7 @@ export default {
         return {
           heartlenght: [],
           pb: "",
+          pbSad: "",
         };
     },
 
@@ -47,7 +49,8 @@ export default {
         loose: Boolean,
       heart: Number,
       img: String,
-      winner: Boolean
+      winner: Boolean,
+      isSad: Boolean
     },
 
   created() {
@@ -55,6 +58,7 @@ export default {
     },
     mounted() {
       this.pb = "../../src/assets/pb/" + this.img + ".png"
+      this.pbSad = "../../src/assets/pb/sad/" + this.img + ".png"
 
       this.heartlenght = []
       for(let i = 0; i < this.heart; i++){
@@ -62,10 +66,6 @@ export default {
       }
     },
     methods: {
-
-      cl(){
-        console.log(this.img)
-      },
 
 
         getCookies(key){

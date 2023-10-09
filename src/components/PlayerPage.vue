@@ -1,4 +1,11 @@
 <template>
+
+  <div class="center-horizontal" v-if="isHost">
+    <button class="register-button center-horizontal" @click="onClickRemove">
+      <p style="margin-top: 5px">Alle Spieler entfernen</p>
+    </button>
+  </div>
+
     <div class="button-layout center-horizontal">
         <button class="register-button center-horizontal" @click="onClickLeave">
             <p style="margin-top: 5px">Spiel verlassen</p>
@@ -75,6 +82,14 @@ export default {
           };
           this.socket.send(JSON.stringify(dat));
 
+              if(this.getCookies("host") === "true"){
+                dat = {
+                  type: "engine",
+                  func: "stop"
+                }
+                this.socket.send(JSON.stringify(dat))
+              }
+
           const message = {
             type: "engine",
             func: "clearGameEngine"
@@ -110,6 +125,9 @@ export default {
 
           }else if(message.func === "start"){
             this.startGame()
+
+          }else if(message.func === "removed"){
+            this.onClickLeave()
 
           }
         });
@@ -170,6 +188,19 @@ export default {
       onClickLeave(){
         this.eventClose()
         window.open(document.baseURI.split("/#/")[0], '_self');
+      },
+
+      onClickRemove(){
+        let dat = {
+          type: "register",
+          func: "clearPlayer"
+        }
+        this.socket.send(JSON.stringify(dat));
+        dat = {
+          type: "register",
+          func: "kickAllPlayers"
+        }
+        this.socket.send(JSON.stringify(dat));
       },
 
 
