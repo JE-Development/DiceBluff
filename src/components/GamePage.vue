@@ -10,6 +10,11 @@
             <p style="margin-top: 5px">Spiel verlassen</p>
         </button>
     </div>
+  <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
+    <button class="register-button center-horizontal" @click="onClickGhostMode" style="background: #5cf0ff">
+      <p style="margin-top: 5px">Ghost Mode aktivieren</p>
+    </button>
+  </div>
 
     <div class="center-horizontal">
         <PlayerView
@@ -36,13 +41,17 @@
         <DiceLayout :center="false" class="dice-big-layout"/>
       </div>
         <div class="center-horizontal">
+          <div :class="shakeAnimationActive ? 'shake' : ''" v-if="ghostMode">
+            <img src="../assets/cup.png" class="cup-image cup-look-close" ref="cup" />
+          </div>
           <div class="absolute">
             <img :src="src1" class="dice-image" style="margin-right: 10px"/>
             <img :src="src2" class="dice-image"/>
           </div>
-          <div :class="shakeAnimationActive ? 'shake' : ''">
+          <div :class="shakeAnimationActive ? 'shake' : ''" v-if="!ghostMode">
             <img src="../assets/cup.png" class="cup-image cup-look-close" ref="cup" />
           </div>
+
         </div>
 
     </div>
@@ -130,6 +139,9 @@ export default {
             globalMode: "",
             loose: false,
             youWin: false,
+            ghostMode: false,
+          isLooser: false,
+          isGhostAllowed: false
         };
     },
 
@@ -148,6 +160,8 @@ export default {
 
     },
     mounted() {
+      this.isGhostAllowed = this.getCookies("ghostmode")
+
         if(this.getCookies("host") === "true"){
             this.isHost = true
         }
@@ -209,8 +223,10 @@ export default {
               this.src1 = base + word[0] + ".png"
               this.src2 = base + word[1] + ".png"
             }else{
-              this.src1 = base + "default.png"
-              this.src2 = base + "default.png"
+              if(!this.ghostMode){
+                this.src1 = base + "default.png"
+                this.src2 = base + "default.png"
+              }
             }
 
           }else if(message.func === "setGlobalDice"){
@@ -219,6 +235,24 @@ export default {
 
           }else if(message.func === "setSad"){
             this.handleSad(message.player)
+
+          }else if(message.func === "showGhostDice"){
+            let base = "../src/assets/dice_"
+            if(message.player === this.getCookies("username") || message.player === "--everyone--"){
+              let word = message.dice.split(";")
+
+
+              this.src1 = base + word[0] + ".png"
+              this.src2 = base + word[1] + ".png"
+            }else{
+              this.src1 = base + "default.png"
+              this.src2 = base + "default.png"
+            }
+
+          }else if(message.func === "enableGhostMode"){
+            if(message.player === this.getCookies("username")){
+              this.ghostMode = true
+            }
 
           }
         });
@@ -252,6 +286,13 @@ export default {
             pb: p.pb,
             winner: p.winner,
             sad: false
+          }
+          if(p.name === this.getCookies("username") && p.looser){
+            this.isLooser = true
+          }
+          if(p.name === this.getCookies("username") && !p.looser){
+            this.isLooser = false
+            this.ghostMode = false
           }
 
           collect.push(data)
@@ -403,6 +444,15 @@ export default {
                 this.shakeAnimationActive = false;
             }, 1000);
         },
+
+      onClickGhostMode(){
+          let dat = {
+            type: "engine",
+            func: "activeGhostMode",
+            args: [this.getCookies("username")]
+          }
+          this.socket.send(JSON.stringify(dat))
+      },
 
 
         getCookies(key){

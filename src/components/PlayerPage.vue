@@ -32,6 +32,10 @@
               <h2 class="white">Herzenanzahl:</h2>
               <input ref="input" class="heart-input" value="3">
           </div>
+          <div class="center">
+            <h2 class="white">Ghost Mode erlauben</h2>
+            <input type="checkbox" class="check-box" ref="isghost" checked>
+          </div>
           <h2 class="red">{{errorText}}</h2>
         </div>
     </div>
@@ -162,6 +166,7 @@ export default {
             this.errorText = "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein."
           }else{
             this.setCookies("hearts", this.$refs.input.value)
+            this.setCookies("ghostmode", String(this.$refs.isghost.checked))
             window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
             let dat = {
               type: "engine",
