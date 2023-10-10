@@ -1,13 +1,16 @@
 <template>
 
+  <div class="center" v-if="isHost">
+    <h1 class="prim-color">Code: <span class="sec-color-text">{{getCookies("rc")}}</span></h1>
+  </div>
   <div class="center-horizontal" v-if="isHost">
-    <button class="register-button center-horizontal" @click="onClickRemove">
+    <button class="register-button center-horizontal prim-color-background" @click="onClickRemove">
       <p style="margin-top: 5px">Alle Spieler entfernen</p>
     </button>
   </div>
 
     <div class="button-layout center-horizontal">
-        <button class="register-button center-horizontal" @click="onClickLeave">
+        <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
             <p style="margin-top: 5px">Spiel verlassen</p>
         </button>
     </div>
@@ -24,7 +27,7 @@
     <div class="button-layout center-horizontal" v-if="isHost">
         <div>
           <div class="center-horizontal">
-            <button class="register-button center-horizontal" @click="onClickStart">
+            <button class="register-button center-horizontal prim-color-background" @click="onClickStart">
               <p style="margin-top: 5px">Spiel starten</p>
             </button>
           </div>
@@ -84,21 +87,29 @@ export default {
             type: "ping",
             func: "getPlayers"
           };
-          this.socket.send(JSON.stringify(dat));
+          this.send(dat);
 
-              if(this.getCookies("host") === "true"){
+          dat = {
+            type: "register",
+            func: "replaceClient",
+            player: this.getCookies("username"),
+            rc: this.getCookies("rc")
+          };
+          this.send(dat);
+
+              /*if(this.getCookies("host") === "true"){
                 dat = {
                   type: "engine",
                   func: "stop"
                 }
-                this.socket.send(JSON.stringify(dat))
+                this.send(dat)
               }
 
           const message = {
             type: "engine",
             func: "clearGameEngine"
           };
-          this.socket.send(JSON.stringify(message));
+          this.send(message)*/
 
         });
 
@@ -145,14 +156,6 @@ export default {
 
     methods: {
 
-
-      getPlayers(){
-            this.socket.send("ping;;;getPlayers");
-      },
-
-      getPb(){
-        this.socket.send("ping;;;getPb");
-      },
       startGame(){
         window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
       },
@@ -173,7 +176,7 @@ export default {
               func: "start",
               args: [this.$refs.input.value]
             }
-            this.socket.send(JSON.stringify(dat));
+            this.send(dat);
           }
         }else{
           this.errorText = "Das Textfeld für die Herzenanzahl darf nicht leer sein."
@@ -187,7 +190,7 @@ export default {
           player: this.getCookies("username"),
           pb: this.getCookies("pb")
         }
-        this.socket.send(JSON.stringify(dat));
+        this.send(dat);
       },
 
       onClickLeave(){
@@ -198,14 +201,22 @@ export default {
       onClickRemove(){
         let dat = {
           type: "register",
-          func: "clearPlayer"
-        }
-        this.socket.send(JSON.stringify(dat));
-        dat = {
-          type: "register",
           func: "kickAllPlayers"
         }
-        this.socket.send(JSON.stringify(dat));
+        this.send(dat);
+        dat = {
+          type: "register",
+          func: "clearPlayer"
+        }
+        this.send(dat);
+      },
+
+
+
+
+      send(data){
+        data.rc = this.getCookies("rc")
+        this.socket.send(JSON.stringify(data))
       },
 
 

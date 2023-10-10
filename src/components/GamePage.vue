@@ -1,12 +1,12 @@
 <template>
 
     <div class="button-layout center-horizontal" v-if="isHost">
-        <button class="register-button center-horizontal" @click="onClickStop">
+        <button class="register-button center-horizontal prim-color-background" @click="onClickStop">
             <p style="margin-top: 5px">Spiel stoppen</p>
         </button>
     </div>
     <div class="button-layout center-horizontal" v-else>
-        <button class="register-button center-horizontal" @click="onClickLeave">
+        <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
             <p style="margin-top: 5px">Spiel verlassen</p>
         </button>
     </div>
@@ -172,6 +172,14 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
+
+          let dat = {
+            type: "register",
+            func: "replaceClient",
+            player: this.getCookies("username"),
+            rc: this.getCookies("rc")
+          };
+          this.send(dat);
             this.getPlayers()
             this.startSession()
 
@@ -270,7 +278,7 @@ export default {
             type: "engine",
             func: "getAllPlayersInfo"
           };
-          this.socket.send(JSON.stringify(message));
+          this.send(message);
         },
 
       handlePlayers(message){
@@ -333,7 +341,7 @@ export default {
             player: this.getCookies("username"),
             pb: this.getCookies("pb")
           }
-          this.socket.send(JSON.stringify(dat))
+          this.send(dat)
         },
 
       startSession(){
@@ -341,7 +349,7 @@ export default {
           type: "engine",
           func: "startSession"
         }
-        this.socket.send(JSON.stringify(dat))
+        this.send(dat)
       },
 
       updateSettings(message){
@@ -368,7 +376,7 @@ export default {
             type: "engine",
             func: "stop"
           }
-          this.socket.send(JSON.stringify(dat))
+          this.send(dat)
           window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
         },
 
@@ -384,7 +392,7 @@ export default {
             player: this.getCookies("username"),
             pb: this.getCookies("pb")
           }
-          this.socket.send(JSON.stringify(dat))
+          this.send(dat)
           window.open(document.baseURI.split("/#/")[0], '_self');
         },
 
@@ -395,7 +403,7 @@ export default {
             args: ["drop"]
           }
 
-            this.socket.send(JSON.stringify(dat));
+            this.send(dat);
 
         },
 
@@ -411,7 +419,7 @@ export default {
 
             this.loggedDiceNum = ""
 
-            this.socket.send(JSON.stringify(dat));
+            this.send(dat);
           }
 
         },
@@ -424,7 +432,7 @@ export default {
             args: ["view"]
           }
 
-          this.socket.send(JSON.stringify(dat));
+          this.send(dat);
 
         },
 
@@ -435,7 +443,7 @@ export default {
             args: ["reveal"]
           }
 
-          this.socket.send(JSON.stringify(dat));
+          this.send(dat);
         },
 
         shakeCup() {
@@ -451,7 +459,12 @@ export default {
             func: "activeGhostMode",
             args: [this.getCookies("username")]
           }
-          this.socket.send(JSON.stringify(dat))
+          this.send(dat)
+      },
+      
+      send(data){
+          data.rc = this.getCookies("rc")
+          this.socket.send(JSON.stringify(data))
       },
 
 

@@ -24,17 +24,22 @@
               <input
                   ref="passinput"
                   :value="pass"
-                  placeholder="Passwort"
+                  placeholder="Raumcode"
                   class="register-input"/>
             </div>
           </div>
         </div>
         <div style="margin-top: 10px"/>
         <div class="center-horizontal">
-            <button class="register-button center-horizontal" @click="onClickJoin">
+            <button class="register-button center-horizontal prim-color-background" @click="onClickJoin">
                 <p style="margin-top: 5px">Spiel beitreten</p>
             </button>
         </div>
+      <div class="center-horizontal">
+        <button class="register-button center-horizontal line1" @click="onClickRoom">
+          <p style="margin-top: 5px">Raum erstellen</p>
+        </button>
+      </div>
       <div style="height: 20px"></div>
       <div class="center-horizontal">
         <button class="register-button center-horizontal sec-color" @click="onClickInstruction">
@@ -126,12 +131,10 @@ export default {
             }else if(message.text === false || message.text === "undefined"){
               this.isStarted = false
             }
-
-          if(message.func === "error"){
-            console.error(message.text)
-          }else if(message.func === "isStarted"){
-            console.log(message.text)
-          }
+          }else if(message.func === "yesRc"){
+            this.$router.push('/player');
+          }else if(message.func === "noRc"){
+            this.unableMessage = "Raumcode existiert nicht"
           }
         });
 
@@ -149,42 +152,66 @@ export default {
             this.clicked = false
           }else{
             if(this.clicked){
-              this.join()
+              if(this.$refs.usernameinput.value !== ""){
+                if(this.$refs.passinput.value !== ""){
+                  this.setCookies("host", "false")
+                  this.setCookies("rc", this.$refs.passinput.value)
+                  this.join(this.$refs.passinput.value)
+                }else{
+                  this.unableMessage = "Du musst ein Raumcode eingeben oder ein Raum erstellen"
+                }
+              }else{
+                this.unableMessage = "Du musst ein Nutzernamen festlegen"
+              }
             }
           }
         },
 
-      addPlayer(){
+      addPlayer(rc){
         const message = {
           type: "register",
           func: "addPlayer",
           player: this.getCookies("username"),
-          pb: this.getCookies("pb")
+          pb: this.getCookies("pb"),
+          rc: rc
         };
         this.socket.send(JSON.stringify(message));
       },
 
-        join(){
+      hostPlayer(rc){
+        const message = {
+          type: "register",
+          func: "addPlayerCreator",
+          player: this.getCookies("username"),
+          pb: this.getCookies("pb"),
+          rc: rc
+        };
+        this.socket.send(JSON.stringify(message));
+      },
+
+        join(rc){
             this.unableMessage = ""
 
-            let username = this.$refs.usernameinput.value;
-            let pass = this.$refs.passinput.value;
+          let username = this.$refs.usernameinput.value
 
-            if(pass === "lost mafia"){
-                this.setCookies("username", username)
-                this.setCookies("pass", pass)
-                this.setCookies("host", "false")
-            }else if(pass === "lost mafia host"){
-                this.setCookies("username", username)
-                this.setCookies("pass", pass)
-                this.setCookies("host", "true")
+          this.setCookies("username", username)
 
-            }
+          this.addPlayer(rc)
 
-          this.addPlayer()
-          this.$router.push('/player');
 
         },
+
+      createJoin(rc){
+        this.unableMessage = ""
+
+        let username = this.$refs.usernameinput.value
+
+        this.setCookies("username", username)
+
+        this.hostPlayer(rc)
+        this.$router.push('/player');
+
+      },
 
         joinUnable(){
             this.unableMessage = "Spiel ist bereits gestartet."
@@ -209,6 +236,21 @@ export default {
           this.srcPb = this.baseSrc + this.getCookies("pb") + ".png"
         }
       },
+
+      getRandomLetters() {
+        const zeichenAnzahl = 8;
+        let zufallsZeichen = '';
+
+        for (let i = 0; i < zeichenAnzahl; i++) {
+          const zufallsIndex = Math.floor(Math.random() * 26);
+          const zufallsBuchstabe = String.fromCharCode(97 + zufallsIndex);
+          zufallsZeichen += zufallsBuchstabe;
+        }
+
+        return zufallsZeichen;
+      },
+
+
       pbClose(){
           this.pbShow = false
         this.setPb()
@@ -216,6 +258,13 @@ export default {
 
       onClickInstruction(){
         this.$router.push('/instruction');
+      },
+
+      onClickRoom(){
+        this.setCookies("host", "true")
+        let rc = this.getRandomLetters()
+        this.setCookies("rc", rc)
+        this.createJoin(rc)
       }
     }
 }
