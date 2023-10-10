@@ -2,17 +2,17 @@
 
     <div class="button-layout center-horizontal" v-if="isHost">
         <button class="register-button center-horizontal prim-color-background" @click="onClickStop">
-            <p style="margin-top: 5px">Spiel stoppen</p>
+            <p style="margin-top: 5px">{{lang.gamePage.stopButton}}</p>
         </button>
     </div>
     <div class="button-layout center-horizontal" v-else>
         <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
-            <p style="margin-top: 5px">Spiel verlassen</p>
+            <p style="margin-top: 5px">{{lang.gamePage.leaveButton}}</p>
         </button>
     </div>
   <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
     <button class="register-button center-horizontal sec-color" @click="onClickGhostMode">
-      <p style="margin-top: 5px">Ghost Mode aktivieren</p>
+      <p style="margin-top: 5px">{{lang.gamePage.enableGhostMode}}</p>
     </button>
   </div>
 
@@ -56,10 +56,6 @@
 
     </div>
 
-    <div class="center-horizontal" v-if="youWin">
-        <h1 class="green">Du hast gewonnen!</h1>
-    </div>
-
     <div class="relative">
 
         <div class="absolute center-horizontal" style="width: 100%; margin-top: 50px;">
@@ -80,18 +76,18 @@
                 </div>
                 <div class="center-horizontal">
                     <button class="game-button-drop center-horizontal" @click="onClickDrop" v-if="isDrop">
-                        <p style="margin-top: 5px">würflen</p>
+                        <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
                     </button>
                     <button class="game-button-move center-horizontal" @click="onClickMove" v-if="isMove">
-                        <p style="margin-top: 5px">schieben</p>
+                        <p style="margin-top: 5px">{{lang.gamePage.moveButton}}</p>
                     </button>
                 </div>
                 <div class="center-horizontal">
                     <button class="game-button-view center-horizontal" @click="onClickView" v-if="isView">
-                        <p style="margin-top: 5px">gucken</p>
+                        <p style="margin-top: 5px">{{lang.gamePage.viewButton}}</p>
                     </button>
                     <button class="game-button-reveal center-horizontal" @click="onClickReveal" v-if="isReveal">
-                        <p style="margin-top: 5px">aufdecken</p>
+                        <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
                     </button>
                 </div>
               <div class="center-horizontal dice-small-layout">
@@ -114,6 +110,8 @@ import Dice from "@/components/views/Dice.vue";
 import dice from "@/components/views/Dice.vue";
 import {toUnicode} from "punycode";
 import {nextTick} from "vue";
+import langDE from "../assets/langDE.json"
+import langEN from "../assets/langEN.json"
 
 export default {
     //npm run dev | npm run build
@@ -141,7 +139,8 @@ export default {
             youWin: false,
             ghostMode: false,
           isLooser: false,
-          isGhostAllowed: false
+          isGhostAllowed: false,
+          lang: langDE
         };
     },
 
@@ -188,10 +187,10 @@ export default {
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
           console.log(message)
-          if(message.func === "error"){
+          if(message.func === "notBiggerError"){
 
             if(message.player === this.getCookies("username")){
-              this.error = message.text
+              this.error = this.lang.gamePage.errorNotBigger
             }
 
           }else if(message.func === "stop"){
@@ -409,7 +408,7 @@ export default {
 
         onClickMove(){
           if(this.loggedDiceNum === ""){
-            this.error = "Du hast keine Zahl ausgewählt"
+            this.error = this.lang.gamePage.errorNoNumberSelected
           }else{
             let dat = {
               type: "engine",

@@ -1,0 +1,32 @@
+{
+  "lang": "en",
+  "register": {
+    "usernamePlaceholder": "Username",
+    "roomPlaceholder": "Room Code",
+    "joinButton": "Join Game",
+    "roomButton": "Create Room",
+    "gameInstructionsButton": "Game Instructions"
+  },
+  "playerPage": {
+    "kickEveryoneButton": "Remove Everyone",
+    "leaveButton": "Quit Game",
+    "startButton": "Start Game",
+    "heartCount": "Count of Hearts",
+    "allowGhostMode": "Allow Ghost Mode",
+    "waitForPlayer": "Wait for Players...",
+    "heartErrorNaN": "The value for the heart count is invalid.",
+    "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
+    "heartErrorEmpty": "The text field for the heart count must not be empty."
+  },
+  "gamePage": {
+    "stopButton": "Stop Game",
+    "leaveButton": "Quit Game",
+    "enableGhostMode": "Enable Ghost Mode",
+    "dropButton": "rolling",
+    "moveButton": "pass",
+    "viewButton": "look",
+    "revealButton": "reveal",
+    "errorNoNumberSelected": "You haven't selected a number.",
+    "errorNotBigger": "The number must be greater than what was previously announced."
+  }
+}

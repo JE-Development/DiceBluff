@@ -5,13 +5,13 @@
   </div>
   <div class="center-horizontal" v-if="isHost">
     <button class="register-button center-horizontal prim-color-background" @click="onClickRemove">
-      <p style="margin-top: 5px">Alle Spieler entfernen</p>
+      <p style="margin-top: 5px">{{lang.playerPage.kickEveryoneButton}}</p>
     </button>
   </div>
 
     <div class="button-layout center-horizontal">
         <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
-            <p style="margin-top: 5px">Spiel verlassen</p>
+            <p style="margin-top: 5px">{{lang.playerPage.leaveButton}}</p>
         </button>
     </div>
 
@@ -28,22 +28,22 @@
         <div>
           <div class="center-horizontal">
             <button class="register-button center-horizontal prim-color-background" @click="onClickStart">
-              <p style="margin-top: 5px">Spiel starten</p>
+              <p style="margin-top: 5px">{{lang.playerPage.startButton}}</p>
             </button>
           </div>
           <div class="center-horizontal center">
-              <h2 class="white">Herzenanzahl:</h2>
+              <h2 class="white">{{lang.playerPage.heartCount}}</h2>
               <input ref="input" class="heart-input" value="3">
           </div>
           <div class="center">
-            <h2 class="white">Ghost Mode erlauben</h2>
+            <h2 class="white">{{lang.playerPage.allowGhostMode}}</h2>
             <input type="checkbox" class="check-box" ref="isghost" checked>
           </div>
           <h2 class="red">{{errorText}}</h2>
         </div>
     </div>
     <div v-else class="center-horizontal">
-        <h1>Warte auf Spieler...</h1>
+        <h1>{{lang.playerPage.waitForPlayer}}</h1>
     </div>
 
 </template>
@@ -53,6 +53,8 @@
 import EventBus from "./code/EventBusEvent";
 import PlayerView from "@/components/views/PlayerView.vue";
 import {nextTick} from "vue";
+import langDE from "../assets/langDE.json"
+import langEN from "../assets/langEN.json"
 
 export default {
     //npm run dev | npm run build
@@ -64,7 +66,8 @@ export default {
             isHost: false,
             socket: null,
           pb: [],
-          errorText: ""
+          errorText: "",
+          lang: langDE
         };
     },
 
@@ -97,19 +100,7 @@ export default {
           };
           this.send(dat);
 
-              /*if(this.getCookies("host") === "true"){
-                dat = {
-                  type: "engine",
-                  func: "stop"
-                }
-                this.send(dat)
-              }
 
-          const message = {
-            type: "engine",
-            func: "clearGameEngine"
-          };
-          this.send(message)*/
 
         });
 
@@ -164,9 +155,9 @@ export default {
         if(this.$refs.input.value !== ""){
           let checker = Number(this.$refs.input.value)
           if(isNaN(checker)){
-            this.errorText = "Der Wert für die Herzenanzahl ist ungültig."
+            this.errorText = this.lang.playerPage.heartErrorNaN
           }else if(checker < 1){
-            this.errorText = "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein."
+            this.errorText = this.lang.playerPage.heartErrorWrongNumber
           }else{
             this.setCookies("hearts", this.$refs.input.value)
             this.setCookies("ghostmode", String(this.$refs.isghost.checked))
@@ -179,7 +170,7 @@ export default {
             this.send(dat);
           }
         }else{
-          this.errorText = "Das Textfeld für die Herzenanzahl darf nicht leer sein."
+          this.errorText = this.lang.playerPage.heartErrorEmpty
         }
       },
 

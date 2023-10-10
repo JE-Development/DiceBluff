@@ -16,7 +16,7 @@
               <input
                   ref="usernameinput"
                   :value="username"
-                  placeholder="Nutzername"
+                  :placeholder="lang.register.usernamePlaceholder"
                   class="register-input"/>
             </div>
             <div style="margin-top: 10px"/>
@@ -24,7 +24,7 @@
               <input
                   ref="passinput"
                   :value="pass"
-                  placeholder="Raumcode"
+                  :placeholder="lang.register.roomPlaceholder"
                   class="register-input"/>
             </div>
           </div>
@@ -32,18 +32,18 @@
         <div style="margin-top: 10px"/>
         <div class="center-horizontal">
             <button class="register-button center-horizontal prim-color-background" @click="onClickJoin">
-                <p style="margin-top: 5px">Spiel beitreten</p>
+                <p style="margin-top: 5px">{{lang.register.joinButton}}</p>
             </button>
         </div>
       <div class="center-horizontal">
         <button class="register-button center-horizontal line1" @click="onClickRoom">
-          <p style="margin-top: 5px">Raum erstellen</p>
+          <p style="margin-top: 5px">{{lang.register.roomButton}}</p>
         </button>
       </div>
       <div style="height: 20px"></div>
       <div class="center-horizontal">
         <button class="register-button center-horizontal sec-color" @click="onClickInstruction">
-          <p style="margin-top: 5px">Spielanleitung</p>
+          <p style="margin-top: 5px">{{lang.register.gameInstructionsButton}}</p>
         </button>
       </div>
         <div class="center-horizontal">
@@ -58,6 +58,8 @@
 <script>
 
 import ProfilePopup from "@/components/views/ProfilePopup.vue";
+import langDE from "../assets/langDE.json"
+import langEN from "../assets/langEN.json"
 
 export default {
     //npm run dev | npm run build
@@ -78,6 +80,7 @@ export default {
             clicked: false,
           pbShow: false,
           isStarted: false,
+          lang: langDE
         };
     },
 

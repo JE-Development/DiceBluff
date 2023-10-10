@@ -1,0 +1,32 @@
+{
+  "lang": "de",
+  "register": {
+    "usernamePlaceholder": "Nutzername",
+    "roomPlaceholder": "Raumcode",
+    "joinButton": "Spiel beitreten",
+    "roomButton": "Raum erstellen",
+    "gameInstructionsButton": "Spielanleitung"
+  },
+  "playerPage": {
+    "kickEveryoneButton": "Alle Spieler entfernen",
+    "leaveButton": "Spiel verlassen",
+    "startButton": "Spiel starten",
+    "heartCount": "Herzenanzahl",
+    "allowGhostMode": "Ghost Mode erlauben",
+    "waitForPlayer": "Warte auf Spieler...",
+    "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
+    "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
+    "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein."
+  },
+  "gamePage": {
+    "stopButton": "Spiel stoppen",
+    "leaveButton": "Spiel verlassen",
+    "enableGhostMode": "Ghost Mode aktivieren",
+    "dropButton": "würfeln",
+    "moveButton": "schieben",
+    "viewButton": "gucken",
+    "revealButton": "aufdecken",
+    "errorNoNumberSelected": "Du hast keine Zahl ausgewählt",
+    "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
+  }
+}
