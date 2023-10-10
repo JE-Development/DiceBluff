@@ -154,7 +154,19 @@
     background: #ff88d9;
 }
 .line6{
-    background: #ff9100;
+    background: #ffa600;
+}
+
+.prim-color{
+    color: #ffa600;
+}
+
+.prim-color-background{
+    background: #ffa600;
+}
+
+.sec-color{
+    background: #5cf0ff
 }
 
 .dice-image{

@@ -5,7 +5,7 @@
       <div class="center-horizontal">
         <div>
           <div class="center-horizontal">
-            <img src="../../assets/crown.png" class="crown" v-if="winner"/>
+            <img src="../../assets/crown.png" class="crown" v-if="winner" style="z-index: 100"/>
             <div style="height: 20px" v-else></div>
           </div>
           <div>

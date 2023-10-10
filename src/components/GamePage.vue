@@ -11,7 +11,7 @@
         </button>
     </div>
   <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
-    <button class="register-button center-horizontal" @click="onClickGhostMode" style="background: #5cf0ff">
+    <button class="register-button center-horizontal sec-color" @click="onClickGhostMode">
       <p style="margin-top: 5px">Ghost Mode aktivieren</p>
     </button>
   </div>
@@ -464,38 +464,3 @@ export default {
     }
 }
 </script>
-
-<style>
-.shake {
-    animation: shakeAnim 1s;
-}
-
-.cup-look-open{
-    transform: translateY(55px);
-    animation: lookAnim 1s;
-    animation-fill-mode: forwards;
-}
-.cup-look-close{
-    transform: translateY(55px);
-    animation: lookCloseAnim 1s;
-}
-
-
-@keyframes shakeAnim {
-    0% { transform: translateX(0); }
-    25% { transform: translateX(-30px); }
-    50% { transform: translateX(30px); }
-    75% { transform: translateX(-30px); }
-    100% { transform: translateX(0); }
-}
-
-@keyframes lookAnim {
-    0% { transform: translateY(55px); }
-    100% { transform: translateY(0px); }
-}
-
-@keyframes lookCloseAnim {
-    0% { transform: translateY(0px); }
-    100% { transform: translateY(55px); }
-}
-</style>

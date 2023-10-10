@@ -1,7 +1,7 @@
 <template>
   <ProfilePopup :show="pbShow" @close="pbClose"/>
-<div class="center full-size">
-    <div style="margin-bottom: 300px">
+<div class="center-horizontal full-size">
+    <div>
 
         <div class="center-horizontal">
           <img src="../assets/logo.png" style="width: 400px"/>
@@ -30,11 +30,17 @@
           </div>
         </div>
         <div style="margin-top: 10px"/>
-        <div class="button-layout center-horizontal">
+        <div class="center-horizontal">
             <button class="register-button center-horizontal" @click="onClickJoin">
                 <p style="margin-top: 5px">Spiel beitreten</p>
             </button>
         </div>
+      <div style="height: 20px"></div>
+      <div class="center-horizontal">
+        <button class="register-button center-horizontal sec-color" @click="onClickInstruction">
+          <p style="margin-top: 5px">Spielanleitung</p>
+        </button>
+      </div>
         <div class="center-horizontal">
           <h2 class="red">{{unableMessage}}</h2>
         </div>
@@ -164,22 +170,19 @@ export default {
             let username = this.$refs.usernameinput.value;
             let pass = this.$refs.passinput.value;
 
-          this.addPlayer()
-
             if(pass === "lost mafia"){
                 this.setCookies("username", username)
                 this.setCookies("pass", pass)
                 this.setCookies("host", "false")
-
-                this.$router.push('/player');
             }else if(pass === "lost mafia host"){
                 this.setCookies("username", username)
                 this.setCookies("pass", pass)
                 this.setCookies("host", "true")
 
-
-                this.$router.push('/player');
             }
+
+          this.addPlayer()
+          this.$router.push('/player');
 
         },
 
@@ -209,6 +212,10 @@ export default {
       pbClose(){
           this.pbShow = false
         this.setPb()
+      },
+
+      onClickInstruction(){
+        this.$router.push('/instruction');
       }
     }
 }

@@ -216,3 +216,46 @@ body{
         gap: 10px;
     }
 }
+
+.shake {
+    animation: shakeAnim 1s;
+}
+
+.shake-inf {
+    animation: shakeAnim 1s infinite;
+}
+
+
+.cup-look-open{
+    transform: translateY(55px);
+    animation: lookAnim 1s;
+    animation-fill-mode: forwards;
+}
+.cup-look-close{
+    transform: translateY(55px);
+    animation: lookCloseAnim 1s;
+}
+
+.cup-look-open-inf{
+    transform: translateY(55px);
+    animation: lookAnim 1s infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes shakeAnim {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-30px); }
+    50% { transform: translateX(30px); }
+    75% { transform: translateX(-30px); }
+    100% { transform: translateX(0); }
+}
+
+@keyframes lookAnim {
+    0% { transform: translateY(55px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes lookCloseAnim {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(55px); }
+}
