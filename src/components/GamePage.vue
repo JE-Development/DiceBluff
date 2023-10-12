@@ -140,7 +140,7 @@ export default {
             ghostMode: false,
           isLooser: false,
           isGhostAllowed: false,
-          lang: langDE
+          lang: langEN
         };
     },
 
@@ -159,6 +159,12 @@ export default {
 
     },
     mounted() {
+      if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+        this.lang = langEN
+      }else{
+        this.lang = langDE
+      }
+
       this.isGhostAllowed = this.getCookies("ghostmode")
 
         if(this.getCookies("host") === "true"){

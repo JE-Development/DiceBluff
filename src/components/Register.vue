@@ -1,5 +1,6 @@
 <template>
   <ProfilePopup :show="pbShow" @close="pbClose"/>
+  <LangSelection @click="langClicked" :lang="lang.langVis"/>
 <div class="center-horizontal full-size">
     <div>
 
@@ -60,11 +61,12 @@
 import ProfilePopup from "@/components/views/ProfilePopup.vue";
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
+import LangSelection from "@/components/views/LangSelection.vue";
 
 export default {
     //npm run dev | npm run build
     name: "Register",
-  components: {ProfilePopup},
+  components: {LangSelection, ProfilePopup},
     data() {
         return {
             username: "",
@@ -80,7 +82,7 @@ export default {
             clicked: false,
           pbShow: false,
           isStarted: false,
-          lang: langDE
+          lang: langEN,
         };
     },
 
@@ -98,6 +100,13 @@ export default {
     },
 
     mounted() {
+
+      if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+        this.lang = langEN
+      }else{
+        this.lang = langDE
+      }
+
         window.addEventListener('beforeunload', this.eventClose);
 
         this.socket = new WebSocket('ws://212.227.183.160:3000');
@@ -251,6 +260,16 @@ export default {
         }
 
         return zufallsZeichen;
+      },
+
+      langClicked(){
+          if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+            this.setCookies("lang", "de")
+            this.lang = langDE
+          }else{
+            this.setCookies("lang", "en")
+            this.lang = langEN
+          }
       },
 
 

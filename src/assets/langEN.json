@@ -1,5 +1,6 @@
 {
   "lang": "en",
+  "langVis": "EN",
   "register": {
     "usernamePlaceholder": "Username",
     "roomPlaceholder": "Room Code",

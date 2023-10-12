@@ -67,7 +67,7 @@ export default {
             socket: null,
           pb: [],
           errorText: "",
-          lang: langDE
+          lang: langEN
         };
     },
 
@@ -75,6 +75,13 @@ export default {
 
     },
     mounted() {
+
+      if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+        this.lang = langEN
+      }else{
+        this.lang = langDE
+      }
+
         if(this.getCookies("host") === "true"){
             this.isHost = true
         }

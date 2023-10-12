@@ -278,7 +278,7 @@ export default {
     name: "InstructionPage",
     data() {
         return {
-          lang: langDE
+          lang: langEN
         };
     },
 
@@ -286,6 +286,11 @@ export default {
     },
 
     mounted() {
+      if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+        this.lang = langEN
+      }else{
+        this.lang = langDE
+      }
     },
 
     methods: {
