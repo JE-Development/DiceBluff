@@ -22,7 +22,7 @@
       <div class="center-horizontal">
         <img
             v-for="(dat) in heartlenght"
-            src="../../assets/heart.png" style="width: 30px; margin: 5px">
+            src="../../assets/heart_texture.png" style="width: 30px; margin: 5px">
       </div>
         <h1 class="orange">{{dice}}</h1>
     </div>

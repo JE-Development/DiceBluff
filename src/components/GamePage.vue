@@ -42,14 +42,14 @@
       </div>
         <div class="center-horizontal">
           <div :class="shakeAnimationActive ? 'shake' : ''" v-if="ghostMode">
-            <img src="../assets/cup.png" class="cup-image cup-look-close" ref="cup" />
+            <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
           </div>
           <div class="absolute">
             <img :src="src1" class="dice-image" style="margin-right: 10px"/>
             <img :src="src2" class="dice-image"/>
           </div>
           <div :class="shakeAnimationActive ? 'shake' : ''" v-if="!ghostMode">
-            <img src="../assets/cup.png" class="cup-image cup-look-close" ref="cup" />
+            <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
           </div>
 
         </div>

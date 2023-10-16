@@ -5,7 +5,7 @@
     <div>
 
         <div class="center-horizontal">
-          <img src="../assets/logo.png" style="width: 400px"/>
+          <img src="../assets/logo_texture.png" style="width: 400px"/>
         </div>
       <div class="center-horizontal">
         <img :src="srcPb" class="pb pointer" @click="pbShow = true"/>
@@ -18,7 +18,7 @@
                   ref="usernameinput"
                   :value="username"
                   :placeholder="lang.register.usernamePlaceholder"
-                  class="register-input"/>
+                  class="register-input shadow texture"/>
             </div>
             <div style="margin-top: 10px"/>
             <div>
@@ -26,18 +26,18 @@
                   ref="passinput"
                   :value="pass"
                   :placeholder="lang.register.roomPlaceholder"
-                  class="register-input"/>
+                  class="register-input shadow texture"/>
             </div>
           </div>
         </div>
         <div style="margin-top: 10px"/>
         <div class="center-horizontal">
-            <button class="register-button center-horizontal prim-color-background" @click="onClickJoin">
+            <button class="prim-color-background register-button center-horizontal" @click="onClickJoin">
                 <p style="margin-top: 5px">{{lang.register.joinButton}}</p>
             </button>
         </div>
       <div class="center-horizontal">
-        <button class="register-button center-horizontal line1" @click="onClickRoom">
+        <button class="register-button center-horizontal third-color-background" @click="onClickRoom">
           <p style="margin-top: 5px">{{lang.register.roomButton}}</p>
         </button>
       </div>

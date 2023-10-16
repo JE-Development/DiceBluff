@@ -33,7 +33,7 @@
           </div>
           <div class="center-horizontal center">
               <h2 class="white">{{lang.playerPage.heartCount}}</h2>
-              <input ref="input" class="heart-input" value="3">
+              <input ref="input" class="heart-input texture" value="3">
           </div>
           <div class="center">
             <h2 class="white">{{lang.playerPage.allowGhostMode}}</h2>
