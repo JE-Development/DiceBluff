@@ -36,12 +36,17 @@
                 <p style="margin-top: 5px">{{lang.register.joinButton}}</p>
             </button>
         </div>
+      <div style="height: 40px"></div>
       <div class="center-horizontal">
         <button class="register-button center-horizontal third-color-background" @click="onClickRoom">
           <p style="margin-top: 5px">{{lang.register.roomButton}}</p>
         </button>
       </div>
-      <div style="height: 20px"></div>
+      <div class="center-horizontal">
+        <button class="register-button center-horizontal fourth-color-background" @click="onClickRoom">
+          <p style="margin-top: 5px">{{lang.register.listButton}}</p>
+        </button>
+      </div>
       <div class="center-horizontal">
         <button class="register-button center-horizontal sec-color" @click="onClickInstruction">
           <p style="margin-top: 5px">{{lang.register.gameInstructionsButton}}</p>
@@ -112,6 +117,7 @@ export default {
         this.socket = new WebSocket('ws://212.227.183.160:3000');
 
         this.socket.addEventListener('open', (event) => {
+          this.unableMessage = ""
 
           let dat = {
             type: "register",
@@ -128,6 +134,11 @@ export default {
           this.socket.send(JSON.stringify(message));
 
         });
+
+      this.socket.addEventListener('error', (event) => {
+        this.unableMessage = this.lang.register.serverDown
+
+      });
 
 
         this.socket.addEventListener('message', (event) => {
@@ -146,18 +157,20 @@ export default {
           }else if(message.func === "yesRc"){
             this.$router.push('/player');
           }else if(message.func === "noRc"){
-            this.unableMessage = "Raumcode existiert nicht"
+            this.unableMessage = this.lang.register.wrongRoomCode
           }
         });
 
         this.username = this.getCookies("username")
-        this.pass = this.getCookies("pass")
 
     },
 
     methods: {
 
         onClickJoin(){
+          let username = this.$refs.usernameinput.value
+          this.setCookies("username", username)
+
             this.clicked = true
           if(this.isStarted === true){
             this.joinUnable()
@@ -204,10 +217,6 @@ export default {
         join(rc){
             this.unableMessage = ""
 
-          let username = this.$refs.usernameinput.value
-
-          this.setCookies("username", username)
-
           this.addPlayer(rc)
 
 
@@ -249,17 +258,13 @@ export default {
         }
       },
 
-      getRandomLetters() {
-        const zeichenAnzahl = 8;
-        let zufallsZeichen = '';
+      getRandomNumbers() {
+        const min = 10000000;
+        const max = 99999999;
 
-        for (let i = 0; i < zeichenAnzahl; i++) {
-          const zufallsIndex = Math.floor(Math.random() * 26);
-          const zufallsBuchstabe = String.fromCharCode(97 + zufallsIndex);
-          zufallsZeichen += zufallsBuchstabe;
-        }
+        const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        return zufallsZeichen;
+        return randomNumber;
       },
 
       langClicked(){
@@ -284,7 +289,7 @@ export default {
 
       onClickRoom(){
         this.setCookies("host", "true")
-        let rc = this.getRandomLetters()
+        let rc = this.getRandomNumbers()
         this.setCookies("rc", rc)
         this.createJoin(rc)
       }

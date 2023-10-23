@@ -6,7 +6,10 @@
     "roomPlaceholder": "Raumcode",
     "joinButton": "Spiel beitreten",
     "roomButton": "Raum erstellen",
-    "gameInstructionsButton": "Spielanleitung"
+    "listButton": "Öffentliche Räume",
+    "gameInstructionsButton": "Spielanleitung",
+    "wrongRoomCode": "Raumcode existiert nicht",
+    "serverDown": "Der Dice Bluff Server ist offline"
   },
   "playerPage": {
     "kickEveryoneButton": "Alle Spieler entfernen",

@@ -6,7 +6,10 @@
     "roomPlaceholder": "Room Code",
     "joinButton": "Join Game",
     "roomButton": "Create Room",
-    "gameInstructionsButton": "Game Instructions"
+    "listButton": "Public Rooms",
+    "gameInstructionsButton": "Game Instructions",
+    "wrongRoomCode": "Room doesn't exist",
+    "serverDown": "The Dice Bluff server is down"
   },
   "playerPage": {
     "kickEveryoneButton": "Remove Everyone",

@@ -194,6 +194,12 @@
     box-shadow: 0px 0px 20px #000000;
 }
 
+.fourth-color-background{
+    background: #bfc7ff;
+    background-image: url("./texture1.png");
+    box-shadow: 0px 0px 20px #000000;
+}
+
 .texture{
     background-image: url("./texture1.png");
 }
