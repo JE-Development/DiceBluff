@@ -12,6 +12,10 @@ body{
     height: 100%;
 }
 
+.round-corner{
+    border-radius: 10px;
+}
+
 .absolute{
     position: absolute;
 }
@@ -32,6 +36,11 @@ body{
 .center-horizontal{
     display: flex;
     justify-content: center;
+}
+
+.center-vertical{
+    display: flex;
+    align-items: center;
 }
 
 .center{

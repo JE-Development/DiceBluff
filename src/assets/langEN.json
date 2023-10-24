@@ -12,11 +12,12 @@
     "serverDown": "The Dice Bluff server is down"
   },
   "playerPage": {
-    "kickEveryoneButton": "Remove Everyone",
+    "kickEveryoneButton": "Close Room",
     "leaveButton": "Quit Game",
     "startButton": "Start Game",
     "heartCount": "Count of Hearts",
     "allowGhostMode": "Allow Ghost Mode",
+    "visibility": "Public Room",
     "waitForPlayer": "Wait for Players...",
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",

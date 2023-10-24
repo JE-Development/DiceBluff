@@ -9,7 +9,7 @@
     </button>
   </div>
 
-    <div class="button-layout center-horizontal">
+    <div class="button-layout center-horizontal" v-if="!isHost">
         <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
             <p style="margin-top: 5px">{{lang.playerPage.leaveButton}}</p>
         </button>
@@ -38,6 +38,10 @@
           <div class="center">
             <h2 class="white">{{lang.playerPage.allowGhostMode}}</h2>
             <input type="checkbox" class="check-box" ref="isghost" checked>
+          </div>
+          <div class="center">
+            <h2 class="white">{{lang.playerPage.visibility}}</h2>
+            <input type="checkbox" class="check-box" ref="vis" checked @click="visClicked">
           </div>
           <h2 class="red">{{errorText}}</h2>
         </div>
@@ -215,6 +219,24 @@ export default {
       send(data){
         data.rc = this.getCookies("rc")
         this.socket.send(JSON.stringify(data))
+      },
+
+      visClicked(){
+        let isVis = this.$refs.vis.checked
+        if(isVis){
+          this.setVis(true)
+        }else{
+          this.setVis(false)
+        }
+      },
+
+      setVis(mode){
+        let dat = {
+          type: "engine",
+          func: "setVis",
+          args: [mode]
+        }
+        this.send(dat)
       },
 
 

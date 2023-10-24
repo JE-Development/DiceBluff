@@ -12,11 +12,12 @@
     "serverDown": "Der Dice Bluff Server ist offline"
   },
   "playerPage": {
-    "kickEveryoneButton": "Alle Spieler entfernen",
+    "kickEveryoneButton": "Raum schließen",
     "leaveButton": "Spiel verlassen",
     "startButton": "Spiel starten",
     "heartCount": "Herzenanzahl",
     "allowGhostMode": "Ghost Mode erlauben",
+    "visibility": "Öffentlicher Raum",
     "waitForPlayer": "Warte auf Spieler...",
     "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
     "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",

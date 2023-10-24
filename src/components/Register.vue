@@ -43,7 +43,7 @@
         </button>
       </div>
       <div class="center-horizontal">
-        <button class="register-button center-horizontal fourth-color-background" @click="onClickRoom">
+        <button class="register-button center-horizontal fourth-color-background" @click="onClickPublic">
           <p style="margin-top: 5px">{{lang.register.listButton}}</p>
         </button>
       </div>
@@ -185,6 +185,10 @@ export default {
                 }else{
                   this.unableMessage = "Du musst ein Raumcode eingeben oder ein Raum erstellen"
                 }
+                /*let rc = "123456"
+                this.setCookies("host", "false")
+                this.setCookies("rc", rc)
+                this.join(rc)*/
               }else{
                 this.unableMessage = "Du musst ein Nutzernamen festlegen"
               }
@@ -264,7 +268,8 @@ export default {
 
         const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        return randomNumber;
+        return randomNumber + "";
+        //return "123456"
       },
 
       langClicked(){
@@ -292,6 +297,12 @@ export default {
         let rc = this.getRandomNumbers()
         this.setCookies("rc", rc)
         this.createJoin(rc)
+      },
+
+      onClickPublic(){
+        let username = this.$refs.usernameinput.value
+        this.setCookies("username", username)
+        this.$router.push('/public');
       }
     }
 }

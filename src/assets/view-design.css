@@ -252,3 +252,9 @@
     border-radius: 50px;
     border-color: #5cf0ff;
 }
+
+.public-room{
+    width: 300px;
+    height: 50px;
+    margin: 15px
+}
