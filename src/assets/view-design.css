@@ -212,6 +212,10 @@
     color: #5cf0ff
 }
 
+.white-background{
+    background: #b7b7b7;
+}
+
 .dice-image{
     margin-top: 295px;
     width: 50px;

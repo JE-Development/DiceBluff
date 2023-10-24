@@ -2,6 +2,11 @@
 
   <div class="center-horizontal">
     <div>
+      <div v-if="rooms.length === 0">
+        <h1 class="red">
+          {{lang.misc.noPublicRooms}}
+        </h1>
+      </div>
       <PublicRoom
           v-for="(dat) in rooms"
           :hoster="dat.hoster"

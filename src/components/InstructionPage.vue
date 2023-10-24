@@ -1,6 +1,6 @@
 <template>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
-    <div style="width: 80vw">
+    <div style="width: 80vw; color: white">
       <h1 class="prim-color">Spielanleitung</h1>
       <h2>Einführung</h2>
       <p>Dice Bluff ist ein Würfelspiel welches man auch unter dem Namen 'Mäxchen' kennt. Physisch wird Dice Bluff mit

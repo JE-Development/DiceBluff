@@ -33,5 +33,8 @@
     "revealButton": "aufdecken",
     "errorNoNumberSelected": "Du hast keine Zahl ausgewählt",
     "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
+  },
+  "misc": {
+    "noPublicRooms": "Es gibt keine öffentliche Räume"
   }
 }
