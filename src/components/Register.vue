@@ -32,25 +32,17 @@
         </div>
         <div style="margin-top: 10px"/>
         <div class="center-horizontal">
-            <button class="prim-color-background register-button center-horizontal" @click="onClickJoin">
-                <p style="margin-top: 5px">{{lang.register.joinButton}}</p>
-            </button>
+          <UIButton :title="lang.register.joinButton" @click="onClickJoin" color="prim-color-background"/>
         </div>
       <div style="height: 40px"></div>
       <div class="center-horizontal">
-        <button class="register-button center-horizontal third-color-background" @click="onClickRoom">
-          <p style="margin-top: 5px">{{lang.register.roomButton}}</p>
-        </button>
+        <UIButton :title="lang.register.roomButton" @click="onClickRoom" color="third-color-background"/>
       </div>
       <div class="center-horizontal">
-        <button class="register-button center-horizontal fourth-color-background" @click="onClickPublic">
-          <p style="margin-top: 5px">{{lang.register.listButton}}</p>
-        </button>
+        <UIButton :title="lang.register.listButton" @click="onClickPublic" color="fourth-color-background"/>
       </div>
       <div class="center-horizontal">
-        <button class="register-button center-horizontal sec-color" @click="onClickInstruction">
-          <p style="margin-top: 5px">{{lang.register.gameInstructionsButton}}</p>
-        </button>
+        <UIButton :title="lang.register.gameInstructionsButton" @click="onClickInstruction" color="sec-color"/>
       </div>
         <div class="center-horizontal">
           <h2 class="red">{{unableMessage}}</h2>
@@ -67,11 +59,12 @@ import ProfilePopup from "@/components/views/ProfilePopup.vue";
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import LangSelection from "@/components/views/LangSelection.vue";
+import UIButton from "@/components/views/UIButton.vue";
 
 export default {
     //npm run dev | npm run build
     name: "Register",
-  components: {LangSelection, ProfilePopup},
+  components: {UIButton, LangSelection, ProfilePopup},
     data() {
         return {
             username: "",

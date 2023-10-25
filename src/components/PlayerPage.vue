@@ -4,15 +4,11 @@
     <h1 class="prim-color">Code: <span class="sec-color-text">{{getCookies("rc")}}</span></h1>
   </div>
   <div class="center-horizontal" v-if="isHost">
-    <button class="register-button center-horizontal prim-color-background" @click="onClickRemove">
-      <p style="margin-top: 5px">{{lang.playerPage.kickEveryoneButton}}</p>
-    </button>
+    <UIButton :title="lang.playerPage.kickEveryoneButton" @click="onClickRemove" color="prim-color-background"/>
   </div>
 
     <div class="button-layout center-horizontal" v-if="!isHost">
-        <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
-            <p style="margin-top: 5px">{{lang.playerPage.leaveButton}}</p>
-        </button>
+      <UIButton :title="lang.playerPage.leaveButton" @click="onClickLeave" color="prim-color-background"/>
     </div>
 
 <div class="center-horizontal">
@@ -27,9 +23,7 @@
     <div class="button-layout center-horizontal" v-if="isHost">
         <div>
           <div class="center-horizontal">
-            <button class="register-button center-horizontal prim-color-background" @click="onClickStart">
-              <p style="margin-top: 5px">{{lang.playerPage.startButton}}</p>
-            </button>
+            <UIButton :title="lang.playerPage.startButton" @click="onClickStart" color="prim-color-background"/>
           </div>
           <div class="center-horizontal center">
               <h2 class="white">{{lang.playerPage.heartCount}}</h2>
@@ -59,11 +53,12 @@ import PlayerView from "@/components/views/PlayerView.vue";
 import {nextTick} from "vue";
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
+import UIButton from "@/components/views/UIButton.vue";
 
 export default {
     //npm run dev | npm run build
     name: "PlayerPage",
-    components: {PlayerView},
+    components: {UIButton, PlayerView},
     data() {
         return {
             names: [],
@@ -141,6 +136,7 @@ export default {
             })
 
           }else if(message.func === "start"){
+            this.setCookies("ghostmode", message.ghostmode)
             this.startGame()
 
           }else if(message.func === "removed"){
@@ -176,7 +172,7 @@ export default {
             let dat = {
               type: "engine",
               func: "start",
-              args: [this.$refs.input.value]
+              args: [this.$refs.input.value, this.$refs.isghost.checked]
             }
             this.send(dat);
           }

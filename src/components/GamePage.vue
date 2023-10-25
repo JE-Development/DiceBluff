@@ -1,19 +1,13 @@
 <template>
 
     <div class="button-layout center-horizontal" v-if="isHost">
-        <button class="register-button center-horizontal prim-color-background" @click="onClickStop">
-            <p style="margin-top: 5px">{{lang.gamePage.stopButton}}</p>
-        </button>
+      <UIButton :title="lang.gamePage.stopButton" @click="onClickStop" color="prim-color-background"/>
     </div>
     <div class="button-layout center-horizontal" v-else>
-        <button class="register-button center-horizontal prim-color-background" @click="onClickLeave">
-            <p style="margin-top: 5px">{{lang.gamePage.leaveButton}}</p>
-        </button>
+      <UIButton :title="lang.gamePage.leaveButton" @click="onClickLeave" color="prim-color-background"/>
     </div>
   <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
-    <button class="register-button center-horizontal sec-color" @click="onClickGhostMode">
-      <p style="margin-top: 5px">{{lang.gamePage.enableGhostMode}}</p>
-    </button>
+    <UIButton :title="lang.gamePage.enableGhostMode" @click="onClickGhostMode" color="sec-color"/>
   </div>
 
     <div class="center-horizontal">
@@ -75,20 +69,20 @@
                     </div>
                 </div>
                 <div class="center-horizontal">
-                    <button class="game-button-drop center-horizontal" @click="onClickDrop" v-if="isDrop">
-                        <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-                    </button>
-                    <button class="game-button-move center-horizontal" @click="onClickMove" v-if="isMove">
-                        <p style="margin-top: 5px">{{lang.gamePage.moveButton}}</p>
-                    </button>
+                  <div class="center-horizontal">
+                    <GameButton :title="lang.gamePage.dropButton" color="game-button-drop" @click="onClickDrop" v-if="isDrop"/>
+                  </div>
+                  <div class="center-horizontal">
+                    <GameButton :title="lang.gamePage.moveButton" color="game-button-move" @click="onClickMove" v-if="isMove"/>
+                  </div>
                 </div>
                 <div class="center-horizontal">
-                    <button class="game-button-view center-horizontal" @click="onClickView" v-if="isView">
-                        <p style="margin-top: 5px">{{lang.gamePage.viewButton}}</p>
-                    </button>
-                    <button class="game-button-reveal center-horizontal" @click="onClickReveal" v-if="isReveal">
-                        <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
-                    </button>
+                  <div class="center-horizontal">
+                    <GameButton :title="lang.gamePage.viewButton" color="game-button-view" @click="onClickView" v-if="isView"/>
+                  </div>
+                  <div class="center-horizontal">
+                    <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal" @click="onClickReveal" v-if="isReveal"/>
+                  </div>
                 </div>
               <div class="center-horizontal dice-small-layout">
                 <DiceLayout :center="true"/>
@@ -112,11 +106,13 @@ import {toUnicode} from "punycode";
 import {nextTick} from "vue";
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
+import UIButton from "@/components/views/UIButton.vue";
+import GameButton from "@/components/views/GameButton.vue";
 
 export default {
     //npm run dev | npm run build
     name: "GamePage",
-    components: {Dice, DiceLayout, PlayerView},
+    components: {GameButton, UIButton, Dice, DiceLayout, PlayerView},
     data() {
         return {
             names: [],

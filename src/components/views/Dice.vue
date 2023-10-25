@@ -1,11 +1,19 @@
 <template>
 
-    <button :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
+    <div class="center-horizontal">
+      <button class="texture" :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
         {{num}}
-    </button>
-    <button class="dice-border-m line6" ref="border" @click="click" v-else>
+      </button>
+      <button class="dice-border-m line6 texture" ref="border" @click="click" v-else>
         {{num}}
-    </button>
+      </button>
+      <button class="absolute shadow on-bottom" :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
+        {{num}}
+      </button>
+      <button class="dice-border-m line6 absolute shadow on-bottom" ref="border" @click="click" v-else>
+        {{num}}
+      </button>
+    </div>
 
 </template>
 

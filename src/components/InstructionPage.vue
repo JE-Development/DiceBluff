@@ -1,6 +1,6 @@
 <template>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
-    <div style="width: 80vw; color: white">
+    <div style="width: 80vw;">
       <h1 class="prim-color">Spielanleitung</h1>
       <h2>Einführung</h2>
       <p>Dice Bluff ist ein Würfelspiel welches man auch unter dem Namen 'Mäxchen' kennt. Physisch wird Dice Bluff mit
@@ -72,17 +72,13 @@
       <h2>Spielablauf als Browsergame erklärt</h2>
       <p>Der Spieler der anfängt muss würfeln</p>
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
       </div>
       <p>
         Dannach kann man daruntergucken wenn man will.
       </p>
       <div class="center-horizontal">
-        <button class="game-button-view center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.viewButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.viewButton" color="game-button-view"/>
       </div>
       <p>Nachdem geguckt wurde, ist kein Knopf mehr zu sehen. Dies liegt daran, dass man jetzt links an der Seite die Zahl
       auswählen muss, die man sagen will. Man kann schon eine Zahl sagen bevor man guckt um blind zu Spielen</p>
@@ -90,14 +86,10 @@
         Nachdem weitergeschoben wurde, sieht der nächste Spieler 2 Knöpfe.
       </a>
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
       </div>
       <div class="center-horizontal">
-        <button class="game-button-reveal center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal"/>
       </div>
 
       <p>
@@ -112,17 +104,15 @@
 
 
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
-        <button class="game-button-move center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.moveButton}}</p>
-        </button>
+        <div class="center-horizontal">
+          <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
+        </div>
+        <div class="center-horizontal">
+          <GameButton :title="lang.gamePage.moveButton" color="game-button-move"/>
+        </div>
       </div>
       <div class="center-horizontal">
-        <button class="game-button-reveal center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal"/>
       </div>
       <p>
         Durch 'schieben' wird der Becher zum nächsten Spieler geschoben.
@@ -192,31 +182,23 @@
       <h2>Explanation of the gameplay as a browser game:</h2>
       <p>The player who starts must roll the dice.</p>
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
       </div>
       <p>
         After that, players can choose to look underneath the cup if they wish.
       </p>
       <div class="center-horizontal">
-        <button class="game-button-view center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.viewButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.viewButton" color="game-button-view"/>
       </div>
       <p>After looking, no button is visible anymore. This is because you must now select the number you want to announce from the list on the left side. You can announce a number even before looking to play blind.</p>
       <a>
         After passing the turn, the next player sees two buttons.
       </a>
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
       </div>
       <div class="center-horizontal">
-        <button class="game-button-reveal center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal"/>
       </div>
 
       <p>
@@ -229,17 +211,15 @@
 
 
       <div class="center-horizontal">
-        <button class="game-button-drop center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.dropButton}}</p>
-        </button>
-        <button class="game-button-move center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.moveButton}}</p>
-        </button>
+        <div class="center-horizontal">
+          <GameButton :title="lang.gamePage.dropButton" color="game-button-drop"/>
+        </div>
+        <div class="center-horizontal">
+          <GameButton :title="lang.gamePage.moveButton" color="game-button-move"/>
+        </div>
       </div>
       <div class="center-horizontal">
-        <button class="game-button-reveal center-horizontal">
-          <p style="margin-top: 5px">{{lang.gamePage.revealButton}}</p>
-        </button>
+        <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal"/>
       </div>
       <p>
         By "passing," the cup is moved to the next player.
@@ -272,10 +252,12 @@
 <script>
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
+import GameButton from "@/components/views/GameButton.vue";
 
 
 export default {
     name: "InstructionPage",
+  components: {GameButton},
     data() {
         return {
           lang: langEN
