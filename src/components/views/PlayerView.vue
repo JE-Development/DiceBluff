@@ -14,7 +14,10 @@
           </div>
         </div>
       </div>
-        <div class="center-horizontal">
+      <div class="center-horizontal" style="height: 0px; margin-top: -10px; margin-bottom: 10px">
+        <p class="white">{{winnerCount}}</p>
+      </div>
+        <div class="center-horizontal" style="height: 40px">
             <h3 v-if="loose" class="red">{{name}}</h3>
             <h3 v-else-if="turn" class="green">{{name}}</h3>
             <h3 v-else>{{name}}</h3>
@@ -50,7 +53,8 @@ export default {
       heart: Number,
       img: String,
       winner: Boolean,
-      isSad: Boolean
+      isSad: Boolean,
+      winnerCount: Number
     },
 
   created() {

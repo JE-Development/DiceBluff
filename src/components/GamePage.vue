@@ -20,6 +20,7 @@
             :img="dat.pb"
             :winner="dat.winner"
             :isSad="dat.sad"
+            :winnerCount="dat.winnerCount"
         />
     </div>
 
@@ -84,7 +85,7 @@
                     <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal" @click="onClickReveal" v-if="isReveal"/>
                   </div>
                 </div>
-              <div class="center-horizontal dice-small-layout">
+              <div class="center-horizontal dice-small-layout" v-if="isDiceMenu">
                 <DiceLayout :center="true"/>
               </div>
             </div>
@@ -294,7 +295,8 @@ export default {
             heart: p.heart,
             pb: p.pb,
             winner: p.winner,
-            sad: false
+            sad: false,
+            winnerCount: p.winnerCount
           }
           if(p.name === this.getCookies("username") && p.looser){
             this.isLooser = true
