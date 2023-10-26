@@ -1,6 +1,6 @@
 <template>
 
-    <div class="prim-color-background round-corner pointer public-room center-vertical texture"  @click="clicked">
+    <div class="prim-color-background round-corner pointer public-room center-vertical texture shadow"  @click="clicked">
       <div style="width: 70%" class="flex">
         <div style="width: 10px"></div>
         <h2>{{hoster}}</h2>

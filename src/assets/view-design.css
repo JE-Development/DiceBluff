@@ -203,5 +203,11 @@
 .public-room{
     width: 300px;
     height: 50px;
+    margin: 15px;
+}
+
+.dashboard-room{
+    width: 500px;
+    height: 50px;
     margin: 15px
 }

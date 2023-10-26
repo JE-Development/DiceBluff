@@ -92,17 +92,18 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
-          let dat = {
-            type: "ping",
-            func: "getPlayers"
-          };
-          this.send(dat);
 
-          dat = {
+          let dat = {
             type: "register",
             func: "replaceClient",
             player: this.getCookies("username"),
             rc: this.getCookies("rc")
+          };
+          this.send(dat);
+
+          dat = {
+            type: "ping",
+            func: "getPlayers"
           };
           this.send(dat);
 
@@ -134,6 +135,11 @@ export default {
             nextTick().then(() =>{
               this.names = names1
             })
+
+            if(message.isStarted){
+              this.setCookies("ghostmode", message.ghostmode)
+              this.startGame()
+            }
 
           }else if(message.func === "start"){
             this.setCookies("ghostmode", message.ghostmode)

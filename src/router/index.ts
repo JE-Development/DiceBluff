@@ -5,6 +5,7 @@ import Register from "../components/Register.vue";
 import PlayerPage from "../components/PlayerPage.vue";
 import InstructionPage from "@/components/InstructionPage.vue";
 import PublicPage from "@/components/PublicPage.vue";
+import Dashboard from "@/components/Dashboard.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -31,6 +32,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/public',
         name: 'PublicPage',
         component: PublicPage
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard
     },
 
 

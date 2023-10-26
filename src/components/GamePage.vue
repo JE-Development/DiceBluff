@@ -380,7 +380,6 @@ export default {
             func: "stop"
           }
           this.send(dat)
-          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
         },
 
 
