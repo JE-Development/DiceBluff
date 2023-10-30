@@ -107,7 +107,7 @@ export default {
 
         window.addEventListener('beforeunload', this.eventClose);
 
-        this.socket = new WebSocket('ws://212.227.183.160:3000');
+        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
         this.socket.addEventListener('open', (event) => {
           this.unableMessage = ""
@@ -151,6 +151,8 @@ export default {
             this.$router.push('/player');
           }else if(message.func === "noRc"){
             this.unableMessage = this.lang.register.wrongRoomCode
+          }else if(message.func === "roomClosed"){
+            this.$notify(this.lang.misc.roomClosed)
           }
         });
 
@@ -170,7 +172,7 @@ export default {
             this.clicked = false
           }else{
             if(this.clicked){
-              if(this.$refs.usernameinput.value !== ""){
+              if(this.checkUsername()){
                 if(this.$refs.passinput.value !== ""){
                   this.setCookies("host", "false")
                   this.setCookies("rc", this.$refs.passinput.value)
@@ -178,12 +180,6 @@ export default {
                 }else{
                   this.unableMessage = "Du musst ein Raumcode eingeben oder ein Raum erstellen"
                 }
-                /*let rc = "123456"
-                this.setCookies("host", "false")
-                this.setCookies("rc", rc)
-                this.join(rc)*/
-              }else{
-                this.unableMessage = "Du musst ein Nutzernamen festlegen"
               }
             }
           }
@@ -229,6 +225,15 @@ export default {
         this.hostPlayer(rc)
         this.$router.push('/player');
 
+      },
+
+      checkUsername(){
+        if(this.$refs.usernameinput.value !== ""){
+          return true
+        }else{
+          this.unableMessage = "Du musst ein Nutzernamen festlegen"
+        }
+        return false
       },
 
         joinUnable(){
@@ -286,16 +291,20 @@ export default {
       },
 
       onClickRoom(){
-        this.setCookies("host", "true")
-        let rc = this.getRandomNumbers()
-        this.setCookies("rc", rc)
-        this.createJoin(rc)
+          if(this.checkUsername()){
+            this.setCookies("host", "true")
+            let rc = this.getRandomNumbers()
+            this.setCookies("rc", rc)
+            this.createJoin(rc)
+          }
       },
 
       onClickPublic(){
-        let username = this.$refs.usernameinput.value
-        this.setCookies("username", username)
-        this.$router.push('/public');
+          if(this.checkUsername()){
+            let username = this.$refs.usernameinput.value
+            this.setCookies("username", username)
+            this.$router.push('/public');
+          }
       }
     }
 }

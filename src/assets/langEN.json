@@ -35,6 +35,7 @@
     "errorNotBigger": "The number must be greater than what was previously announced."
   },
   "misc": {
-    "noPublicRooms": "There are no public rooms"
+    "noPublicRooms": "There are no public rooms",
+    "roomClosed": "Room closed by host"
   }
 }

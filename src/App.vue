@@ -30,6 +30,7 @@ export default {
 </script>
 
 <template>
+  <notifications />
 
   <main>
       <router-view />

@@ -55,7 +55,7 @@ export default {
         window.addEventListener('beforeunload', this.eventClose);
 
 
-        this.socket = new WebSocket('ws://212.227.183.160:3000');
+        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")

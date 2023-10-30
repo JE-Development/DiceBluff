@@ -35,6 +35,7 @@
     "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
   },
   "misc": {
-    "noPublicRooms": "Es gibt keine öffentliche Räume"
+    "noPublicRooms": "Es gibt keine öffentliche Räume",
+    "roomClosed": "Der Raum wurde vom Host geschlossen"
   }
 }

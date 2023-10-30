@@ -170,7 +170,7 @@ export default {
 
         window.addEventListener('beforeunload', this.eventClose);
 
-        this.socket = new WebSocket('ws://212.227.183.160:3000');
+        this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
@@ -264,6 +264,10 @@ export default {
               this.ghostMode = true
             }
 
+          }else if(message.func === "removed"){
+            this.onClickLeave()
+            this.eventClose()
+            window.open(document.baseURI.split("/#/")[0], '_self');
           }
         });
 
@@ -338,6 +342,10 @@ export default {
       },
 
         eventClose(){
+          if(this.isHost){
+            //this.onClickStop()
+            this.killRoom()
+          }
           let dat = {
             type: "register",
             func: "removePlayer",
@@ -381,6 +389,14 @@ export default {
           }
           this.send(dat)
         },
+
+      killRoom(){
+        let dat = {
+          type: "engine",
+          func: "kill"
+        }
+        this.send(dat)
+      },
 
 
         stopGame(){
