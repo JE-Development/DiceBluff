@@ -1,0 +1,41 @@
+{
+  "lang": "de",
+  "langVis": "DE",
+  "register": {
+    "usernamePlaceholder": "Nutzername",
+    "roomPlaceholder": "Raumcode",
+    "joinButton": "Spiel beitreten",
+    "roomButton": "Raum erstellen",
+    "listButton": "Öffentliche Räume",
+    "gameInstructionsButton": "Spielanleitung",
+    "wrongRoomCode": "Raumcode existiert nicht",
+    "serverDown": "Der Dice Bluff Server ist offline"
+  },
+  "playerPage": {
+    "kickEveryoneButton": "Raum schließen",
+    "leaveButton": "Spiel verlassen",
+    "startButton": "Spiel starten",
+    "heartCount": "Herzenanzahl",
+    "allowGhostMode": "Ghost Mode erlauben",
+    "visibility": "Öffentlicher Raum",
+    "waitForPlayer": "Warte auf Spieler...",
+    "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
+    "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
+    "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein."
+  },
+  "gamePage": {
+    "stopButton": "Spiel stoppen",
+    "leaveButton": "Spiel verlassen",
+    "enableGhostMode": "Ghost Mode aktivieren",
+    "dropButton": "würfeln",
+    "moveButton": "schieben",
+    "viewButton": "gucken",
+    "revealButton": "aufdecken",
+    "errorNoNumberSelected": "Du hast keine Zahl ausgewählt",
+    "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
+  },
+  "misc": {
+    "noPublicRooms": "Es gibt keine öffentliche Räume",
+    "roomClosed": "Der Raum wurde vom Host geschlossen"
+  }
+}

@@ -23,6 +23,11 @@
                   <img src="../../assets/pb/stick.png" class="pb pb-select pointer" @click="click8"/>
                   <img src="../../assets/pb/stonks.png" class="pb pb-select pointer" @click="click9"/>
                   <img src="../../assets/pb/sus.png" class="pb pb-select pointer" @click="click10"/>
+                  <img src="../../assets/pb/calling.png" class="pb pb-select pointer" @click="click11"/>
+                  <img src="../../assets/pb/futurama.png" class="pb pb-select pointer" @click="click12"/>
+                  <img src="../../assets/pb/pou.png" class="pb pb-select pointer" @click="click13"/>
+                  <img src="../../assets/pb/sweat.png" class="pb pb-select pointer" @click="click14"/>
+                  <img src="../../assets/pb/confused.png" class="pb pb-select pointer" @click="click15"/>
                 </div>
               </div>
             </div>
@@ -99,7 +104,22 @@ export default {
     },
     click10(){
       this.handlePb("sus")
-    }
+    },
+    click11(){
+      this.handlePb("calling")
+    },
+    click12(){
+      this.handlePb("futurama")
+    },
+    click13(){
+      this.handlePb("pou")
+    },
+    click14(){
+      this.handlePb("sweat")
+    },
+    click15(){
+      this.handlePb("confused")
+    },
   },
 
 }
@@ -124,7 +144,6 @@ export default {
 
 .modal-container-saved {
   display: block;
-  width: 90vw;
   margin: 0px auto;
   padding: 5px 5px;
   border-radius: 2px;
