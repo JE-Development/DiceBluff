@@ -113,7 +113,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          console.log(message)
+          //console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
@@ -164,25 +164,29 @@ export default {
       },
 
       onClickStart(){
-        if(this.$refs.input.value !== ""){
-          let checker = Number(this.$refs.input.value)
-          if(isNaN(checker)){
-            this.errorText = this.lang.playerPage.heartErrorNaN
-          }else if(checker < 1){
-            this.errorText = this.lang.playerPage.heartErrorWrongNumber
-          }else{
-            this.setCookies("hearts", this.$refs.input.value)
-            this.setCookies("ghostmode", String(this.$refs.isghost.checked))
-            window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
-            let dat = {
-              type: "engine",
-              func: "start",
-              args: [this.$refs.input.value, this.$refs.isghost.checked]
+        if(this.names.length > 1){
+          if(this.$refs.input.value !== ""){
+            let checker = Number(this.$refs.input.value)
+            if(isNaN(checker)){
+              this.errorText = this.lang.playerPage.heartErrorNaN
+            }else if(checker < 1){
+              this.errorText = this.lang.playerPage.heartErrorWrongNumber
+            }else{
+              this.setCookies("hearts", this.$refs.input.value)
+              this.setCookies("ghostmode", String(this.$refs.isghost.checked))
+              window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
+              let dat = {
+                type: "engine",
+                func: "start",
+                args: [this.$refs.input.value, this.$refs.isghost.checked]
+              }
+              this.send(dat);
             }
-            this.send(dat);
+          }else{
+            this.errorText = this.lang.playerPage.heartErrorEmpty
           }
         }else{
-          this.errorText = this.lang.playerPage.heartErrorEmpty
+          this.errorText = this.lang.playerPage.needMorePlayers
         }
       },
 

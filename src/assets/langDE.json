@@ -9,7 +9,10 @@
     "listButton": "Öffentliche Räume",
     "gameInstructionsButton": "Spielanleitung",
     "wrongRoomCode": "Raumcode existiert nicht",
-    "serverDown": "Der Dice Bluff Server ist offline"
+    "serverDown": "Der Dice Bluff Server ist offline",
+    "noUsername": "Du musst einen Nutzernamen festlegen",
+    "gameStarted": "Spiel ist bereits gestartet",
+    "noRoomCode": "Du musst ein Raumcode eingeben oder ein Raum erstellen"
   },
   "playerPage": {
     "kickEveryoneButton": "Raum schließen",
@@ -21,7 +24,8 @@
     "waitForPlayer": "Warte auf Spieler...",
     "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
     "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
-    "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein."
+    "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein.",
+    "needMorePlayers": "Du brauchst mindestens 2 Spieler."
   },
   "gamePage": {
     "stopButton": "Spiel stoppen",

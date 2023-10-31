@@ -9,7 +9,10 @@
     "listButton": "Public Rooms",
     "gameInstructionsButton": "Game Instructions",
     "wrongRoomCode": "Room doesn't exist",
-    "serverDown": "The Dice Bluff server is down"
+    "serverDown": "The Dice Bluff server is down",
+    "noUsername": "You have to choose an username",
+    "gameStarted": "Game already started",
+    "noRoomCode": "You have to enter a room code or create a room"
   },
   "playerPage": {
     "kickEveryoneButton": "Close Room",
@@ -21,7 +24,8 @@
     "waitForPlayer": "Wait for Players...",
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
-    "heartErrorEmpty": "The text field for the heart count must not be empty."
+    "heartErrorEmpty": "The text field for the heart count must not be empty.",
+    "needMorePlayers": "You need at least 2 players."
   },
   "gamePage": {
     "stopButton": "Stop Game",

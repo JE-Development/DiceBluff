@@ -138,7 +138,7 @@ export default {
 
           const message = JSON.parse(event.data)
 
-          console.log(message)
+          //console.log(message)
           if(message.func === "error"){
             console.error(message.text)
           }else if(message.func === "isStarted"){
@@ -178,7 +178,7 @@ export default {
                   this.setCookies("rc", this.$refs.passinput.value)
                   this.join(this.$refs.passinput.value)
                 }else{
-                  this.unableMessage = "Du musst ein Raumcode eingeben oder ein Raum erstellen"
+                  this.unableMessage = this.lang.register.noRoomCode
                 }
               }
             }
@@ -231,13 +231,13 @@ export default {
         if(this.$refs.usernameinput.value !== ""){
           return true
         }else{
-          this.unableMessage = "Du musst ein Nutzernamen festlegen"
+          this.unableMessage = this.lang.register.noUsername
         }
         return false
       },
 
         joinUnable(){
-            this.unableMessage = "Spiel ist bereits gestartet."
+            this.unableMessage = this.lang.register.gameStarted
         },
 
         getCookies(key){

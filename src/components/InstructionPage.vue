@@ -3,7 +3,7 @@
     <div style="width: 80vw;">
       <h1 class="prim-color">Spielanleitung</h1>
       <h2>Einführung</h2>
-      <p>Dice Bluff ist ein Würfelspiel welches man auch unter dem Namen 'Mäxchen' kennt. Physisch wird Dice Bluff mit
+      <p>Dice Bluff ist ein Würfelspiel welches man auch unter dem Namen 'Mäxchen' oder 'Mia' kennt. Physisch wird Dice Bluff mit
         2 Würfeln und einem Würfelbecher gespielt. Das Ziel ist es als letztes übrig zu sein. Dies erreicht man durch gutes Lügen
         und viel Glück.
       </p>
@@ -145,7 +145,7 @@
     <div style="width: 80vw">
       <h1 class="prim-color">Game Instructions</h1>
       <h2>Introduction</h2>
-      <p>Dice Bluff is a dice game also known by the name 'Mäxchen.' In the physical version, Dice Bluff is played with 2 dice and a dice cup. The goal is to be the last one remaining, which is achieved through skillful bluffing and a bit of luck.
+      <p>Dice Bluff is a dice game also known by the name 'Mäxchen' or 'Mia'. In the physical version, Dice Bluff is played with 2 dice and a dice cup. The goal is to be the last one remaining, which is achieved through skillful bluffing and a bit of luck.
       </p>
       <h2>Composition of Numbers</h2>
       <p>

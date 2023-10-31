@@ -189,7 +189,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          console.log(message)
+          //console.log(message)
           if(message.func === "notBiggerError"){
 
             if(message.player === this.getCookies("username")){
