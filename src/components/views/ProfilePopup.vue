@@ -13,21 +13,10 @@
                 <div style="height: 20px"></div>
 
                 <div ref="header" class="center-horizontal main-grid">
-                  <img src="../../assets/pb/bugs.png" class="pb pb-select pointer" @click="click1"/>
-                  <img src="../../assets/pb/dog.png" class="pb pb-select pointer" @click="click2"/>
-                  <img src="../../assets/pb/glow.png" class="pb pb-select pointer" @click="click3"/>
-                  <img src="../../assets/pb/mike.png" class="pb pb-select pointer" @click="click4"/>
-                  <img src="../../assets/pb/sigma.png" class="pb pb-select pointer" @click="click5"/>
-                  <img src="../../assets/pb/sponge.png" class="pb pb-select pointer" @click="click6"/>
-                  <img src="../../assets/pb/squid.png" class="pb pb-select pointer" @click="click7"/>
-                  <img src="../../assets/pb/stick.png" class="pb pb-select pointer" @click="click8"/>
-                  <img src="../../assets/pb/stonks.png" class="pb pb-select pointer" @click="click9"/>
-                  <img src="../../assets/pb/sus.png" class="pb pb-select pointer" @click="click10"/>
-                  <img src="../../assets/pb/calling.png" class="pb pb-select pointer" @click="click11"/>
-                  <img src="../../assets/pb/futurama.png" class="pb pb-select pointer" @click="click12"/>
-                  <img src="../../assets/pb/pou.png" class="pb pb-select pointer" @click="click13"/>
-                  <img src="../../assets/pb/sweat.png" class="pb pb-select pointer" @click="click14"/>
-                  <img src="../../assets/pb/confused.png" class="pb pb-select pointer" @click="click15"/>
+                  <img
+                      v-for="(dat) in pbList"
+
+                      :src="'../../src/assets/pb/' + dat + '.png'" class="pb pb-select pointer" @click="click(dat)"/>
                 </div>
               </div>
             </div>
@@ -51,6 +40,7 @@ export default {
   data(){
     return{
       savedContent: [],
+      pbList: import.meta.env.VITE_PB.split(","),
     }
   },
 
@@ -75,50 +65,8 @@ export default {
       this.onClose()
     },
 
-    click1(){
-      this.handlePb("bugs")
-    },
-    click2(){
-      this.handlePb("dog")
-    },
-    click3(){
-      this.handlePb("glow")
-    },
-    click4(){
-      this.handlePb("mike")
-    },
-    click5(){
-      this.handlePb("sigma")
-    },
-    click6(){
-      this.handlePb("sponge")
-    },
-    click7(){
-      this.handlePb("squid")
-    },
-    click8(){
-      this.handlePb("stick")
-    },
-    click9(){
-      this.handlePb("stonks")
-    },
-    click10(){
-      this.handlePb("sus")
-    },
-    click11(){
-      this.handlePb("calling")
-    },
-    click12(){
-      this.handlePb("futurama")
-    },
-    click13(){
-      this.handlePb("pou")
-    },
-    click14(){
-      this.handlePb("sweat")
-    },
-    click15(){
-      this.handlePb("confused")
+    click(dat){
+      this.handlePb(dat)
     },
   },
 

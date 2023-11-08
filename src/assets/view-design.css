@@ -143,6 +143,10 @@
     background: #bfc7ff;
 }
 
+.fifth-color-background{
+    background: #ff88d9;;
+}
+
 .texture{
     background-image: url("./texture1.png");
 }

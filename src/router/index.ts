@@ -6,6 +6,7 @@ import PlayerPage from "../components/PlayerPage.vue";
 import InstructionPage from "@/components/InstructionPage.vue";
 import PublicPage from "@/components/PublicPage.vue";
 import Dashboard from "@/components/Dashboard.vue";
+import BotPage from "@/components/BotPage.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -37,6 +38,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/dashboard',
         name: 'Dashboard',
         component: Dashboard
+    },
+    {
+        path: '/bot',
+        name: 'BotPage',
+        component: BotPage
     },
 
 

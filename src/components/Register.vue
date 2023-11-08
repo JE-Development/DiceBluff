@@ -36,6 +36,9 @@
         </div>
       <div style="height: 40px"></div>
       <div class="center-horizontal">
+        <UIButton :title="lang.register.botButton" @click="onClickBot" color="fifth-color-background"/>
+      </div>
+      <div class="center-horizontal">
         <UIButton :title="lang.register.roomButton" @click="onClickRoom" color="third-color-background"/>
       </div>
       <div class="center-horizontal">
@@ -71,8 +74,7 @@ export default {
             pass: "",
           srcPb: "",
           baseSrc: "../src/assets/pb/",
-          pbList: ["bugs", "dog", "glow", "mike", "sigma", "sponge", "squid", "stick",
-            "stick", "stonks", "sus", "calling", "pou", "futurama", "sweat", "confused"],
+          pbList: import.meta.env.VITE_PB.split(","),
             socket: null,
             messages: [],
             newMessage: '',
@@ -227,6 +229,18 @@ export default {
 
       },
 
+      createBotJoin(rc){
+        this.unableMessage = ""
+
+        let username = this.$refs.usernameinput.value
+
+        this.setCookies("username", username)
+
+        this.hostPlayer(rc)
+        this.$router.push('/bot');
+
+      },
+
       checkUsername(){
         if(this.$refs.usernameinput.value !== ""){
           return true
@@ -297,6 +311,15 @@ export default {
             this.setCookies("rc", rc)
             this.createJoin(rc)
           }
+      },
+
+      onClickBot(){
+        if(this.checkUsername()){
+          this.setCookies("host", "true")
+          let rc = this.getRandomNumbers()
+          this.setCookies("rc", rc)
+          this.createBotJoin(rc)
+        }
       },
 
       onClickPublic(){
