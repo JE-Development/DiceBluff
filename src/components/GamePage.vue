@@ -400,7 +400,12 @@ export default {
 
 
         stopGame(){
-          window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
+          if(this.getCookies("botLayout") === "true"){
+            window.open(document.baseURI.split("/#/")[0] + "/#/bot", '_self');
+          }else{
+            window.open(document.baseURI.split("/#/")[0] + "/#/player", '_self');
+          }
+
         },
 
         onClickLeave(){

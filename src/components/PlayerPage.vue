@@ -174,6 +174,7 @@ export default {
             }else{
               this.setCookies("hearts", this.$refs.input.value)
               this.setCookies("ghostmode", String(this.$refs.isghost.checked))
+              this.setCookies("botLayout", "false")
               window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
               let dat = {
                 type: "engine",

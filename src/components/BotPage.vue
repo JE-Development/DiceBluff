@@ -27,6 +27,10 @@
             <UIButton :title="lang.playerPage.removeBotButton" @click="onClickRemoveBot" color="sec-color"/>
           </div>
           <h2 class="red">{{errorText}}</h2>
+          <div class="center-horizontal center">
+            <h2 class="white">{{lang.playerPage.heartCount}}</h2>
+            <input ref="input" class="heart-input texture" value="3">
+          </div>
         </div>
     </div>
 
@@ -145,6 +149,11 @@ export default {
         window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
       },
 
+      onClickLeave(){
+        this.eventClose()
+        window.open(document.baseURI.split("/#/")[0], '_self');
+      },
+
       onClickStart(){
         if(this.names.length > 1){
           if(this.$refs.input.value !== ""){
@@ -155,12 +164,13 @@ export default {
               this.errorText = this.lang.playerPage.heartErrorWrongNumber
             }else{
               this.setCookies("hearts", this.$refs.input.value)
-              this.setCookies("ghostmode", String(this.$refs.isghost.checked))
+              this.setCookies("ghostmode", "false")
+              this.setCookies("botLayout", "true")
               window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
               let dat = {
                 type: "engine",
                 func: "start",
-                args: [this.$refs.input.value, this.$refs.isghost.checked]
+                args: [this.$refs.input.value, false]
               }
               this.send(dat);
             }
@@ -206,11 +216,15 @@ export default {
           player: this.getRandomUsername(),
           pb: this.getRandomPB(),
         };
-        this.socket.send(JSON.stringify(dat));
+        this.send(dat)
       },
 
       onClickRemoveBot(){
-
+        let dat = {
+          type: "register",
+          func: "removeBot"
+        };
+        this.send(dat)
       },
 
 
@@ -264,7 +278,17 @@ export default {
           "Lincoln",
         ]
         let random = Math.floor(Math.random() * usernames.length)
-        return usernames[random]
+        let randomUsername = usernames[random];
+        let exist = false;
+        for(let i = 0; i < this.names.length; i++){
+          if(this.names[i].name === randomUsername){
+            exist = true;
+          }
+        }
+        if(exist){
+          randomUsername = this.getRandomUsername()
+        }
+        return randomUsername
       },
 
 
