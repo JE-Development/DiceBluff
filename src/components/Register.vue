@@ -34,7 +34,8 @@
         <div class="center-horizontal">
           <UIButton :title="lang.register.joinButton" @click="onClickJoin" color="prim-color-background"/>
         </div>
-      <div style="height: 40px"></div>
+
+
       <div class="center-horizontal">
         <UIButton :title="lang.register.botButton" @click="onClickBot" color="fifth-color-background"/>
       </div>
