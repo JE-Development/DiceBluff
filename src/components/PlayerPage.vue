@@ -66,7 +66,8 @@ export default {
             socket: null,
           pb: [],
           errorText: "",
-          lang: langEN
+          lang: langEN,
+          buttonTrigger: false
         };
     },
 
@@ -192,7 +193,7 @@ export default {
       },
 
       eventClose(){
-        if(this.isHost){
+        if(this.isHost && !this.buttonTrigger){
           this.onClickRemove()
         }else{
           let dat = {
@@ -211,6 +212,7 @@ export default {
       },
 
       onClickRemove(){
+        this.buttonTrigger = true
         let dat = {
           type: "register",
           func: "kickAllPlayers"

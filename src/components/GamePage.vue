@@ -248,15 +248,17 @@ export default {
 
           }else if(message.func === "showGhostDice"){
             let base = "../src/assets/dice_"
-            if(message.player === this.getCookies("username") || message.player === "--everyone--"){
-              let word = message.dice.split(";")
+            for(let i = 0; i < message.player.length; i++){
+              if(message.player[i] === this.getCookies("username") || message.player[i] === "--everyone--"){
+                let word = message.dice.split(";")
 
 
-              this.src1 = base + word[0] + ".png"
-              this.src2 = base + word[1] + ".png"
-            }else{
-              this.src1 = base + "default.png"
-              this.src2 = base + "default.png"
+                this.src1 = base + word[0] + ".png"
+                this.src2 = base + word[1] + ".png"
+              }else{
+                this.src1 = base + "default.png"
+                this.src2 = base + "default.png"
+              }
             }
 
           }else if(message.func === "enableGhostMode"){
