@@ -1,4 +1,5 @@
 <template>
+  <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
     <div style="width: 80vw;">
       <h1 class="prim-color">Spielanleitung</h1>
@@ -253,11 +254,12 @@
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import GameButton from "@/components/views/GameButton.vue";
+import LangSelection from "@/components/views/LangSelection.vue";
 
 
 export default {
     name: "InstructionPage",
-  components: {GameButton},
+  components: {LangSelection, GameButton},
     data() {
         return {
           lang: langEN
@@ -276,6 +278,16 @@ export default {
     },
 
     methods: {
+
+      langClicked(){
+        if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+          this.setCookies("lang", "de")
+          this.lang = langDE
+        }else{
+          this.setCookies("lang", "en")
+          this.lang = langEN
+        }
+      },
 
         getCookies(key){
             return this.$cookies.get(key);
