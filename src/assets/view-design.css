@@ -215,3 +215,10 @@
     height: 50px;
     margin: 15px
 }
+
+.link-background{
+    width: 600px;
+    background: #e3e3e3;
+    padding-right: 5px;
+    padding-left: 5px;
+}

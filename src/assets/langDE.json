@@ -41,6 +41,9 @@
     "errorNoNumberSelected": "Du hast keine Zahl ausgewählt",
     "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
   },
+  "jwc": {
+    "joinButton": "Spiel beitreten"
+  },
   "misc": {
     "noPublicRooms": "Es gibt keine öffentliche Räume",
     "roomClosed": "Der Raum wurde vom Host geschlossen"

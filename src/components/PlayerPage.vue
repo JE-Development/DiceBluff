@@ -1,7 +1,14 @@
 <template>
+  <audio ref="audio" :src="audioSrc"></audio>
 
-  <div class="center" v-if="isHost">
-    <h1 class="prim-color">Code: <span class="sec-color-text">{{getCookies("rc")}}</span></h1>
+
+  <div class="center-horizontal" v-if="isHost">
+    <div class="center-horizontal">
+      <div class="absolute">
+        <h2 class="link-background center-horizontal">{{baseURI}}/code/{{getCookies("rc")}}</h2>
+      </div>
+      <div style="height: 60px"></div>
+    </div>
   </div>
   <div class="center-horizontal" v-if="isHost">
     <UIButton :title="lang.playerPage.kickEveryoneButton" @click="onClickRemove" color="prim-color-background"/>
@@ -67,7 +74,10 @@ export default {
           pb: [],
           errorText: "",
           lang: langEN,
-          buttonTrigger: false
+          buttonTrigger: false,
+          baseURI: "",
+          audioBase: "https://dicebluff.inforge.de/sounds/",
+          audioSrc: ""
         };
     },
 
@@ -75,6 +85,7 @@ export default {
 
     },
     mounted() {
+      this.baseURI = document.baseURI.split("#")[0] + "#"
 
       if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
         this.lang = langEN
@@ -120,6 +131,7 @@ export default {
             console.error(message.text)
 
           }else if(message.func === "allPlayers"){
+            this.playSound()
             this.names = []
 
             let allPlayers = message.players
@@ -148,6 +160,11 @@ export default {
 
           }else if(message.func === "removed"){
             this.onClickLeave()
+          }else if(message.func === "playSound"){
+            let sound = message.sound
+            this.audioSrc = this.audioBase + sound + ".mp3"
+
+            this.playSound()
           }
         });
 
@@ -159,6 +176,11 @@ export default {
 
 
     methods: {
+      playSound() {
+        let audio = this.$refs.audio;
+        audio.currentTime = 0;
+        audio.play();
+      },
 
       startGame(){
         window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');

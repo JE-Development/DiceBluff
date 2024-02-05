@@ -1,4 +1,5 @@
 <template>
+  <audio ref="audio" :src="audioSrc"></audio>
 
     <div class="button-layout center-horizontal" v-if="isHost">
       <UIButton :title="lang.gamePage.stopButton" @click="onClickStop" color="prim-color-background"/>
@@ -137,7 +138,9 @@ export default {
             ghostMode: false,
           isLooser: false,
           isGhostAllowed: false,
-          lang: langEN
+          lang: langEN,
+          audioBase: "https://dicebluff.inforge.de/sounds/",
+          audioSrc: ""
         };
     },
 
@@ -189,7 +192,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "notBiggerError"){
 
             if(message.player === this.getCookies("username")){
@@ -270,6 +273,18 @@ export default {
             this.onClickLeave()
             this.eventClose()
             window.open(document.baseURI.split("/#/")[0], '_self');
+          }else if(message.func === "playSound"){
+            let sound = message.sound
+            this.audioSrc = this.audioBase + sound + ".mp3"
+
+            this.playSound()
+          }else if(message.func === "playSoundPlayer"){
+            if(message.player === this.getCookies("username")){
+              let sound = message.sound
+              this.audioSrc = this.audioBase + sound + ".mp3"
+
+              this.playSound()
+            }
           }
         });
 
@@ -281,6 +296,13 @@ export default {
 
 
     methods: {
+      playSound() {
+        let audio = this.$refs.audio;
+        audio.currentTime = 0;
+        console.log("audio src: " + this.audioSrc)
+        audio.play();
+      },
+
         getPlayers(){
           const message = {
             type: "engine",
@@ -430,6 +452,10 @@ export default {
 
             this.send(dat);
 
+          this.audioSrc = this.audioBase + "rolling" + ".mp3"
+
+          this.playSound()
+
         },
 
         onClickMove(){
@@ -445,6 +471,10 @@ export default {
             this.loggedDiceNum = ""
 
             this.send(dat);
+
+            this.audioSrc = this.audioBase + "pass" + ".mp3"
+
+            this.playSound()
           }
 
         },
@@ -459,6 +489,10 @@ export default {
 
           this.send(dat);
 
+          this.audioSrc = this.audioBase + "view" + ".mp3"
+
+          this.playSound()
+
         },
 
         onClickReveal(){
@@ -469,6 +503,10 @@ export default {
           }
 
           this.send(dat);
+
+          this.audioSrc = this.audioBase + "reveal" + ".mp3"
+
+          this.playSound()
         },
 
         shakeCup() {

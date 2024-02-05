@@ -12,6 +12,7 @@
           :hoster="dat.hoster"
           :playerCount="dat.playerCount"
           :rc="dat.rc"
+          :pb="dat.pb"
           @clicked="clicked"
       />
     </div>

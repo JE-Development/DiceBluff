@@ -7,6 +7,7 @@ import InstructionPage from "@/components/InstructionPage.vue";
 import PublicPage from "@/components/PublicPage.vue";
 import Dashboard from "@/components/Dashboard.vue";
 import BotPage from "@/components/BotPage.vue";
+import JoinWithCode from "@/components/JoinWithCode.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -43,6 +44,11 @@ const routes: Array<RouteRecordRaw> = [
         path: '/bot',
         name: 'BotPage',
         component: BotPage
+    },
+    {
+        path: '/code/:rc',
+        name: 'JoinWithCode',
+        component: JoinWithCode
     },
 
 
