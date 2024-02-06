@@ -1,0 +1,63 @@
+Dies ist eine Powerup Beschreibung
+
+XP Verteilung:
+Man braucht 100 XP um ein Powerup zu bekommen. Wenn man ein Powerup besitzt kann man keine XP bekommen.
+XP bekommt man wenn der nächster Spieler die gesagte Zahl glaubt. Je höher die geglaubte Zahl desto mehr
+XP bekommt man.
+
+31: 5xp
+32: 6xp
+
+41: 8xp
+42: 9xp
+43: 10xp
+
+51: 11xp
+52: 12xp
+53: 13xp
+54: 14xp
+
+61: 16xp
+62: 17xp
+63: 18xp
+64: 19xp
+65: 20xp
+
+11: 23xp
+22: 28xp
+33: 35xp
+44: 45xp
+55: 60xp
+66: 70xp
+
+21: 100xp
+
+Powerups:
+
+1: "Pass" (pass) (10%), ein Spieler kann den Würfelbecher weiterschieben ohne eine Zahl gesagt zu haben.
+Es ist so als ob er übersprungen wird. Das popup kann nicht verwendet werden wenn er bei seinem
+Zug eine andere Aktion wie würfeln oder ähnliches schon ausgeführt hat.
+Er kann das Popup auch dann verwenden wenn eine 21 gewürfelt wurde. Er hat dann eine gewisse Zeit zeit um
+das Powerup zu verwenden, damit jemand anderes die 21 abbekommt.
+
+2: "Shake" (shake) (20%), die Würfel werden neu gewürfelt. Er kann dieses Popup jederzeit anwenden außer bei "reveal".
+Er kann es auch verwenden wenn er nicht dran ist um jemand anderes zu schaden oder zu helfen.
+Er kann es auch für sich selber benutzen wenn er schlechte Zahlen gewürfelt hat
+
+3: "X-Ray" (xray) (20%), man bekommt einen zufälligen Würfel von den 2 Würfel gezeigt. Powerup ist inaktiv wenn
+man in "view" ist
+
+4: "Transfer" (transfer) (20%), wenn du ein Leben abgezogen bekommen müsstes, kannst du den schaden auf jemand
+anderem übertragen. Wenn du das powerup aktivierst, wird ein zufälliger spieler ausgewählt, welcher den
+Herzabzug bekommt, dabei kann man trotdem selber im Zufallsprinzip ausgewählt werden. Es garantiert also nicht
+dass man selber kein Herzabzug bekommt
+
+5: "Heart" (heart) (10%), man bekommt sofort ein Zusatzherz
+
+6: "Change" (change) (10%), man kann die zuvor geagte Zahl ändern. Sie wird zufällig ausgewählt zwischen der gesagten
+Zahl und der kleinsten Zahl. Wenn Spieler 1 sagt, dass er eine 61 hat und du das powerup verwendest dann kann
+sich die zuvor gesagte Zahl ändern zu einer Zahl die im bereich zwischen 31 und 61 (incl.) ändert.
+
+7: "Block" (block) (10%) du kannst einem Spieler den "Reveal" Button blockieren
+
+Summe -> 100%
