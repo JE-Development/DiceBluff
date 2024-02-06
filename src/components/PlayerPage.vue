@@ -1,5 +1,7 @@
 <template>
   <audio ref="audio" :src="audioSrc"></audio>
+  <LangSelection @click="langClicked" :lang="lang.langVis"/>
+  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
 
 
   <div class="center-horizontal" v-if="isHost">
@@ -61,11 +63,13 @@ import {nextTick} from "vue";
 import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import UIButton from "@/components/views/UIButton.vue";
+import LangSelection from "@/components/views/LangSelection.vue";
+import AudioSettings from "@/components/views/AudioSettings.vue";
 
 export default {
     //npm run dev | npm run build
     name: "PlayerPage",
-    components: {UIButton, PlayerView},
+    components: {AudioSettings, LangSelection, UIButton, PlayerView},
     data() {
         return {
             names: [],
@@ -77,11 +81,32 @@ export default {
           buttonTrigger: false,
           baseURI: "",
           audioBase: "https://dicebluff.inforge.de/sounds/",
-          audioSrc: ""
+          audioSrc: "",
+          audios: {},
+          audioSettingsStatus: true
         };
     },
 
     created() {
+      this.audios = {
+        "join-left": this.audioBase + "join-left" + ".mp3"
+      }
+
+      let promises = [];
+      Object.keys(this.audios).forEach(s => {
+        promises.push(new Promise((resolve, reject) => {
+          let url = this.audios[s];
+          this.audios[s] = new Audio();
+          this.audios[s].addEventListener('canplaythrough', resolve, false);
+          this.audios[s].src = url;
+        }));
+      });
+
+      Promise.all(promises).then(() => {
+        //stats.innerText = `All audio files loaded!  Drag mouse over the keys`;
+      }).catch(e => {
+        console.log('error loading audio files: ', e);
+      });
 
     },
     mounted() {
@@ -91,6 +116,12 @@ export default {
         this.lang = langEN
       }else{
         this.lang = langDE
+      }
+
+      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
+        this.audioSettingsStatus = true
+      }else{
+        this.audioSettingsStatus = false
       }
 
         if(this.getCookies("host") === "true"){
@@ -131,7 +162,6 @@ export default {
             console.error(message.text)
 
           }else if(message.func === "allPlayers"){
-            this.playSound()
             this.names = []
 
             let allPlayers = message.players
@@ -161,10 +191,9 @@ export default {
           }else if(message.func === "removed"){
             this.onClickLeave()
           }else if(message.func === "playSound"){
-            let sound = message.sound
-            this.audioSrc = this.audioBase + sound + ".mp3"
-
-            this.playSound()
+            if(this.audioSettingsStatus){
+              this.playSound(message.sound)
+            }
           }
         });
 
@@ -176,10 +205,29 @@ export default {
 
 
     methods: {
-      playSound() {
-        let audio = this.$refs.audio;
-        audio.currentTime = 0;
-        audio.play();
+      audioSettingsClicked(){
+        if(this.audioSettingsStatus){
+          this.audioSettingsStatus = false
+          this.setCookies("audioSettings", "false")
+        }else{
+          this.audioSettingsStatus = true
+          this.setCookies("audioSettings", "true")
+        }
+      },
+
+      langClicked(){
+        if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+          this.setCookies("lang", "de")
+          this.lang = langDE
+        }else{
+          this.setCookies("lang", "en")
+          this.lang = langEN
+        }
+      },
+
+      playSound(sound) {
+        this.audios[sound].currentTime = 0
+        this.audios[sound].play()
       },
 
       startGame(){

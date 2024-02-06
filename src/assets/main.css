@@ -33,6 +33,10 @@ body{
     height: 95vh;
 }
 
+.full-width{
+    width: 95vw;
+}
+
 .max-width{
     width: 100%;
 }

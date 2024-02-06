@@ -1,6 +1,7 @@
 <template>
   <ProfilePopup :show="pbShow" @close="pbClose"/>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
+  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
   <div class="center-horizontal full-size">
     <div>
 
@@ -44,10 +45,11 @@ import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import LangSelection from "@/components/views/LangSelection.vue";
 import UIButton from "@/components/views/UIButton.vue";
+import AudioSettings from "@/components/views/AudioSettings.vue";
 
 export default {
   name: "JoinWithCode",
-  components: {UIButton, LangSelection, ProfilePopup},
+  components: {AudioSettings, UIButton, LangSelection, ProfilePopup},
   data() {
     return {
       username: "",
@@ -64,6 +66,7 @@ export default {
       isStarted: false,
       lang: langEN,
       code: this.$route.params.rc,
+      audioSettingsStatus: true
     };
   },
 
@@ -86,6 +89,12 @@ export default {
       this.lang = langEN
     }else{
       this.lang = langDE
+    }
+
+    if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
+      this.audioSettingsStatus = true
+    }else{
+      this.audioSettingsStatus = false
     }
 
     window.addEventListener('beforeunload', this.eventClose);
@@ -144,6 +153,15 @@ export default {
   },
 
   methods: {
+    audioSettingsClicked(){
+      if(this.audioSettingsStatus){
+        this.audioSettingsStatus = false
+        this.setCookies("audioSettings", "false")
+      }else{
+        this.audioSettingsStatus = true
+        this.setCookies("audioSettings", "true")
+      }
+    },
 
     onClickJoin(){
       let username = this.$refs.usernameinput.value

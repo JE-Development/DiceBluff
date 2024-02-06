@@ -1,5 +1,6 @@
 <template>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
+  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
     <div style="width: 80vw;">
       <h1 class="prim-color">Spielanleitung</h1>
@@ -255,14 +256,16 @@ import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import GameButton from "@/components/views/GameButton.vue";
 import LangSelection from "@/components/views/LangSelection.vue";
+import AudioSettings from "@/components/views/AudioSettings.vue";
 
 
 export default {
     name: "InstructionPage",
-  components: {LangSelection, GameButton},
+  components: {AudioSettings, LangSelection, GameButton},
     data() {
         return {
-          lang: langEN
+          lang: langEN,
+          audioSettingsStatus: true
         };
     },
 
@@ -275,9 +278,24 @@ export default {
       }else{
         this.lang = langDE
       }
+
+      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
+        this.audioSettingsStatus = true
+      }else{
+        this.audioSettingsStatus = false
+      }
     },
 
     methods: {
+      audioSettingsClicked(){
+        if(this.audioSettingsStatus){
+          this.audioSettingsStatus = false
+          this.setCookies("audioSettings", "false")
+        }else{
+          this.audioSettingsStatus = true
+          this.setCookies("audioSettings", "true")
+        }
+      },
 
       langClicked(){
         if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){

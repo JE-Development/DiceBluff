@@ -1,4 +1,6 @@
 <template>
+  <LangSelection @click="langClicked" :lang="lang.langVis"/>
+  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
   <audio ref="audio" :src="audioSrc"></audio>
 
     <div class="button-layout center-horizontal" v-if="isHost">
@@ -110,11 +112,13 @@ import langDE from "../assets/langDE.json"
 import langEN from "../assets/langEN.json"
 import UIButton from "@/components/views/UIButton.vue";
 import GameButton from "@/components/views/GameButton.vue";
+import LangSelection from "@/components/views/LangSelection.vue";
+import AudioSettings from "@/components/views/AudioSettings.vue";
 
 export default {
     //npm run dev | npm run build
     name: "GamePage",
-    components: {GameButton, UIButton, Dice, DiceLayout, PlayerView},
+    components: {AudioSettings, LangSelection, GameButton, UIButton, Dice, DiceLayout, PlayerView},
     data() {
         return {
             names: [],
@@ -140,11 +144,39 @@ export default {
           isGhostAllowed: false,
           lang: langEN,
           audioBase: "https://dicebluff.inforge.de/sounds/",
-          audioSrc: ""
+          audioSrc: "",
+          audios: {},
+          audioSettingsStatus: true
         };
     },
 
     created() {
+      this.audios = {
+        "join-left": this.audioBase + "join-left" + ".mp3",
+        "heart-loose": this.audioBase + "heart-loose" + ".mp3",
+        "pass": this.audioBase + "pass" + ".mp3",
+        "reveal": this.audioBase + "reveal" + ".mp3",
+        "rolling": this.audioBase + "rolling" + ".mp3",
+        "turn": this.audioBase + "turn" + ".mp3",
+        "view": this.audioBase + "view" + ".mp3",
+        "winning": this.audioBase + "winning" + ".mp3",
+      }
+
+      let promises = [];
+      Object.keys(this.audios).forEach(s => {
+        promises.push(new Promise((resolve, reject) => {
+          let url = this.audios[s];
+          this.audios[s] = new Audio();
+          this.audios[s].addEventListener('canplaythrough', resolve, false);
+          this.audios[s].src = url;
+        }));
+      });
+
+      Promise.all(promises).then(() => {
+        //stats.innerText = `All audio files loaded!  Drag mouse over the keys`;
+      }).catch(e => {
+        console.log('error loading audio files: ', e);
+      });
 
         EventBus.addEventListener('dice-num', (event) => {
             this.loggedDiceNum = event.data
@@ -155,6 +187,8 @@ export default {
         })
         EventBus.addEventListener('dice-mode', (event) => {
             this.loggedDiceMode = event.data
+          //this.audioSrc = this.audioBase + "view" + ".mp3"
+          //this.playSound()
         })
 
     },
@@ -163,6 +197,12 @@ export default {
         this.lang = langEN
       }else{
         this.lang = langDE
+      }
+
+      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
+        this.audioSettingsStatus = true
+      }else{
+        this.audioSettingsStatus = false
       }
 
       this.isGhostAllowed = this.getCookies("ghostmode")
@@ -274,16 +314,12 @@ export default {
             this.eventClose()
             window.open(document.baseURI.split("/#/")[0], '_self');
           }else if(message.func === "playSound"){
-            let sound = message.sound
-            this.audioSrc = this.audioBase + sound + ".mp3"
-
-            this.playSound()
+            if(this.audioSettingsStatus){
+              this.playSound(message.sound)
+            }
           }else if(message.func === "playSoundPlayer"){
-            if(message.player === this.getCookies("username")){
-              let sound = message.sound
-              this.audioSrc = this.audioBase + sound + ".mp3"
-
-              this.playSound()
+            if(message.player === this.getCookies("username") && this.audioSettingsStatus){
+              this.playSound(message.sound)
             }
           }
         });
@@ -296,11 +332,29 @@ export default {
 
 
     methods: {
-      playSound() {
-        let audio = this.$refs.audio;
-        audio.currentTime = 0;
-        console.log("audio src: " + this.audioSrc)
-        audio.play();
+      audioSettingsClicked(){
+        if(this.audioSettingsStatus){
+          this.audioSettingsStatus = false
+          this.setCookies("audioSettings", "false")
+        }else{
+          this.audioSettingsStatus = true
+          this.setCookies("audioSettings", "true")
+        }
+      },
+
+      langClicked(){
+        if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
+          this.setCookies("lang", "de")
+          this.lang = langDE
+        }else{
+          this.setCookies("lang", "en")
+          this.lang = langEN
+        }
+      },
+
+      playSound(sound) {
+        this.audios[sound].currentTime = 0
+        this.audios[sound].play()
       },
 
         getPlayers(){
@@ -452,10 +506,6 @@ export default {
 
             this.send(dat);
 
-          this.audioSrc = this.audioBase + "rolling" + ".mp3"
-
-          this.playSound()
-
         },
 
         onClickMove(){
@@ -471,10 +521,6 @@ export default {
             this.loggedDiceNum = ""
 
             this.send(dat);
-
-            this.audioSrc = this.audioBase + "pass" + ".mp3"
-
-            this.playSound()
           }
 
         },
@@ -489,10 +535,6 @@ export default {
 
           this.send(dat);
 
-          this.audioSrc = this.audioBase + "view" + ".mp3"
-
-          this.playSound()
-
         },
 
         onClickReveal(){
@@ -504,9 +546,6 @@ export default {
 
           this.send(dat);
 
-          this.audioSrc = this.audioBase + "reveal" + ".mp3"
-
-          this.playSound()
         },
 
         shakeCup() {
