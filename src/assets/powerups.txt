@@ -10,27 +10,27 @@ XP bekommt man wenn der nächster Spieler die gesagte Zahl glaubt. Je höher die
 XP bekommt man.
 
 31: 5xp
-32: 6xp
+32: 7xp
 
-41: 8xp
-42: 9xp
-43: 10xp
+41: 10xp
+42: 12xp
+43: 14xp
 
-51: 11xp
-52: 12xp
-53: 13xp
-54: 14xp
+51: 17xp
+52: 19xp
+53: 21xp
+54: 23xp
 
-61: 16xp
-62: 17xp
-63: 18xp
-64: 19xp
-65: 20xp
+61: 26xp
+62: 28xp
+63: 30xp
+64: 32xp
+65: 34xp
 
-11: 23xp
-22: 28xp
-33: 35xp
-44: 45xp
+11: 40xp
+22: 45xp
+33: 50xp
+44: 55xp
 55: 60xp
 66: 70xp
 
@@ -68,7 +68,7 @@ sich die zuvor gesagte Zahl ändern zu einer Zahl die im bereich zwischen 31 und
 
 9: "Steal" (steal) (10%) stehle jemandem sein powerup, du weißt vorher abwer nicht welchen powerup er hat. er verliert dabei sein powerup und bekommt NICHT im gegenzug dein powerup
 
-10: "Reverse" (reverse) (10%) wenn du normalerweise schaden bekommen müsstes, bekommst du keins. aber wenn du "reveal" drückst und dann jemand anderes schaden bekommen würde, du selber aber nicht, bekommst du trotzdem schaden, und der andere auch
+10: "Reverse" (reverse) (10%) wenn du normalerweise schaden bekommen müsstes, bekommst du keins. aber wenn du "reveal" drückst und dann jemand anderes schaden bekommen würde, du selber aber nicht, bekommst du trotzdem schaden, und der andere dafür nicht
 
 11: "Helper" (helper) (5%) wenn du auf "view" drückst, kannst du ein 3. würfel hervorrufen, der eine zufällige zahl besitzt und kannst dafür einen anderen würfel entfernen.
 

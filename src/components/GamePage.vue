@@ -82,6 +82,9 @@
 
                     </div>
                 </div>
+              <div class="center-horizontal">
+                <h2>{{powerup1}}</h2>
+              </div>
                 <div class="center-horizontal">
                   <div class="center-horizontal">
                     <GameButton :title="lang.gamePage.dropButton" color="game-button-drop" @click="onClickDrop" v-if="isDrop"/>
@@ -159,6 +162,8 @@ export default {
           audioSettingsStatus: true,
           progressMultiply: 5,
           progress: 0,
+          stillfree: true,
+          powerup1: ""
         };
     },
 
@@ -310,6 +315,7 @@ export default {
 
                 this.src1 = base + word[0] + ".png"
                 this.src2 = base + word[1] + ".png"
+                break;
               }else{
                 this.src1 = base + "default.png"
                 this.src2 = base + "default.png"
@@ -336,16 +342,22 @@ export default {
           }else if(message.func === "addXP"){
             if(message.player === this.getCookies("username")){
               this.progress = this.progress + message.xp
-              if(this.progress > 100){
+              if(this.progress >= 100){
                 this.progress = 100
-                let dat = {
-                  type: "engine",
-                  func: "fullXP",
-                  player: this.getCookies("username")
+                if(this.stillfree){
+                  let dat = {
+                    type: "engine",
+                    func: "fullXP",
+                    args: [this.getCookies("username")]
+                  }
+                  this.send(dat)
                 }
-                this.send(dat)
               }
             }
+          }else if(message.func === "getPowerup1"){
+            this.powerup1 = message.title
+            let id = message.id
+            this.stillfree = message.stillfree
           }
         });
 
