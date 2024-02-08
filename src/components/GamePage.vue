@@ -3,6 +3,16 @@
   <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
   <audio ref="audio" :src="audioSrc"></audio>
 
+  <div class="center-horizontal">
+    <div :style="'width: ' + 100*progressMultiply + 'px; height: 10px'">
+      <div :style="'width: ' + 100 * progressMultiply + 'px; height: 10px; background: #eeeeee55'" class="absolute"></div>
+      <div :style="'width: ' + progress * progressMultiply + 'px; height: 10px; background: #42b983'" class="absolute"></div>
+    </div>
+    <div>
+      <div>{{progress}}XP</div>
+    </div>
+  </div>
+
     <div class="button-layout center-horizontal" v-if="isHost">
       <UIButton :title="lang.gamePage.stopButton" @click="onClickStop" color="prim-color-background"/>
     </div>
@@ -146,7 +156,9 @@ export default {
           audioBase: "https://dicebluff.inforge.de/sounds/",
           audioSrc: "",
           audios: {},
-          audioSettingsStatus: true
+          audioSettingsStatus: true,
+          progressMultiply: 5,
+          progress: 0,
         };
     },
 
@@ -320,6 +332,19 @@ export default {
           }else if(message.func === "playSoundPlayer"){
             if(message.player === this.getCookies("username") && this.audioSettingsStatus){
               this.playSound(message.sound)
+            }
+          }else if(message.func === "addXP"){
+            if(message.player === this.getCookies("username")){
+              this.progress = this.progress + message.xp
+              if(this.progress > 100){
+                this.progress = 100
+                let dat = {
+                  type: "engine",
+                  func: "fullXP",
+                  player: this.getCookies("username")
+                }
+                this.send(dat)
+              }
             }
           }
         });
