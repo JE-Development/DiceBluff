@@ -46,6 +46,10 @@
             <h2 class="white">{{lang.playerPage.visibility}}</h2>
             <input type="checkbox" class="check-box" ref="vis" checked @click="visClicked">
           </div>
+          <div class="center">
+            <h2 class="white">{{lang.playerPage.powerups}}</h2>
+            <input type="checkbox" class="check-box" ref="powerups" checked>
+          </div>
           <h2 class="red">{{errorText}}</h2>
         </div>
     </div>
@@ -181,11 +185,13 @@ export default {
 
             if(message.isStarted){
               this.setCookies("ghostmode", message.ghostmode)
+              this.setCookies("powerups", message.powerups)
               this.startGame()
             }
 
           }else if(message.func === "start"){
-            this.setCookies("ghostmode", message.ghostmode)
+            this.setCookies("ghostmode", message.powerups)
+            this.setCookies("powerups", message.powerups)
             this.startGame()
 
           }else if(message.func === "removed"){
@@ -245,12 +251,13 @@ export default {
             }else{
               this.setCookies("hearts", this.$refs.input.value)
               this.setCookies("ghostmode", String(this.$refs.isghost.checked))
+              this.setCookies("powerups", String(this.$refs.powerups.checked))
               this.setCookies("botLayout", "false")
               window.open(document.baseURI.split("/#/")[0] + "/#/game", '_self');
               let dat = {
                 type: "engine",
                 func: "start",
-                args: [this.$refs.input.value, this.$refs.isghost.checked]
+                args: [this.$refs.input.value, this.$refs.isghost.checked, this.$refs.powerups.checked]
               }
               this.send(dat);
             }

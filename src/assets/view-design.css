@@ -131,6 +131,11 @@
 
 }
 
+.powerup-grey{
+    background: #696969;
+
+}
+
 .sec-color{
     background: #5cf0ff;
 }
@@ -202,6 +207,16 @@
     border: solid;
     border-radius: 50px;
     border-color: #5cf0ff;
+}
+
+.powerup-border{
+    width: 200px;
+    height: 50px;
+}
+
+.powerup-icon{
+    width: 45px;
+    padding: 10px
 }
 
 .audio-border{

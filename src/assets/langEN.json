@@ -24,6 +24,7 @@
     "heartCount": "Count of Hearts",
     "allowGhostMode": "Allow Ghost Mode",
     "visibility": "Public Room",
+    "powerups": "With Powerups",
     "waitForPlayer": "Wait for Players...",
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
@@ -38,11 +39,28 @@
     "moveButton": "pass",
     "viewButton": "look",
     "revealButton": "reveal",
+    "selectBlockReveal": "Select a player to block his 'reveal' button",
+    "cancel": "Cancel",
+    "close": "Close",
+    "blockRevealMessage": "Your 'reveal' button was blocked by a player",
+    "stealNoPlayer": "No one has a powerup",
+    "helperInfo": "Select a dice you want to remove",
     "errorNoNumberSelected": "You haven't selected a number.",
     "errorNotBigger": "The number must be greater than what was previously announced."
   },
   "jwc": {
     "joinButton": "Join Game"
+  },
+  "powerup": {
+    "passExp": "You can move the cup without saying anything.",
+    "shakeExp": "You can drop the cup, whether you already pressed 'drop'.",
+    "xrayExp": "You can see one dice but you don't know which one of the 2 dices is it.",
+    "transferExp": "If you get damage, you or someone else can get damage.",
+    "heartExp": "You get an extra heart.",
+    "changeExp": "You can change the number someone said before. So if he said 65, the new number will be generated between 31 and 65",
+    "doubleExp": "Someone gets double damage except you.",
+    "reverseExp": "If I press 'reveal' and I have to get damage, because it's the truth, I wont get damage but the player, who said the truth, gets damaga. But if I press 'reveal' and the previous player has to get damage, because it's a lie, I will get damage and the previous player wont.",
+    "helperExp": "You get a 3. dice and you can replace it with the other dices."
   },
   "misc": {
     "noPublicRooms": "There are no public rooms",

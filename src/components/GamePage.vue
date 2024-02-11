@@ -1,9 +1,11 @@
 <template>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
+  <PlayerSelectPopup v-if="psShow" :show="psShow" @clicked="psClicked" :players="names" @cancelled="psCancelled" errorNoPlayer="" :headline="lang.gamePage.selectBlockReveal"/>
+  <HelpPopup v-if="helpShow" :show="helpShow" @close="helpClosed" :pid="helpPid"/>
   <audio ref="audio" :src="audioSrc"></audio>
 
-  <div class="center-horizontal">
+  <div class="center-horizontal" v-if="isPowerupsAllowed === 'true'">
     <div :style="'width: ' + 100*progressMultiply + 'px; height: 10px'">
       <div :style="'width: ' + 100 * progressMultiply + 'px; height: 10px; background: #eeeeee55'" class="absolute"></div>
       <div :style="'width: ' + progress * progressMultiply + 'px; height: 10px; background: #42b983'" class="absolute"></div>
@@ -52,12 +54,23 @@
           <div :class="shakeAnimationActive ? 'shake' : ''" v-if="ghostMode">
             <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
           </div>
-          <div class="absolute">
+          <div class="absolute" v-if="showThirdDice">
+            <img :src="src1" class="dice-image" style="margin-right: 10px" @click="dice1Selected"/>
+            <img :src="src2" class="dice-image" style="margin-right: 10px" @click="dice2Selected"/>
+            <img :src="src3" class="dice-image" @click="dice3Selected"/>
+          </div>
+          <div class="absolute" v-else>
             <img :src="src1" class="dice-image" style="margin-right: 10px"/>
             <img :src="src2" class="dice-image"/>
           </div>
           <div :class="shakeAnimationActive ? 'shake' : ''" v-if="!ghostMode">
             <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
+          </div>
+          <div class="absolute" v-if="allowedXray" style="transform: translateY(-80px)">
+            <img :src="xraySrc" class="dice-image"/>
+          </div>
+          <div class="absolute" v-if="allowedGlobalPowerup" style="transform: translateY(80px)">
+            <PowerupView :title="globalPowerup" :img="globalPid" :active="true" :enabled="true" @help="helpClicked"/>
           </div>
 
         </div>
@@ -71,6 +84,9 @@
                 <div class="center-horizontal" v-if="error !== ''">
                     <h4 class="red">{{error}}</h4>
                 </div>
+              <div class="center-horizontal" v-if="infoMessage !== ''">
+                <h4 class="white">{{infoMessage}}</h4>
+              </div>
                 <div class="center-horizontal" v-if="loggedDiceNum !== ''">
                     <dice
                         :num="loggedDiceNum"
@@ -83,7 +99,11 @@
                     </div>
                 </div>
               <div class="center-horizontal">
-                <h2>{{powerup1}}</h2>
+                <PowerupView :title="powerup1" :img="pid1" :active="pwActive1" :enabled="pwEnabled1" v-if="powerup1 !== ''" @clicked="onPowerupClicked1" @help="helpClicked"/>
+                <div style="width: 20px" v-if="powerup1 !== '' && powerup2 !== ''"></div>
+                <PowerupView :title="powerup2" :img="pid2" :active="pwActive2" :enabled="pwEnabled2" v-if="powerup2 !== ''" @clicked="onPowerupClicked2" @help="helpClicked"/>
+              </div>
+              <div class="center-horizontal">
               </div>
                 <div class="center-horizontal">
                   <div class="center-horizontal">
@@ -127,11 +147,17 @@ import UIButton from "@/components/views/UIButton.vue";
 import GameButton from "@/components/views/GameButton.vue";
 import LangSelection from "@/components/views/LangSelection.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
+import PowerupView from "@/components/views/PowerupView.vue";
+import PlayerSelectPopup from "@/components/views/PlayerSelectPopup.vue";
+import HelpPopup from "@/components/views/HelpPopup.vue";
 
 export default {
     //npm run dev | npm run build
     name: "GamePage",
-    components: {AudioSettings, LangSelection, GameButton, UIButton, Dice, DiceLayout, PlayerView},
+    components: {
+      HelpPopup,
+      PlayerSelectPopup,
+      PowerupView, AudioSettings, LangSelection, GameButton, UIButton, Dice, DiceLayout, PlayerView},
     data() {
         return {
             names: [],
@@ -145,6 +171,7 @@ export default {
             isMove: false,
             src1: "",
             src2: "",
+            src3: "six",
             loggedDiceNum: "",
             loggedDiceMode: "",
             error: "",
@@ -163,7 +190,25 @@ export default {
           progressMultiply: 5,
           progress: 0,
           stillfree: true,
-          powerup1: ""
+          powerup1: "",
+          pid1: "",
+          pwActive1: true,
+          pwEnabled1: false,
+          powerup2: "",
+          pid2: "",
+          pwActive2: true,
+          pwEnabled2: false,
+          globalPowerup: "",
+          globalPid: "",
+          xraySrc: "",
+          allowedXray: true,
+          allowedGlobalPowerup: false,
+          psShow: false,
+          showThirdDice: false,
+          infoMessage: "",
+          isPowerupsAllowed: false,
+          helpShow: false,
+          helpPid: ""
         };
     },
 
@@ -223,6 +268,7 @@ export default {
       }
 
       this.isGhostAllowed = this.getCookies("ghostmode")
+      this.isPowerupsAllowed = this.getCookies("powerups")
 
         if(this.getCookies("host") === "true"){
             this.isHost = true
@@ -343,7 +389,7 @@ export default {
             if(message.player === this.getCookies("username")){
               this.progress = this.progress + message.xp
               if(this.progress >= 100){
-                this.progress = 100
+                this.progress = 0
                 if(this.stillfree){
                   let dat = {
                     type: "engine",
@@ -351,13 +397,83 @@ export default {
                     args: [this.getCookies("username")]
                   }
                   this.send(dat)
+                }else{
+                  this.progress = 100
                 }
               }
             }
           }else if(message.func === "getPowerup1"){
-            this.powerup1 = message.title
-            let id = message.id
-            this.stillfree = message.stillfree
+            if(message.player === this.getCookies("username")){
+              this.powerup1 = message.title
+              this.pid1 = message.id
+              this.stillfree = message.stillfree
+              this.pwEnabled1 = message.active
+              if(!this.stillfree){
+                this.progress = 100
+              }
+            }
+          }else if(message.func === "getPowerup2"){
+            if(message.player === this.getCookies("username")){
+              this.powerup2 = message.title
+              this.pid2 = message.id
+              this.stillfree = message.stillfree
+              this.pwEnabled2 = message.active
+              if(!this.stillfree){
+                this.progress = 100
+              }
+            }
+          }else if(message.func === "pwSettings"){
+            if(message.player === this.getCookies("username") || message.player === "-everyone-"){
+              this.updatePowerupsVis(message)
+            }
+          }else if(message.func === "disablePowerup1"){
+            if(message.player === this.getCookies("username") || message.player === "-everyone-"){
+              this.powerup1 = ""
+              this.pid1 = ""
+              this.pwActive1 = false
+              this.pwEnabled1 = false
+              this.stillfree = true
+              this.progress = 0
+            }
+          }else if(message.func === "disablePowerup2"){
+            if(message.player === this.getCookies("username") || message.player === "-everyone-"){
+              this.powerup2 = ""
+              this.pid2 = ""
+              this.pwActive2 = false
+              this.pwEnabled2 = false
+              this.stillfree = true
+              this.progress = 0
+            }
+          }else if(message.func === "disableGlobalPowerup"){
+            this.globalPowerup = ""
+            this.globalPid = ""
+            this.allowedGlobalPowerup = false
+          }else if(message.func === "allowedXray"){
+            if(message.player === this.getCookies("username") || message.player === "-everyone-"){
+              this.allowedXray = message.allowed
+            }
+          }else if(message.func === "xrayDice"){
+            let base = "../src/assets/dice_"
+            this.xraySrc = base + message.dice + ".png"
+          }else if(message.func === "revealBlocked"){
+            if(message.player === this.getCookies("username")){
+              this.error = this.lang.gamePage.blockRevealMessage
+            }
+          }else if(message.func === "showBlockPopup"){
+            if(message.player === this.getCookies("username")){
+              this.psShow = true
+            }
+          }else if(message.func === "setGlobalPowerup"){
+            this.globalPowerup = message.powerup
+            this.globalPid = message.pid
+            this.allowedGlobalPowerup = true
+          }else if(message.func === "usedHelper"){
+            let base = "../src/assets/dice_"
+            if(message.player === this.getCookies("username")){
+              this.showThirdDice = true
+              this.src3 = base + message.dice + ".png"
+              this.infoMessage = this.lang.gamePage.helperInfo
+            }
           }
         });
 
@@ -369,6 +485,83 @@ export default {
 
 
     methods: {
+
+      helpClicked(pid){
+        this.helpPid = pid
+        this.helpShow = true
+      },
+
+      helpClosed(){
+        this.helpShow = false
+      },
+
+      dice1Selected(){
+        this.infoMessage = ""
+        let dat = {
+          type: "engine",
+          func: "selectedHelper",
+          args: [this.getCookies("username"), "dice1", this.src1, this.src2, this.src3]
+        }
+        this.send(dat)
+        this.src3 = ""
+        this.showThirdDice = false
+        this.isDiceMenu = true
+      },
+      dice2Selected(){
+        this.infoMessage = ""
+        let dat = {
+          type: "engine",
+          func: "selectedHelper",
+          args: [this.getCookies("username"), "dice2", this.src1, this.src2, this.src3]
+        }
+        this.send(dat)
+        this.src3 = ""
+        this.showThirdDice = false
+        this.isDiceMenu = true
+      },
+      dice3Selected(){
+        this.infoMessage = ""
+        this.src3 = ""
+        this.showThirdDice = false
+        this.isDiceMenu = true
+      },
+
+      psClicked(player){
+        this.psShow = false
+        let dat = {
+          type: "engine",
+          func: "blockReveal",
+          args: [player, this.getCookies("username")]
+        }
+        this.send(dat)
+      },
+
+      psCancelled(){
+        this.psShow = false
+      },
+
+      onPowerupClicked1(){
+        if(!this.pwEnabled1){
+          let dat = {
+            type: "engine",
+            func: "powerupClicked1",
+            args: [this.getCookies("username"), this.pid1]
+          }
+          this.send(dat)
+        }
+      },
+
+      onPowerupClicked2(){
+        if(!this.pwEnabled2){
+          let dat = {
+            type: "engine",
+            func: "powerupClicked2",
+            args: [this.getCookies("username"), this.pid2]
+          }
+          this.send(dat)
+        }
+      },
+
       audioSettingsClicked(){
         if(this.audioSettingsStatus){
           this.audioSettingsStatus = false
@@ -486,6 +679,11 @@ export default {
             this.isView = message.viewButton
             this.isReveal = message.revealButton
           }
+      },
+
+      updatePowerupsVis(message){
+        this.pwActive1 = message[this.pid1]
+        this.pwActive2 = message[this.pid2]
       },
 
       upCup(){

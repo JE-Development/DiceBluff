@@ -41,8 +41,8 @@ Powerups:
 1: "Pass" (pass) (10%), ein Spieler kann den Würfelbecher weiterschieben ohne eine Zahl gesagt zu haben.
 Es ist so als ob er übersprungen wird. Das popup kann nicht verwendet werden wenn er bei seinem
 Zug eine andere Aktion wie würfeln oder ähnliches schon ausgeführt hat.
-Er kann das Popup auch dann verwenden wenn eine 21 gewürfelt wurde. Er hat dann eine gewisse Zeit um
-das Powerup zu verwenden, damit jemand anderes die 21 abbekommt.
+Er kann das Popup nicht verwenden wenn eine 21 gewürfelt wurde. Wenn der nächste Spieler dennoch "reveal"
+drückt und es eine Lüge war, verliert trotzdem der Spieler der "pass" ein gelöst hat ein Leben
 
 2: "Shake" (shake) (10%), die Würfel werden neu gewürfelt. Er kann dieses Popup jederzeit anwenden außer bei "reveal".
 Er kann es auch verwenden wenn er nicht dran ist um jemand anderes zu schaden oder zu helfen.
@@ -66,11 +66,9 @@ sich die zuvor gesagte Zahl ändern zu einer Zahl die im bereich zwischen 31 und
 
 8: "Double Damage" (double) (5%) man kann diesen Popup jederzeit aktivieren. Er bleibt on der runde so lange aktiviert bis jemand schaden bekommt. man ist selber imun gegen das powerup. wenn also jemand ein herzabzug bekommt, bekommt er double damage (2 herzenabzug)
 
-9: "Steal" (steal) (10%) stehle jemandem sein powerup, du weißt vorher abwer nicht welchen powerup er hat. er verliert dabei sein powerup und bekommt NICHT im gegenzug dein powerup
+9: "Reverse" (reverse) (10%) wenn du normalerweise schaden bekommen müsstes, bekommst du keins. aber wenn du "reveal" drückst und dann jemand anderes schaden bekommen würde, du selber aber nicht, bekommst du trotzdem schaden, und der andere dafür nicht
 
-10: "Reverse" (reverse) (10%) wenn du normalerweise schaden bekommen müsstes, bekommst du keins. aber wenn du "reveal" drückst und dann jemand anderes schaden bekommen würde, du selber aber nicht, bekommst du trotzdem schaden, und der andere dafür nicht
-
-11: "Helper" (helper) (5%) wenn du auf "view" drückst, kannst du ein 3. würfel hervorrufen, der eine zufällige zahl besitzt und kannst dafür einen anderen würfel entfernen.
+10: "Helper" (helper) (5%) wenn du auf "view" drückst, kannst du ein 3. würfel hervorrufen, der eine zufällige zahl besitzt und kannst dafür einen anderen würfel entfernen.
 
 
 Summe -> 100%
