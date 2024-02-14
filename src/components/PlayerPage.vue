@@ -1,7 +1,7 @@
 <template>
   <audio ref="audio" :src="audioSrc"></audio>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
-  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
+  <AudioSettings/>
 
 
   <div class="center-horizontal" v-if="isHost">
@@ -121,13 +121,6 @@ export default {
       }else{
         this.lang = langDE
       }
-
-      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
-        this.audioSettingsStatus = true
-      }else{
-        this.audioSettingsStatus = false
-      }
-
         if(this.getCookies("host") === "true"){
             this.isHost = true
         }
@@ -151,6 +144,12 @@ export default {
           dat = {
             type: "ping",
             func: "getPlayers"
+          };
+          this.send(dat);
+
+          dat = {
+            type: "ping",
+            func: "existRoom"
           };
           this.send(dat);
 
@@ -200,6 +199,10 @@ export default {
             if(this.audioSettingsStatus){
               this.playSound(message.sound)
             }
+          }else if(message.func === "existRoom"){
+            if(!message.exist){
+              this.$router.push("/")
+            }
           }
         });
 
@@ -211,15 +214,7 @@ export default {
 
 
     methods: {
-      audioSettingsClicked(){
-        if(this.audioSettingsStatus){
-          this.audioSettingsStatus = false
-          this.setCookies("audioSettings", "false")
-        }else{
-          this.audioSettingsStatus = true
-          this.setCookies("audioSettings", "true")
-        }
-      },
+
 
       langClicked(){
         if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
@@ -232,7 +227,15 @@ export default {
       },
 
       playSound(sound) {
+        let val = this.getCookies("volume")
+        let volume = 1
+        try{
+          volume = Number(val) / 100
+        }catch (e){
+
+        }
         this.audios[sound].currentTime = 0
+        this.audios[sound].volume = volume
         this.audios[sound].play()
       },
 

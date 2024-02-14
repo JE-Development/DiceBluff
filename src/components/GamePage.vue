@@ -1,6 +1,6 @@
 <template>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
-  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
+  <AudioSettings/>
   <PlayerSelectPopup v-if="psShow" :show="psShow" @clicked="psClicked" :players="names" @cancelled="psCancelled" errorNoPlayer="" :headline="lang.gamePage.selectBlockReveal"/>
   <HelpPopup v-if="helpShow" :show="helpShow" @close="helpClosed" :pid="helpPid"/>
   <audio ref="audio" :src="audioSrc"></audio>
@@ -261,11 +261,6 @@ export default {
         this.lang = langDE
       }
 
-      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
-        this.audioSettingsStatus = true
-      }else{
-        this.audioSettingsStatus = false
-      }
 
       this.isGhostAllowed = this.getCookies("ghostmode")
       this.isPowerupsAllowed = this.getCookies("powerups")
@@ -474,6 +469,10 @@ export default {
               this.src3 = base + message.dice + ".png"
               this.infoMessage = this.lang.gamePage.helperInfo
             }
+          }else if(message.func === "existRoom"){
+            if(!message.exist){
+              this.$router.push("/")
+            }
           }
         });
 
@@ -562,16 +561,6 @@ export default {
         }
       },
 
-      audioSettingsClicked(){
-        if(this.audioSettingsStatus){
-          this.audioSettingsStatus = false
-          this.setCookies("audioSettings", "false")
-        }else{
-          this.audioSettingsStatus = true
-          this.setCookies("audioSettings", "true")
-        }
-      },
-
       langClicked(){
         if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
           this.setCookies("lang", "de")
@@ -583,7 +572,15 @@ export default {
       },
 
       playSound(sound) {
+        let val = this.getCookies("volume")
+        let volume = 1
+        try{
+          volume = Number(val) / 100
+        }catch (e){
+
+        }
         this.audios[sound].currentTime = 0
+        this.audios[sound].volume = volume
         this.audios[sound].play()
       },
 

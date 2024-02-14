@@ -1,7 +1,7 @@
 <template>
   <ProfilePopup :show="pbShow" @close="pbClose"/>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
-  <AudioSettings @click="audioSettingsClicked" :status="audioSettingsStatus"/>
+  <AudioSettings/>
   <div class="center-horizontal full-size">
     <div>
 
@@ -98,11 +98,7 @@ export default {
         this.lang = langDE
       }
 
-      if(this.getCookies("audioSettings") === null || this.getCookies("audioSettings") === "true"){
-        this.audioSettingsStatus = true
-      }else{
-        this.audioSettingsStatus = false
-      }
+
 
         window.addEventListener('beforeunload', this.eventClose);
 
@@ -161,15 +157,6 @@ export default {
 
     methods: {
 
-      audioSettingsClicked(){
-        if(this.audioSettingsStatus){
-          this.audioSettingsStatus = false
-          this.setCookies("audioSettings", "false")
-        }else{
-          this.audioSettingsStatus = true
-          this.setCookies("audioSettings", "true")
-        }
-      },
 
         onClickJoin(){
           let username = this.$refs.usernameinput.value
