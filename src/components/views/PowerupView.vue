@@ -1,13 +1,13 @@
 <template>
 
   <div class="powerup-border round-corner sec-color texture center-vertical pointer" @click="click" v-if="enabled">
-    <img :src="'https://dicebluff.inforge.de/assets/powerups/' + img + '.png'" class="powerup-icon">
+    <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
     <!--<img src="../../assets/help.png" style="height: 50%" @click="helpClicked">/!-->
   </div>
   <div class="powerup-border round-corner prim-color-background texture center-vertical pointer" @click="click" v-else-if="active">
-    <img :src="'https://dicebluff.inforge.de/assets/powerups/' + img + '.png'" class="powerup-icon">
+    <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
     <!--<img src="../../assets/help.png" style="height: 50%" @click="helpClicked">/!-->
