@@ -1,5 +1,6 @@
 import './assets/main.css'
 import './assets/view-design.css'
+import './assets/anim.scss'
 import VueCookies from 'vue-cookies'
 import router from './router'
 import Notifications from '@kyvg/vue3-notification'

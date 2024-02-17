@@ -5,15 +5,30 @@
   <HelpPopup v-if="helpShow" :show="helpShow" @close="helpClosed" :pid="helpPid"/>
   <audio ref="audio" :src="audioSrc"></audio>
 
-  <div class="center-horizontal" v-if="isPowerupsAllowed === 'true'">
-    <div :style="'width: ' + 100*progressMultiply + 'px; height: 10px'">
-      <div :style="'width: ' + 100 * progressMultiply + 'px; height: 10px; background: #eeeeee55'" class="absolute"></div>
-      <div :style="'width: ' + progress * progressMultiply + 'px; height: 10px; background: #42b983'" class="absolute"></div>
+  <transition name="toast">
+    <Toast color="red" :text="error" v-if="showToast" style="z-index: 9999"/>
+  </transition>
+
+  <div class="full-size game-mobile-padding">
+    <div class="center-horizontal progress-display" v-if="isPowerupsAllowed === 'true'">
+      <div :style="'width: ' + 100*progressMultiply + 'px; height: 10px'">
+        <div :style="'width: ' + 100 * progressMultiply + 'px; height: 10px; background: #eeeeee55'" class="absolute"></div>
+        <div :style="'width: ' + progress * progressMultiply + 'px; height: 10px; background: #42b983'" class="absolute"></div>
+      </div>
+      <div>
+        <div>{{progress}}XP</div>
+      </div>
     </div>
-    <div>
-      <div>{{progress}}XP</div>
+
+    <div class="center-horizontal progress-display-mobile" v-if="isPowerupsAllowed === 'true'">
+      <div :style="'width: ' + 100*(progressMultiply/2) + 'px; height: 10px'">
+        <div :style="'width: ' + 100 * (progressMultiply/2) + 'px; height: 10px; background: #eeeeee55'" class="absolute"></div>
+        <div :style="'width: ' + progress * (progressMultiply/2) + 'px; height: 10px; background: #42b983'" class="absolute"></div>
+      </div>
+      <div>
+        <div>{{progress}}XP</div>
+      </div>
     </div>
-  </div>
 
     <div class="button-layout center-horizontal" v-if="isHost">
       <UIButton :title="lang.gamePage.stopButton" @click="onClickStop" color="prim-color-background"/>
@@ -21,114 +36,114 @@
     <div class="button-layout center-horizontal" v-else>
       <UIButton :title="lang.gamePage.leaveButton" @click="onClickLeave" color="prim-color-background"/>
     </div>
-  <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
-    <UIButton :title="lang.gamePage.enableGhostMode" @click="onClickGhostMode" color="sec-color"/>
-  </div>
+    <div class="button-layout center-horizontal" v-if="isLooser && !ghostMode && isGhostAllowed === 'true'">
+      <UIButton :title="lang.gamePage.enableGhostMode" @click="onClickGhostMode" color="sec-color"/>
+    </div>
 
     <div class="center-horizontal">
-        <PlayerView
-            v-for="(dat) in names"
-            :name="dat.name"
-            :turn="dat.turn"
-            :loose="dat.loose"
-            :heart="dat.heart"
-            :img="dat.pb"
-            :winner="dat.winner"
-            :isSad="dat.sad"
-            :winnerCount="dat.winnerCount"
-        />
+      <PlayerView
+          v-for="(dat) in names"
+          :name="dat.name"
+          :turn="dat.turn"
+          :loose="dat.loose"
+          :heart="dat.heart"
+          :img="dat.pb"
+          :winner="dat.winner"
+          :isSad="dat.sad"
+          :winnerCount="dat.winnerCount"
+      />
     </div>
 
     <div class="center-horizontal" v-if="globalDice !== ''">
-        <dice
-            :num="globalDice"
-            :mode="globalMode"
-        />
+      <dice
+          :num="globalDice"
+          :mode="globalMode"
+      />
     </div>
 
     <div class="relative">
       <div class="absolute" v-if="isDiceMenu">
         <DiceLayout :center="false" class="dice-big-layout"/>
       </div>
-        <div class="center-horizontal">
-          <div :class="shakeAnimationActive ? 'shake' : ''" v-if="ghostMode">
-            <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
-          </div>
-          <div class="absolute" v-if="showThirdDice">
-            <img :src="src1" class="dice-image" style="margin-right: 10px" @click="dice1Selected"/>
-            <img :src="src2" class="dice-image" style="margin-right: 10px" @click="dice2Selected"/>
-            <img :src="src3" class="dice-image" @click="dice3Selected"/>
-          </div>
-          <div class="absolute" v-else>
-            <img :src="src1" class="dice-image" style="margin-right: 10px"/>
-            <img :src="src2" class="dice-image"/>
-          </div>
-          <div :class="shakeAnimationActive ? 'shake' : ''" v-if="!ghostMode">
-            <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
-          </div>
-          <div class="absolute" v-if="allowedXray" style="transform: translateY(-80px)">
-            <img :src="xraySrc" class="dice-image"/>
-          </div>
-          <div class="absolute" v-if="allowedGlobalPowerup" style="transform: translateY(80px)">
-            <PowerupView :title="globalPowerup" :img="globalPid" :active="true" :enabled="true" @help="helpClicked"/>
-          </div>
-
+      <div class="center-horizontal">
+        <div :class="shakeAnimationActive ? 'shake' : ''" v-if="ghostMode">
+          <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
         </div>
+        <div class="absolute" v-if="showThirdDice">
+          <img :src="src1" class="dice-image" style="margin-right: 10px" @click="dice1Selected"/>
+          <img :src="src2" class="dice-image" style="margin-right: 10px" @click="dice2Selected"/>
+          <img :src="src3" class="dice-image" @click="dice3Selected"/>
+        </div>
+        <div class="absolute" v-else>
+          <img :src="src1" class="dice-image" style="margin-right: 10px"/>
+          <img :src="src2" class="dice-image"/>
+        </div>
+        <div :class="shakeAnimationActive ? 'shake' : ''" v-if="!ghostMode">
+          <img src="../assets/cup_texture.png" class="cup-image cup-look-close" ref="cup" />
+        </div>
+        <div class="absolute" v-if="allowedXray" style="transform: translateY(-80px)">
+          <img :src="xraySrc" class="dice-image"/>
+        </div>
+        <div class="absolute" v-if="allowedGlobalPowerup" style="transform: translateY(80px)">
+          <PowerupView :title="globalPowerup" :img="globalPid" :active="true" :enabled="true" @help="helpClicked"/>
+        </div>
+
+      </div>
 
     </div>
 
     <div class="relative">
 
-        <div class="absolute center-horizontal" style="width: 100%; margin-top: 50px;">
-            <div>
-                <div class="center-horizontal" v-if="error !== ''">
-                    <h4 class="red">{{error}}</h4>
-                </div>
-              <div class="center-horizontal" v-if="infoMessage !== ''">
-                <h4 class="white">{{infoMessage}}</h4>
-              </div>
-                <div class="center-horizontal" v-if="loggedDiceNum !== ''">
-                    <dice
-                        :num="loggedDiceNum"
-                        :mode="loggedDiceMode"
-                    />
-                </div>
-                <div v-else>
-                    <div class="dice-border">
+      <div class="absolute center-horizontal" style="width: 100%; margin-top: 50px;">
+        <div>
+          <div class="center-horizontal" v-if="infoMessage !== ''">
+            <h4 class="white">{{infoMessage}}</h4>
+          </div>
+          <div class="center-horizontal" v-if="loggedDiceNum !== ''">
+            <dice
+                :num="loggedDiceNum"
+                :mode="loggedDiceMode"
+            />
+          </div>
+          <div v-else>
+            <div class="dice-border">
 
-                    </div>
-                </div>
+            </div>
+          </div>
+          <div class="center-horizontal">
+            <PowerupView :title="powerup1" :img="pid1" :active="pwActive1" :enabled="pwEnabled1" v-if="powerup1 !== ''" @clicked="onPowerupClicked1" @help="helpClicked"/>
+            <div style="width: 20px" v-if="powerup1 !== '' && powerup2 !== ''"></div>
+            <PowerupView :title="powerup2" :img="pid2" :active="pwActive2" :enabled="pwEnabled2" v-if="powerup2 !== ''" @clicked="onPowerupClicked2" @help="helpClicked"/>
+          </div>
+          <div class="center-horizontal">
+          </div>
+          <div class="game-button-layout">
+            <div class="center-horizontal">
               <div class="center-horizontal">
-                <PowerupView :title="powerup1" :img="pid1" :active="pwActive1" :enabled="pwEnabled1" v-if="powerup1 !== ''" @clicked="onPowerupClicked1" @help="helpClicked"/>
-                <div style="width: 20px" v-if="powerup1 !== '' && powerup2 !== ''"></div>
-                <PowerupView :title="powerup2" :img="pid2" :active="pwActive2" :enabled="pwEnabled2" v-if="powerup2 !== ''" @clicked="onPowerupClicked2" @help="helpClicked"/>
+                <GameButton :title="lang.gamePage.dropButton" color="game-button-drop" @click="onClickDrop" v-if="isDrop"/>
               </div>
               <div class="center-horizontal">
-              </div>
-                <div class="center-horizontal">
-                  <div class="center-horizontal">
-                    <GameButton :title="lang.gamePage.dropButton" color="game-button-drop" @click="onClickDrop" v-if="isDrop"/>
-                  </div>
-                  <div class="center-horizontal">
-                    <GameButton :title="lang.gamePage.moveButton" color="game-button-move" @click="onClickMove" v-if="isMove"/>
-                  </div>
-                </div>
-                <div class="center-horizontal">
-                  <div class="center-horizontal">
-                    <GameButton :title="lang.gamePage.viewButton" color="game-button-view" @click="onClickView" v-if="isView"/>
-                  </div>
-                  <div class="center-horizontal">
-                    <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal" @click="onClickReveal" v-if="isReveal"/>
-                  </div>
-                </div>
-              <div class="center-horizontal dice-small-layout" v-if="isDiceMenu">
-                <DiceLayout :center="true"/>
+                <GameButton :title="lang.gamePage.moveButton" color="game-button-move" @click="onClickMove" v-if="isMove"/>
               </div>
             </div>
+            <div class="center-horizontal">
+              <div class="center-horizontal">
+                <GameButton :title="lang.gamePage.viewButton" color="game-button-view" @click="onClickView" v-if="isView"/>
+              </div>
+              <div class="center-horizontal">
+                <GameButton :title="lang.gamePage.revealButton" color="game-button-reveal" @click="onClickReveal" v-if="isReveal"/>
+              </div>
+            </div>
+          </div>
+          <div class="center-horizontal dice-small-layout" v-if="isDiceMenu">
+            <DiceLayout :center="true"/>
+          </div>
         </div>
+      </div>
 
 
     </div>
+  </div>
 
 </template>
 
@@ -150,11 +165,13 @@ import AudioSettings from "@/components/views/AudioSettings.vue";
 import PowerupView from "@/components/views/PowerupView.vue";
 import PlayerSelectPopup from "@/components/views/PlayerSelectPopup.vue";
 import HelpPopup from "@/components/views/HelpPopup.vue";
+import Toast from "@/components/views/Toast.vue";
 
 export default {
     //npm run dev | npm run build
     name: "GamePage",
     components: {
+      Toast,
       HelpPopup,
       PlayerSelectPopup,
       PowerupView, AudioSettings, LangSelection, GameButton, UIButton, Dice, DiceLayout, PlayerView},
@@ -208,7 +225,8 @@ export default {
           infoMessage: "",
           isPowerupsAllowed: false,
           helpShow: false,
-          helpPid: ""
+          helpPid: "",
+          showToast: false
         };
     },
 
@@ -273,6 +291,10 @@ export default {
 
         this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
 
+      this.socket.addEventListener('error', (event) => {
+        this.$router.push("/")
+      });
+
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
 
@@ -295,6 +317,7 @@ export default {
 
             if(message.player === this.getCookies("username")){
               this.error = this.lang.gamePage.errorNotBigger
+              this.displayToast()
             }
 
           }else if(message.func === "stop"){
@@ -453,6 +476,7 @@ export default {
           }else if(message.func === "revealBlocked"){
             if(message.player === this.getCookies("username")){
               this.error = this.lang.gamePage.blockRevealMessage
+              this.displayToast()
             }
           }else if(message.func === "showBlockPopup"){
             if(message.player === this.getCookies("username")){
@@ -484,6 +508,13 @@ export default {
 
 
     methods: {
+
+      displayToast(){
+        this.showToast = true
+        setTimeout(() => {
+          this.showToast = false
+        }, 4000)
+      },
 
       helpClicked(pid){
         this.helpPid = pid
@@ -743,6 +774,7 @@ export default {
         onClickMove(){
           if(this.loggedDiceNum === ""){
             this.error = this.lang.gamePage.errorNoNumberSelected
+            this.displayToast()
           }else{
             let dat = {
               type: "engine",

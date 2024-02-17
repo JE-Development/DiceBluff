@@ -3,7 +3,7 @@
   <AudioSettings/>
 
   <div class="center-horizontal">
-    <div>
+    <div class="room-mobile-layout">
       <div v-if="rooms.length === 0">
         <h1 class="red">
           {{lang.misc.noPublicRooms}}

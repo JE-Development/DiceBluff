@@ -43,6 +43,10 @@
     background: #ffadbc;
 }
 
+.register-button-layout{
+    display: flex;
+}
+
 .register-input{
     width: 300px;
     height: 30px;
@@ -64,6 +68,10 @@
     width: 180px;
     height: 160px;
     border-radius: 20px;
+}
+
+.player-card-space{
+    height: 20px
 }
 
 .dice-border{
@@ -251,4 +259,98 @@
     background: #e3e3e3;
     padding-right: 5px;
     padding-left: 5px;
+}
+
+.room-link{
+    padding-top: 25px;
+}
+
+.link-text{
+    font-size: 22px;
+}
+
+.game-mobile-padding{
+    padding-top: 0px;
+}
+
+.progress-display{
+    display: flex;
+}
+
+.progress-display-mobile{
+    display: none;
+}
+
+.game-button-layout{
+    display: inline;
+}
+
+.heart{
+    width: 30px;
+    margin: 5px;
+}
+
+.room-mobile-layout{
+    padding-top: 0px;
+}
+
+@media (max-width: 830px) {
+    .game-mobile-padding{
+        padding-top: 50px;
+    }
+
+    .room-mobile-layout{
+        padding-top: 40px;
+    }
+}
+
+@media (max-width: 800px) {
+    .dice-image{
+        margin-top: 180px;
+        width: 30px;
+    }
+
+    .game-button-layout{
+        display: flex;
+        justify-content: center;
+    }
+
+    .heart{
+        width: 20px;
+    }
+
+    .player-card{
+        width: 150px;
+        height: 125px;
+    }
+
+    .player-card-space{
+        height: 5px
+    }
+}
+
+@media (max-width: 630px) {
+    .register-button-layout{
+        display: inline-block;
+    }
+
+    .link-background{
+        width: 95vw;
+    }
+}
+
+@media (max-width: 560px) {
+    .progress-display{
+        display: none;
+    }
+
+    .progress-display-mobile{
+        display: flex;
+    }
+}
+
+@media (max-width: 500px) {
+    .link-text{
+        font-size: 5vw;
+    }
 }

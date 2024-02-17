@@ -6,7 +6,7 @@
         <div>
           <div class="center-horizontal">
             <img src="../../assets/crown.png" class="crown" v-if="winner" style="z-index: 100"/>
-            <div style="height: 20px" v-else></div>
+            <div class="player-card-space" v-else></div>
           </div>
           <div>
             <img :src="pb" class="pb absolute" style="width: 50px" v-if="!isSad"/>
@@ -25,7 +25,7 @@
       <div class="center-horizontal">
         <img
             v-for="(dat) in heartlenght"
-            src="../../assets/heart_texture.png" style="width: 30px; margin: 5px">
+            src="../../assets/heart_texture.png" class="heart">
       </div>
         <h1 class="orange">{{dice}}</h1>
     </div>

@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="center">
+    <div v-if="center" class="center-horizontal" style="flex-wrap: wrap;">
         <div class="flex center-horizontal">
             <Dice
                     v-for="(dat) in line1"

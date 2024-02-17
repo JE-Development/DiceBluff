@@ -16,6 +16,10 @@ body{
     height: 100%;
 }
 
+.overflow-hidden{
+    overflow: hidden;
+}
+
 .round-corner{
     border-radius: 10px;
 }
@@ -28,9 +32,13 @@ body{
     position: relative;
 }
 
+.not-optimized{
+    visibility: hidden;
+}
+
 .full-size{
-    width: 95vw;
-    height: 95vh;
+    width: 100vw;
+    height: 100vh;
 }
 
 .full-width{
@@ -57,6 +65,10 @@ body{
     justify-content: center;
 }
 
+.center-text{
+    text-align: center;
+}
+
 .left{
     display: flex;
     justify-content: start;
@@ -75,8 +87,16 @@ body{
     color: #00ffff;
 }
 
+.neutral-background{
+    background: #008cff;
+}
+
 .red{
     color: #ff0f0f;
+}
+
+.red-background{
+    background: #ff0f0f;
 }
 
 .temp-current-color{
@@ -214,6 +234,14 @@ body{
     .dice-small-layout{
         height: auto;
         visibility: visible;
+    }
+
+    .not-optimized{
+        visibility: visible;
+    }
+
+    .cup-image{
+        width: 150px;
     }
 }
 

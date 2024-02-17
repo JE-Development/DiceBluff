@@ -13,6 +13,7 @@
     "serverDown": "Der Dice Bluff Server ist offline",
     "noUsername": "Du musst einen Nutzernamen festlegen",
     "gameStarted": "Spiel ist bereits gestartet",
+    "notOptimized": "Diese Bildschirmgröße ist nicht optimiert. Es kann zu unübersichtliche Verschiebung von Elementen kommen. Für ein besseres Erlebnis, aktiviere 'Desktopwebseite' und spiele in Querformat.",
     "noRoomCode": "Du musst ein Raumcode eingeben oder ein Raum erstellen"
   },
   "playerPage": {

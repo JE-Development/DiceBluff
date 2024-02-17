@@ -2,7 +2,12 @@
   <ProfilePopup :show="pbShow" @close="pbClose"/>
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <AudioSettings/>
-  <div class="center-horizontal full-size">
+
+  <transition name="toast">
+    <Toast color="red" :text="unableMessage" v-if="showToast"/>
+  </transition>
+
+  <div class="center-horizontal full-width">
     <div>
 
       <div class="center-horizontal">
@@ -25,22 +30,26 @@
       </div>
       <div style="margin-top: 10px"/>
       <div class="center-horizontal">
-        <div class="center-horizontal">
-          <UIButton :title="lang.register.roomButton" @click="onClickRoom" color="third-color-background"/>
-        </div>
-        <div class="center-horizontal">
-          <UIButton :title="lang.register.listButton" @click="onClickPublic" color="fourth-color-background"/>
+        <div class="register-button-layout">
+          <div class="center-horizontal">
+            <UIButton :title="lang.register.roomButton" @click="onClickRoom" color="third-color-background"/>
+          </div>
+          <div class="center-horizontal">
+            <UIButton :title="lang.register.listButton" @click="onClickPublic" color="fourth-color-background"/>
+          </div>
         </div>
       </div>
       <div style="height: 40px"></div>
       <div class="center-horizontal">
         <UIButton :title="lang.register.gameInstructionsButton" @click="onClickInstruction" color="sec-color"/>
       </div>
-      <div class="center-horizontal">
-        <h2 class="red">{{unableMessage}}</h2>
-      </div>
+      <div style="height: 40px"></div>
     </div>
+
   </div>
+  <!--<div class="not-optimized center-horizontal">
+    <div class="red center-text" style="background: rgba(0,0,0,0.25); width: auto">{{lang.register.notOptimized}}</div>
+  </div>/!-->
 
 </template>
 
@@ -53,11 +62,12 @@ import langEN from "../assets/langEN.json"
 import LangSelection from "@/components/views/LangSelection.vue";
 import UIButton from "@/components/views/UIButton.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
+import Toast from "@/components/views/Toast.vue";
 
 export default {
     //npm run dev | npm run build
     name: "Register",
-  components: {AudioSettings, UIButton, LangSelection, ProfilePopup},
+  components: {Toast, AudioSettings, UIButton, LangSelection, ProfilePopup},
     data() {
         return {
             username: "",
@@ -73,7 +83,9 @@ export default {
           pbShow: false,
           isStarted: false,
           lang: langEN,
-          audioSettingsStatus: true
+          audioSettingsStatus: true,
+          showToast: false,
+          allowJoin: false
         };
     },
 
@@ -107,6 +119,8 @@ export default {
         this.socket.addEventListener('open', (event) => {
           this.unableMessage = ""
 
+          this.allowJoin = true
+
           let dat = {
             type: "register",
             func: "removePlayer",
@@ -125,7 +139,7 @@ export default {
 
       this.socket.addEventListener('error', (event) => {
         this.unableMessage = this.lang.register.serverDown
-
+        this.displayToast()
       });
 
 
@@ -146,6 +160,7 @@ export default {
             this.$router.push('/player');
           }else if(message.func === "noRc"){
             this.unableMessage = this.lang.register.wrongRoomCode
+            this.displayToast()
           }else if(message.func === "roomClosed"){
             this.$notify(this.lang.misc.roomClosed)
           }
@@ -175,6 +190,7 @@ export default {
                   this.join(this.$refs.passinput.value)
                 }else{
                   this.unableMessage = this.lang.register.noRoomCode
+                  this.displayToast()
                 }
               }
             }
@@ -240,12 +256,14 @@ export default {
           return true
         }else{
           this.unableMessage = this.lang.register.noUsername
+          this.displayToast()
         }
         return false
       },
 
         joinUnable(){
             this.unableMessage = this.lang.register.gameStarted
+          this.displayToast()
         },
 
         getCookies(key){
@@ -300,10 +318,15 @@ export default {
 
       onClickRoom(){
           if(this.checkUsername()){
-            this.setCookies("host", "true")
-            let rc = this.getRandomNumbers()
-            this.setCookies("rc", rc)
-            this.createJoin(rc)
+            if(this.allowJoin){
+              this.setCookies("host", "true")
+              let rc = this.getRandomNumbers()
+              this.setCookies("rc", rc)
+              this.createJoin(rc)
+            }else{
+              this.unableMessage = this.lang.register.serverDown
+              this.displayToast()
+            }
           }
       },
 
@@ -316,13 +339,20 @@ export default {
         }
       },
 
+      displayToast(){
+        this.showToast = true
+        setTimeout(() => {
+          this.showToast = false
+        }, 4000)
+      },
+
       onClickPublic(){
           if(this.checkUsername()){
             let username = this.$refs.usernameinput.value
             this.setCookies("username", username)
             this.$router.push('/public');
           }
-      }
+      },
     }
 }
 </script>

@@ -3,59 +3,63 @@
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <AudioSettings/>
 
+  <transition name="toast">
+    <Toast color="red" :text="errorText" v-if="showToast" style="z-index: 9999"/>
+  </transition>
 
-  <div class="center-horizontal" v-if="isHost">
-    <div class="center-horizontal">
-      <div class="absolute">
-        <h2 class="link-background center-horizontal">{{baseURI}}/code/{{getCookies("rc")}}</h2>
+  <div class="full-size">
+    <div class="center-horizontal room-link" v-if="isHost">
+      <div class="center-horizontal">
+        <div class="absolute">
+          <h2 class="link-background link-text center-horizontal">{{baseURI}}/code/{{getCookies("rc")}}</h2>
+        </div>
+        <div style="height: 60px"></div>
       </div>
-      <div style="height: 60px"></div>
     </div>
-  </div>
-  <div class="center-horizontal" v-if="isHost">
-    <UIButton :title="lang.playerPage.kickEveryoneButton" @click="onClickRemove" color="prim-color-background"/>
-  </div>
+    <div class="center-horizontal" v-if="isHost">
+      <UIButton :title="lang.playerPage.kickEveryoneButton" @click="onClickRemove" color="prim-color-background"/>
+    </div>
 
-    <div class="button-layout center-horizontal" v-if="!isHost">
+    <div class="button-layout center-horizontal room-mobile-layout" v-if="!isHost">
       <UIButton :title="lang.playerPage.leaveButton" @click="onClickLeave" color="prim-color-background"/>
     </div>
 
-<div class="center-horizontal">
-    <PlayerView
-        v-for="(dat) in names"
-        :name="dat.name"
-        :img="dat.pb"
+    <div class="center-horizontal">
+      <PlayerView
+          v-for="(dat) in names"
+          :name="dat.name"
+          :img="dat.pb"
 
-    />
-</div>
+      />
+    </div>
 
     <div class="button-layout center-horizontal" v-if="isHost">
-        <div>
-          <div class="center-horizontal">
-            <UIButton :title="lang.playerPage.startButton" @click="onClickStart" color="prim-color-background"/>
-          </div>
-          <div class="center-horizontal center">
-              <h2 class="white">{{lang.playerPage.heartCount}}</h2>
-              <input ref="input" class="heart-input texture" value="3">
-          </div>
-          <div class="center">
-            <h2 class="white">{{lang.playerPage.allowGhostMode}}</h2>
-            <input type="checkbox" class="check-box" ref="isghost" checked>
-          </div>
-          <div class="center">
-            <h2 class="white">{{lang.playerPage.visibility}}</h2>
-            <input type="checkbox" class="check-box" ref="vis" checked @click="visClicked">
-          </div>
-          <div class="center">
-            <h2 class="white">{{lang.playerPage.powerups}}</h2>
-            <input type="checkbox" class="check-box" ref="powerups" checked>
-          </div>
-          <h2 class="red">{{errorText}}</h2>
+      <div>
+        <div class="center-horizontal">
+          <UIButton :title="lang.playerPage.startButton" @click="onClickStart" color="prim-color-background"/>
         </div>
+        <div class="center-horizontal center">
+          <h2 class="white">{{lang.playerPage.heartCount}}</h2>
+          <input ref="input" class="heart-input texture" value="3">
+        </div>
+        <div class="center">
+          <h2 class="white">{{lang.playerPage.allowGhostMode}}</h2>
+          <input type="checkbox" class="check-box" ref="isghost" checked>
+        </div>
+        <div class="center">
+          <h2 class="white">{{lang.playerPage.visibility}}</h2>
+          <input type="checkbox" class="check-box" ref="vis" checked @click="visClicked">
+        </div>
+        <div class="center">
+          <h2 class="white">{{lang.playerPage.powerups}}</h2>
+          <input type="checkbox" class="check-box" ref="powerups" checked>
+        </div>
+      </div>
     </div>
     <div v-else class="center-horizontal">
-        <h1>{{lang.playerPage.waitForPlayer}}</h1>
+      <h1>{{lang.playerPage.waitForPlayer}}</h1>
     </div>
+  </div>
 
 </template>
 
@@ -69,11 +73,12 @@ import langEN from "../assets/langEN.json"
 import UIButton from "@/components/views/UIButton.vue";
 import LangSelection from "@/components/views/LangSelection.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
+import Toast from "@/components/views/Toast.vue";
 
 export default {
     //npm run dev | npm run build
     name: "PlayerPage",
-    components: {AudioSettings, LangSelection, UIButton, PlayerView},
+    components: {Toast, AudioSettings, LangSelection, UIButton, PlayerView},
     data() {
         return {
             names: [],
@@ -87,7 +92,8 @@ export default {
           audioBase: "https://dicebluff.inforge.de/sounds/",
           audioSrc: "",
           audios: {},
-          audioSettingsStatus: true
+          audioSettingsStatus: true,
+          showToast: false
         };
     },
 
@@ -129,6 +135,10 @@ export default {
 
 
         this.socket = new WebSocket(import.meta.env.VITE_SERVER_URL);
+
+      this.socket.addEventListener('error', (event) => {
+        this.$router.push("/")
+      });
 
         this.socket.addEventListener('open', (event) => {
           console.log("socket connected")
@@ -216,6 +226,13 @@ export default {
     methods: {
 
 
+      displayToast(){
+        this.showToast = true
+        setTimeout(() => {
+          this.showToast = false
+        }, 4000)
+      },
+
       langClicked(){
         if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
           this.setCookies("lang", "de")
@@ -249,8 +266,10 @@ export default {
             let checker = Number(this.$refs.input.value)
             if(isNaN(checker)){
               this.errorText = this.lang.playerPage.heartErrorNaN
+              this.displayToast()
             }else if(checker < 1){
               this.errorText = this.lang.playerPage.heartErrorWrongNumber
+              this.displayToast()
             }else{
               this.setCookies("hearts", this.$refs.input.value)
               this.setCookies("ghostmode", String(this.$refs.isghost.checked))
@@ -266,9 +285,11 @@ export default {
             }
           }else{
             this.errorText = this.lang.playerPage.heartErrorEmpty
+            this.displayToast()
           }
         }else{
           this.errorText = this.lang.playerPage.needMorePlayers
+          this.displayToast()
         }
       },
 

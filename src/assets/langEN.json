@@ -13,6 +13,7 @@
     "serverDown": "The Dice Bluff server is down",
     "noUsername": "You have to choose an username",
     "gameStarted": "Game already started",
+    "notOptimized": "This screen size is not optimized. Elements will be on the wrong location. For a better experience, enable 'Desktop site' and play in landscape.",
     "noRoomCode": "You have to enter a room code or create a room"
   },
   "playerPage": {

@@ -33,7 +33,8 @@ export default {
 
     props:{
         num: String,
-        mode: String
+        mode: String,
+
     },
 
     created() {
