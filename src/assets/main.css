@@ -45,8 +45,16 @@ body{
     width: 95vw;
 }
 
+full-height{
+    height: 95vh;
+}
+
 .max-width{
     width: 100%;
+}
+
+.max-height{
+    height: 100%;
 }
 
 .center-horizontal{
