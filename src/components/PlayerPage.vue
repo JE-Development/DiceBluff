@@ -213,6 +213,14 @@ export default {
             if(!message.exist){
               this.$router.push("/")
             }
+          }else if(message.func === "notExistToReplace"){
+            let message = {
+              type: "register",
+              func: "addPlayer",
+              player: this.getCookies("username"),
+              pb: this.getCookies("pb"),
+            };
+            this.send(message)
           }
         });
 

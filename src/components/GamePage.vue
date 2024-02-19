@@ -188,7 +188,7 @@ export default {
             isMove: false,
             src1: "",
             src2: "",
-            src3: "six",
+            src3: "",
             loggedDiceNum: "",
             loggedDiceMode: "",
             error: "",
@@ -226,7 +226,7 @@ export default {
           isPowerupsAllowed: false,
           helpShow: false,
           helpPid: "",
-          showToast: false
+          showToast: false,
         };
     },
 
@@ -241,6 +241,8 @@ export default {
         "view": this.audioBase + "view" + ".mp3",
         "winning": this.audioBase + "winning" + ".mp3",
       }
+
+
 
       let promises = [];
       Object.keys(this.audios).forEach(s => {
@@ -297,6 +299,7 @@ export default {
 
         this.socket.addEventListener('open', (event) => {
             console.log('WebSocket-Verbindung geöffnet');
+
 
           let dat = {
             type: "register",
@@ -356,16 +359,19 @@ export default {
 
               this.src1 = base + word[0] + ".png"
               this.src2 = base + word[1] + ".png"
+
             }else{
               if(!this.ghostMode){
                 this.src1 = base + "default.png"
                 this.src2 = base + "default.png"
+
               }
             }
 
           }else if(message.func === "setGlobalDice"){
             this.globalDice = message.dice
             this.globalMode = message.mode
+
 
           }else if(message.func === "setSad"){
             this.handleSad(message.player)
@@ -379,10 +385,12 @@ export default {
 
                 this.src1 = base + word[0] + ".png"
                 this.src2 = base + word[1] + ".png"
+
                 break;
               }else{
                 this.src1 = base + "default.png"
                 this.src2 = base + "default.png"
+
               }
             }
 
@@ -452,6 +460,7 @@ export default {
               this.pwEnabled1 = false
               this.stillfree = true
               this.progress = 0
+
             }
           }else if(message.func === "disablePowerup2"){
             if(message.player === this.getCookies("username") || message.player === "-everyone-"){
@@ -461,6 +470,7 @@ export default {
               this.pwEnabled2 = false
               this.stillfree = true
               this.progress = 0
+
             }
           }else if(message.func === "disableGlobalPowerup"){
             this.globalPowerup = ""
@@ -497,6 +507,8 @@ export default {
             if(!message.exist){
               this.$router.push("/")
             }
+          }else if(message.func === "notExistToReplace"){
+            this.$router.push("/")
           }
         });
 
@@ -679,7 +691,6 @@ export default {
 
         eventClose(){
           if(this.isHost){
-            //this.onClickStop()
             this.killRoom()
           }
           let dat = {
@@ -690,6 +701,7 @@ export default {
           }
           this.send(dat)
         },
+
 
       startSession(){
         let dat = {

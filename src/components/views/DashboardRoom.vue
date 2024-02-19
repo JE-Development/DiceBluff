@@ -3,7 +3,7 @@
   <div style="height: 50px"></div>
 
     <div class="center-horizontal">
-      <div class="prim-color-background round-corner dashboard-room center-vertical texture shadow">
+      <div class="prim-color-background round-corner dashboard-room center-vertical texture shadow pointer" @click="selectedClicked">
         <div style="width: 70%" class="flex">
           <div style="width: 10px"></div>
           <h2>{{hoster}}</h2>
@@ -77,6 +77,10 @@ export default {
 
       watchClicked(){
         this.$emit("watch", this.rc)
+      },
+
+      selectedClicked(){
+        this.$emit("selected", this.rc)
       },
 
 

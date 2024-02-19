@@ -186,6 +186,10 @@ full-height{
     color: #00ffff;
 }
 
+.dark-blue{
+    color: #004ef6;
+}
+
 .cup-image{
     transform: translateY(55px);
     width: 250px;

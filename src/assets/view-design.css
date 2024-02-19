@@ -254,6 +254,11 @@
     margin: 15px
 }
 
+.dashboard-room-layout{
+    height: 200px;
+    overflow-y: scroll;
+}
+
 .link-background{
     width: auto;
     background: #e3e3e3;

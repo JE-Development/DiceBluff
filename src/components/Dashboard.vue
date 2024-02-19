@@ -19,7 +19,7 @@
   </div>
   <div v-if="isLogin">
     <div class="center-horizontal">
-      <div>
+      <div class="dashboard-room-layout">
         <div v-if="rooms.length === 0">
           <h1 class="red">
             No Rooms
@@ -34,8 +34,19 @@
             @delete="deleteClicked"
             @join="joinClicked"
             @watch="watchClicked"
+            @selected="selectedClicked"
         />
       </div>
+    </div>
+    <div style="width: 200px; background: rgba(118,255,186,0.24)">
+      <h3>Values</h3>
+      <p class="white">start: <span class="dark-blue">{{valueInfo.start}}</span></p>
+      <p class="white">turn: <span class="dark-blue">{{valueInfo.turn}}</span></p>
+      <p class="white">winner: <span class="dark-blue">{{valueInfo.winner}}</span></p>
+      <p class="white">heartcount: <span class="dark-blue">{{valueInfo.heartcount}}</span></p>
+      <p class="white">ghostmode: <span class="dark-blue">{{valueInfo.ghostmode}}</span></p>
+      <p class="white">usePowerups: <span class="dark-blue">{{valueInfo.usePowerups}}</span></p>
+      <p class="white">loggedDice: <span class="dark-blue">{{valueInfo.loggedDice}}</span></p>
     </div>
   </div>
 
@@ -57,11 +68,21 @@ export default {
           isLogin: false,
           errorText: "",
           rooms: [],
+          rc: "",
+          valueInfo: {}
         };
     },
 
     created() {
-
+      this.valueInfo = {
+        start: "",
+        turn: "",
+        winner: "",
+        heartcount: "",
+        ghostmode: "",
+        usePowerups: "",
+        loggedDice: "",
+      }
     },
     mounted() {
 
@@ -97,6 +118,14 @@ export default {
             for(let i = 0; i < r.length; i++){
               this.rooms.push(r[i])
             }
+          }else if(message.func === "values"){
+            this.valueInfo.start = message.start
+            this.valueInfo.turn = message.turn
+            this.valueInfo.winner = message.winner
+            this.valueInfo.heartcount = message.heartcount
+            this.valueInfo.ghostmode = message.ghostmode
+            this.valueInfo.usePowerups = message.usePowerups
+            this.valueInfo.loggedDice = message.loggedDice
           }
         });
 
@@ -184,6 +213,16 @@ export default {
           type: "dashboard",
           func: "addWatcher",
           watcher: this.getCookies("username"),
+          rc: rc
+        }
+        this.send(dat)
+      },
+
+      selectedClicked(rc){
+        this.rc = rc
+        let dat = {
+          type: "dashboard",
+          func: "getCurrentValues",
           rc: rc
         }
         this.send(dat)
