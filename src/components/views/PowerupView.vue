@@ -4,19 +4,19 @@
     <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <!--<img src="../../assets/help.png" style="height: 50%" @click="helpClicked">/!-->
+    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
   </div>
   <div class="powerup-border round-corner prim-color-background texture center-vertical pointer" @click="click" v-else-if="active">
     <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <!--<img src="../../assets/help.png" style="height: 50%" @click="helpClicked">/!-->
+    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
   </div>
   <div class="powerup-border powerup-grey round-corner texture center-vertical" v-else>
     <div class="powerup-icon"></div>
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <!--<img src="../../assets/help.png" style="height: 50%" @click="helpClicked">/!-->
+    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
   </div>
 
 </template>
@@ -24,8 +24,11 @@
 
 <script>
 
+import HelpPopup from "@/components/views/HelpPopup.vue";
+
 export default {
     name: "PowerupView",
+  components: {HelpPopup},
     data() {
         return {
         };
@@ -52,7 +55,7 @@ export default {
         },
 
       helpClicked(){
-        this.$emit("help", img)
+          this.$emit("help", this.img)
       },
 
 

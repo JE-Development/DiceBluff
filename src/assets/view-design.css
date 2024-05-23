@@ -57,6 +57,10 @@
     padding-left: 10px;
 }
 
+.instructions-background{
+    background: rgba(0, 0, 0, 0.28);
+}
+
 .profile-picture{
     width: 50px;
 }

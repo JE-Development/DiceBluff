@@ -63,11 +63,12 @@ import LangSelection from "@/components/views/LangSelection.vue";
 import UIButton from "@/components/views/UIButton.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
 import Toast from "@/components/views/Toast.vue";
+import PowerupView from "@/components/views/PowerupView.vue";
 
 export default {
     //npm run dev | npm run build
     name: "Register",
-  components: {Toast, AudioSettings, UIButton, LangSelection, ProfilePopup},
+  components: {PowerupView, Toast, AudioSettings, UIButton, LangSelection, ProfilePopup},
     data() {
         return {
             username: "",

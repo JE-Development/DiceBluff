@@ -10,12 +10,12 @@
               <div>
 
                 <div class="button-layout center-horizontal">
-                  <UIButton :title="lang.gamePage.close" @click="close" color="fifth-color-background"/>
+                  <UIButton :title="lang.gamePage.close" @click="onClose" color="fifth-color-background"/>
                 </div>
 
                 <div style="height: 20px"></div>
 
-                <p class="white">{{text}}</p>
+                <p class="white center-text">{{text}}</p>
               </div>
             </div>
           </div>

@@ -61,7 +61,8 @@
     "changeExp": "You can change the number someone said before. So if he said 65, the new number will be generated between 31 and 65",
     "doubleExp": "Someone gets double damage except you.",
     "reverseExp": "If I press 'reveal' and I have to get damage, because it's the truth, I wont get damage but the player, who said the truth, gets damaga. But if I press 'reveal' and the previous player has to get damage, because it's a lie, I will get damage and the previous player wont.",
-    "helperExp": "You get a 3. dice and you can replace it with the other dices."
+    "helperExp": "You get a 3. dice and you can replace it with the other dices. You will see 3 dices and you have to click the one you wish to remove.",
+    "blockExp": "You can block the 'reveal' button of someone."
   },
   "misc": {
     "noPublicRooms": "There are no public rooms",

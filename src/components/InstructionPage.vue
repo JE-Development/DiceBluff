@@ -2,8 +2,14 @@
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <AudioSettings/>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
-    <div style="width: 80vw;">
+    <div style="width: 80vw;" class="white instructions-background">
       <h1 class="prim-color">Spielanleitung</h1>
+      <h3>
+        Die Anleitung gibt es auch als YouTube Video (nur auf Deutsch)
+      </h3>
+      <div class="center-horizontal">
+        <UIButton title="Zum YouTube Video" color="prim-color-background" @click="onYouTube"/>
+      </div>
       <h2>Einführung</h2>
       <p>Dice Bluff ist ein Würfelspiel welches man auch unter dem Namen 'Mäxchen' oder 'Mia' kennt. Physisch wird Dice Bluff mit
         2 Würfeln und einem Würfelbecher gespielt. Das Ziel ist es als letztes übrig zu sein. Dies erreicht man durch gutes Lügen
@@ -147,6 +153,12 @@
     <div style="width: 80vw">
       <h1 class="prim-color">Game Instructions</h1>
       <h2>Introduction</h2>
+      <h3>
+        The instructions are also as an YouTube video available (only in german)
+      </h3>
+      <div class="center-horizontal">
+        <UIButton title="Go to the YouTube video" color="prim-color-background" @click="onYouTube"/>
+      </div>
       <p>Dice Bluff is a dice game also known by the name 'Mäxchen' or 'Mia'. In the physical version, Dice Bluff is played with 2 dice and a dice cup. The goal is to be the last one remaining, which is achieved through skillful bluffing and a bit of luck.
       </p>
       <h2>Composition of Numbers</h2>
@@ -257,11 +269,12 @@ import langEN from "../assets/langEN.json"
 import GameButton from "@/components/views/GameButton.vue";
 import LangSelection from "@/components/views/LangSelection.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
+import UIButton from "@/components/views/UIButton.vue";
 
 
 export default {
     name: "InstructionPage",
-  components: {AudioSettings, LangSelection, GameButton},
+  components: {UIButton, AudioSettings, LangSelection, GameButton},
     data() {
         return {
           lang: langEN,
@@ -290,6 +303,10 @@ export default {
           this.setCookies("lang", "en")
           this.lang = langEN
         }
+      },
+
+      onYouTube(){
+        window.open("https://www.youtube.com/watch?v=O6K0GjS9228");
       },
 
         getCookies(key){

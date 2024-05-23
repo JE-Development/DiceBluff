@@ -60,7 +60,8 @@
     "changeExp": "Man kann die zuvor gesagte Zahl ändern. Wenn zuvor z.B. ein 1 Pasch gesagt wurde. Dann wird eine neue Zahl zwischen 31 und 1 Pasch generiert.",
     "doubleExp": "Jemand, der schaden bekommen müsste, bekommt doppelten schaden. Man selber ist imun dagegen und bekommt nur Einzelschaden.",
     "reverseExp": "Wenn ich 'aufdecken' drücke und jemand die Wahrheit gesagt hat und ich Schaden bekommen müsste, bekomme ich kein Schaden und der andere, der die Wahrheit gesagt hat, bekommt Schaden. Aber wenn ich auf 'aufdecken' drücke und ich jemanden beim Lügen erwischt habe und der andere Schaden bekommen würde, bekommt er kein Schaden, aber ich schon.",
-    "helperExp": "Man kann einen 3. Würfel hervorrufen und ihn mit einem anderen Würfel austauschen"
+    "helperExp": "Man kann einen 3. Würfel hervorrufen und ihn mit einem anderen Würfel austauschen. Man sieht dann 3 Würfel und man muss den Würfel anklicken, der verschwinden soll.",
+    "blockExp": "Man kann den 'aufdecken' Knopf von jemanden blockieren."
   },
   "misc": {
     "noPublicRooms": "Es gibt keine öffentliche Räume",
