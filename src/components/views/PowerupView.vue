@@ -4,19 +4,19 @@
     <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
   </div>
   <div class="powerup-border round-corner prim-color-background texture center-vertical pointer" @click="click" v-else-if="active">
     <img :src="'https://dicebluff.inforge.de/src/assets/powerups/' + img + '.png'" class="powerup-icon">
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
   </div>
   <div class="powerup-border powerup-grey round-corner texture center-vertical" v-else>
     <div class="powerup-icon"></div>
     <div style="font-size: 20px">{{title}}</div>
     <div style="width: 20px"></div>
-    <img src="../../assets/help.png" style="height: 50%" @click="helpClicked">
+  </div>
+  <div class="center" style="margin-left: 10px">
+    <img src="../../assets/help.png" style="height: 30px" @click="helpClicked" class="pointer">
   </div>
 
 </template>

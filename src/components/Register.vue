@@ -64,11 +64,12 @@ import UIButton from "@/components/views/UIButton.vue";
 import AudioSettings from "@/components/views/AudioSettings.vue";
 import Toast from "@/components/views/Toast.vue";
 import PowerupView from "@/components/views/PowerupView.vue";
+import ShowPowerupPopup from "@/components/views/ShowPowerupPopup.vue";
 
 export default {
     //npm run dev | npm run build
     name: "Register",
-  components: {PowerupView, Toast, AudioSettings, UIButton, LangSelection, ProfilePopup},
+  components: {ShowPowerupPopup, PowerupView, Toast, AudioSettings, UIButton, LangSelection, ProfilePopup},
     data() {
         return {
             username: "",
@@ -86,7 +87,8 @@ export default {
           lang: langEN,
           audioSettingsStatus: true,
           showToast: false,
-          allowJoin: false
+          allowJoin: false,
+          powerupShow: true
         };
     },
 
@@ -104,6 +106,8 @@ export default {
     },
 
     mounted() {
+      //this.$refs.powerupPopup.playLeaveAnim()
+
 
       if(this.getCookies("lang") === null || this.getCookies("lang") === "en"){
         this.lang = langEN

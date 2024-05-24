@@ -4,6 +4,7 @@
   <PlayerSelectPopup v-if="psShow" :show="psShow" @clicked="psClicked" :players="names" @cancelled="psCancelled" errorNoPlayer="" :headline="lang.gamePage.selectBlockReveal"/>
   <HelpPopup v-if="helpShow" :show="helpShow" @close="helpClosed" :pid="helpPid"/>
   <audio ref="audio" :src="audioSrc"></audio>
+  <ShowPowerupPopup ref="powerupPopup" :pb="epPb" :powerup="epPowerup" :pid="epPid" :player="epPlayer"/>
 
   <transition name="toast">
     <Toast color="red" :text="error" v-if="showToast" style="z-index: 9999"/>
@@ -166,11 +167,13 @@ import PowerupView from "@/components/views/PowerupView.vue";
 import PlayerSelectPopup from "@/components/views/PlayerSelectPopup.vue";
 import HelpPopup from "@/components/views/HelpPopup.vue";
 import Toast from "@/components/views/Toast.vue";
+import ShowPowerupPopup from "@/components/views/ShowPowerupPopup.vue";
 
 export default {
     //npm run dev | npm run build
     name: "GamePage",
     components: {
+      ShowPowerupPopup,
       Toast,
       HelpPopup,
       PlayerSelectPopup,
@@ -227,6 +230,10 @@ export default {
           helpShow: false,
           helpPid: "",
           showToast: false,
+          epPb: "",
+          epPowerup: "",
+          epPid: "",
+          epPlayer: "",
         };
     },
 
@@ -509,6 +516,14 @@ export default {
             }
           }else if(message.func === "notExistToReplace"){
             this.$router.push("/")
+          }else if(message.func === "showEveryonePowerup"){
+            this.epPlayer = message.player
+            if(this.epPlayer !== this.getCookies("username")){
+              this.epPb = message.pb
+              this.epPowerup = message.powerupName
+              this.epPid = message.pid
+              this.$refs.powerupPopup.playEnterAnim()
+            }
           }
         });
 
