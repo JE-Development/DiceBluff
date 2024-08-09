@@ -30,7 +30,9 @@
     "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
     "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
     "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein.",
-    "needMorePlayers": "Du brauchst mindestens 2 Spieler."
+    "needMorePlayers": "Du brauchst mindestens 2 Spieler.",
+    "botLimitError": "Du kannst nur 5 Bots hinzufügen.",
+    "botNotAllowed": "Du kannst keine Bots nutzen, während Powerups aktiviert sind."
   },
   "gamePage": {
     "stopButton": "Spiel stoppen",

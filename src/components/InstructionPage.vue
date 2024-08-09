@@ -150,15 +150,15 @@
 
 
   <div class="center-horizontal" style="text-align: center" v-else-if="lang.lang === 'en'">
-    <div style="width: 80vw">
+    <div style="width: 80vw" class="white instructions-background">
       <h1 class="prim-color">Game Instructions</h1>
-      <h2>Introduction</h2>
       <h3>
         The instructions are also as an YouTube video available (only in german)
       </h3>
       <div class="center-horizontal">
         <UIButton title="Go to the YouTube video" color="prim-color-background" @click="onYouTube"/>
       </div>
+      <h2>Introduction</h2>
       <p>Dice Bluff is a dice game also known by the name 'Mäxchen' or 'Mia'. In the physical version, Dice Bluff is played with 2 dice and a dice cup. The goal is to be the last one remaining, which is achieved through skillful bluffing and a bit of luck.
       </p>
       <h2>Composition of Numbers</h2>

@@ -38,6 +38,24 @@
         <div class="center-horizontal">
           <UIButton :title="lang.playerPage.startButton" @click="onClickStart" color="prim-color-background"/>
         </div>
+
+        <div class="center-horizontal" v-if="allowBot">
+          <div class="center-horizontal">
+            <UIButton :title="lang.playerPage.addBotButton" @click="onClickAddBot" color="sec-color"/>
+          </div>
+
+          <div class="center-horizontal">
+            <UIButton :title="lang.playerPage.removeBotButton" @click="onClickRemoveBot" color="sec-color"/>
+          </div>
+        </div>
+        <div class="center-horizontal" v-else>
+          <div style="height: 30px; margin-top: 12px; margin-bottom: 12px; background: rgba(0,0,0,0.5)" class="center">
+            <div style="width: 5px"></div>
+            <h2 class="red">{{lang.playerPage.botNotAllowed}}</h2>
+            <div style="width: 5px"></div>
+          </div>
+        </div>
+
         <div class="center-horizontal center">
           <h2 class="white">{{lang.playerPage.heartCount}}</h2>
           <input ref="input" class="heart-input texture" value="3">
@@ -52,7 +70,7 @@
         </div>
         <div class="center">
           <h2 class="white">{{lang.playerPage.powerups}}</h2>
-          <input type="checkbox" class="check-box" ref="powerups" checked>
+          <input type="checkbox" class="check-box" ref="powerups" @change="checkBoxChange">
         </div>
       </div>
     </div>
@@ -93,7 +111,8 @@ export default {
           audioSrc: "",
           audios: {},
           audioSettingsStatus: true,
-          showToast: false
+          showToast: false,
+          allowBot: true
         };
     },
 
@@ -169,7 +188,7 @@ export default {
 
         this.socket.addEventListener('message', (event) => {
           const message = JSON.parse(event.data)
-          //console.log(message)
+          console.log(message)
           if(message.func === "error"){
 
             console.error(message.text)
@@ -221,6 +240,9 @@ export default {
               pb: this.getCookies("pb"),
             };
             this.send(message)
+          }else if(message.func === "botLimit" && this.getCookies("username") === message.player){
+            this.errorText = this.lang.playerPage.botLimitError
+            this.displayToast()
           }
         });
 
@@ -358,6 +380,49 @@ export default {
           args: [mode]
         }
         this.send(dat)
+      },
+
+
+      onClickAddBot(){
+        let dat = {
+          type: "register",
+          func: "addBot",
+          pb: this.getRandomPB(),
+          player: this.getCookies("username")
+        };
+        this.send(dat)
+      },
+
+      onClickRemoveBot(){
+        this.errorText = ""
+        let dat = {
+          type: "register",
+          func: "removeBot"
+        };
+        this.send(dat)
+      },
+
+      onClickRemoveAllBots(){
+        let dat = {
+          type: "register",
+          func: "removeAllBots"
+        };
+        this.send(dat)
+      },
+
+
+      getRandomPB(){
+        let pbs = import.meta.env.VITE_PB.split(",")
+        let random = Math.floor(Math.random() * pbs.length)
+        return pbs[random]
+      },
+
+      checkBoxChange(){
+        let isPowerup = this.$refs.powerups.checked
+        this.allowBot = !isPowerup
+        if(!this.allowBot){
+          this.onClickRemoveAllBots()
+        }
       },
 
 

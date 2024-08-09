@@ -30,7 +30,9 @@
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
     "heartErrorEmpty": "The text field for the heart count is empty!",
-    "needMorePlayers": "You need at least 2 players."
+    "needMorePlayers": "You need at least 2 players.",
+    "botLimitError": "You can only add 5 bots.",
+    "botNotAllowed": "You can't use bots with powerups enabled."
   },
   "gamePage": {
     "stopButton": "Stop Game",

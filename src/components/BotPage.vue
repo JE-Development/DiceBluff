@@ -213,7 +213,6 @@ export default {
         let dat = {
           type: "register",
           func: "addBot",
-          player: this.getRandomUsername(),
           pb: this.getRandomPB(),
         };
         this.send(dat)
@@ -233,65 +232,6 @@ export default {
         let random = Math.floor(Math.random() * pbs.length)
         return pbs[random]
       },
-
-      getRandomUsername(){
-        let usernames = [
-          "Zepp",
-          "Cody",
-          "Kelsy",
-          "Ariel",
-          "Lucero",
-          "Rashad",
-          "Faven",
-          "Estel",
-          "Amore",
-          "Dodie",
-          "Bayo",
-          "Winona",
-          "Amour",
-          "Bonamy",
-          "Eagor",
-          "Nicole",
-          "Optimus",
-          "Amicia",
-          "Ryn",
-          "Walter",
-          "Trevor",
-          "Carine",
-          "Lyka",
-          "Neil",
-          "Ulima",
-          "Solada",
-          "Gedith",
-          "Derek",
-          "Thaddeus",
-          "Dakota",
-          "Kaida",
-          "Taylor",
-          "Ravyn",
-          "Rona",
-          "Hydra",
-          "Raymond",
-          "Ravyn",
-          "Rinc",
-          "Pendragon",
-          "Lincoln",
-        ]
-        let random = Math.floor(Math.random() * usernames.length)
-        let randomUsername = usernames[random];
-        let exist = false;
-        for(let i = 0; i < this.names.length; i++){
-          if(this.names[i].name === randomUsername){
-            exist = true;
-          }
-        }
-        if(exist){
-          randomUsername = this.getRandomUsername()
-        }
-        return randomUsername
-      },
-
-
 
 
       send(data){
