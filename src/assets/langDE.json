@@ -13,6 +13,10 @@
     "serverDown": "Der Dice Bluff Server ist offline",
     "noUsername": "Du musst einen Nutzernamen festlegen",
     "gameStarted": "Spiel ist bereits gestartet",
+    "tutorialText": "Möchtest du zuerst das Tutorial spielen?",
+    "tutorialAgainText": "Du kannst jeder Zeit das Tutorial bei 'Spielanleitung' erneut spielen",
+    "tutorialButton": "Tutorial spielen",
+    "tutorialHide": "Tutorial ausblenden",
     "notOptimized": "Diese Bildschirmgröße ist nicht optimiert. Es kann zu unübersichtliche Verschiebung von Elementen kommen. Für ein besseres Erlebnis, aktiviere 'Desktopwebseite' und spiele in Querformat.",
     "noRoomCode": "Du musst ein Raumcode eingeben oder ein Raum erstellen"
   },
@@ -26,13 +30,26 @@
     "allowGhostMode": "Ghost Mode erlauben",
     "visibility": "Öffentlicher Raum",
     "powerups": "Mit Powerups",
+    "tutorialNextButton": "Weiter",
     "waitForPlayer": "Warte auf Spieler...",
     "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
     "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
     "heartErrorEmpty": "Das Textfeld für die Herzenanzahl darf nicht leer sein.",
     "needMorePlayers": "Du brauchst mindestens 2 Spieler.",
     "botLimitError": "Du kannst nur 5 Bots hinzufügen.",
-    "botNotAllowed": "Du kannst keine Bots nutzen, während Powerups aktiviert sind."
+    "botNotAllowed": "Du kannst keine Bots nutzen, während Powerups aktiviert sind.",
+
+
+
+    "tutorialLink": "Mit diesem Link können andere Spieler deinem Raum beitreten.",
+    "tutorialClose": "Du kannst hier den Raum schließen. Wenn der Raum geschlossen wird, werden alle Spieler aus dem Raum entfernt.",
+    "tutorialBot": "Wenn du keine weiteren Spieler findest, oder alleine Spielen möchtest, kannst du hier Bots hinzufügen oder entfernen.",
+    "tutorialHeart": "Die Herzenanzahl sagt an wie viele Leben ein Spieler hat.",
+    "tutorialGhostMode": "Wenn der Ghost Mode aktiv ist, können Spieler, die verloren haben, das Spiel mit X-Ray weiterverfolgen.",
+    "tutorialPublic": "Wenn der Raum öffentlich ist, können Spieler über 'Öffentliche Räume' dein Raum finden",
+    "tutorialPowerups": "Du kannst das Spiel mit Powerups erweitern.",
+    "tutorialAddBots": "Füge für das Tutorial 2 Bots hinzu.",
+    "tutorialStartGame": "Jetzt starten wir mal ein Spiel."
   },
   "gamePage": {
     "stopButton": "Spiel stoppen",
@@ -48,7 +65,19 @@
     "blockRevealMessage": "Dein 'aufdecken' Knopf wurde von einem Spieler blockiert",
     "helperInfo": "Wähle ein Würfel aus den du entfernen möchtest",
     "errorNoNumberSelected": "Du hast keine Zahl ausgewählt",
-    "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt."
+    "errorNotBigger": "Die Zahl muss größer sein als vorher gesagt.",
+
+
+
+    "tutorialTurn": "Der grüne Name zeigt an welcher Spieler gerade dran ist.",
+    "tutorialToSay": "Hier sieht man alle Zahlen, die man sagen kann.",
+    "tutorialDrop": "Um zu starten musst du die Würfel würfeln.",
+    "tutorialView": "Gucke drunter, um zu wissen was du gewürfelt hast.",
+    "tutorialTypeIn": "Gebe die Zahl ein, die du gewürfelt hast.",
+    "tutorialMove": "Schiebe den Würfelbecher zum nächsten Spieler.",
+    "tutorialSaid": "Hier oben siehst du die Zahl, welcher der Spieler gesagt hat.",
+    "tutorialLieOrNot": "Der Spieler sagt entweder die Wahrheit oder hat gelogen. Es ist erst dann eine Lüge wenn die gesagte Zahl HÖHER ist als was gewürfelt wurde.",
+    "tutorialChoose": "Wenn du ihm glaubst, musst du würfeln. Wenn du ihm nicht glaubst musst du den Würflebecher aufdecken."
   },
   "jwc": {
     "joinButton": "Spiel beitreten"

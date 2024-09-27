@@ -1,11 +1,11 @@
 <template>
 
-  <button class="register-button center-horizontal texture" :class="color" @click="click">
-    <p style="margin-top: 5px">{{title}}</p>
-  </button>
-  <button class="register-button center-horizontal shadow absolute on-bottom" @click="click">
+    <button class="register-button center pointer" :class="color" @click="click">
+        <p style="margin-top: 0px; margin-bottom: 0px;" class="black">{{ title }}</p>
+    </button>
+    <button class="register-button center-horizontal shadow absolute on-bottom" @click="click">
 
-  </button>
+    </button>
 
 </template>
 
@@ -19,9 +19,9 @@ export default {
         };
     },
 
-    props:{
+    props: {
         title: String,
-      color: String
+        color: String
     },
 
     created() {
@@ -33,15 +33,15 @@ export default {
 
     methods: {
 
-        click(){
+        click() {
             this.$emit("click")
         },
 
 
-        getCookies(key){
+        getCookies(key) {
             return this.$cookies.get(key);
         },
-        setCookies(key, value){
+        setCookies(key, value) {
             return this.$cookies.set(key, value, 2147483647);
         },
     }

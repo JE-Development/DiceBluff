@@ -1,18 +1,18 @@
 <template>
 
     <div class="center-horizontal">
-      <button class="texture" :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
-        {{num}}
-      </button>
-      <button class="dice-border-m line6 texture" ref="border" @click="click" v-else>
-        {{num}}
-      </button>
-      <button class="absolute shadow on-bottom" :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
-        {{num}}
-      </button>
-      <button class="dice-border-m line6 absolute shadow on-bottom" ref="border" @click="click" v-else>
-        {{num}}
-      </button>
+        <button :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
+            {{ num }}
+        </button>
+        <button class="dice-border-m line6" ref="border" @click="click" v-else>
+            {{ num }}
+        </button>
+        <button class="absolute shadow on-bottom" :class="setClass" ref="border" @click="click" v-if="mode !== '6'">
+            {{ num }}
+        </button>
+        <button class="dice-border-m line6 absolute shadow on-bottom" ref="border" @click="click" v-else>
+            {{ num }}
+        </button>
     </div>
 
 </template>
@@ -31,7 +31,7 @@ export default {
         };
     },
 
-    props:{
+    props: {
         num: String,
         mode: String,
 
@@ -51,30 +51,30 @@ export default {
 
     methods: {
 
-        click(){
+        click() {
             EventBus.emit('dice-num', this.num)
             EventBus.emit('dice-mode', this.mode)
         },
 
-        setClasses(){
-            if(this.mode === "1"){
+        setClasses() {
+            if (this.mode === "1") {
                 this.setClass = this.baseClass + " line1"
-            }else if(this.mode === "2"){
+            } else if (this.mode === "2") {
                 this.setClass = this.baseClass + " line2"
-            }else if(this.mode === "3"){
+            } else if (this.mode === "3") {
                 this.setClass = this.baseClass + " line3"
-            }else if(this.mode === "4"){
+            } else if (this.mode === "4") {
                 this.setClass = this.baseClass + " line4"
-            }else if(this.mode === "5"){
+            } else if (this.mode === "5") {
                 this.setClass = this.baseClass + " line5"
             }
         },
 
 
-        getCookies(key){
+        getCookies(key) {
             return this.$cookies.get(key);
         },
-        setCookies(key, value){
+        setCookies(key, value) {
             return this.$cookies.set(key, value, 2147483647);
         },
     }

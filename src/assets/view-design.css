@@ -1,12 +1,11 @@
-.register-button{
+.register-button {
     display: flex;
     width: 300px;
     height: 50px;
     margin: 2px;
 
-    border: 3px solid transparent;
+    border: none;
 
-    cursor: pointer;
     border-radius: 10px;
 
     font-size: 25px;
@@ -17,14 +16,32 @@
     width: 140px;
     height: 50px;
 
-    margin: 5px;
+    margin: 2px;
 
-    border: 3px solid transparent;
+    border: none;
 
     cursor: pointer;
     border-radius: 10px;
 
     font-size: 25px;
+}
+
+.tutorial-button{
+    display: flex;
+    height: 30px;
+
+    margin: 2px;
+
+    border: none;
+
+    cursor: pointer;
+    border-radius: 10px;
+
+    font-size: 25px;
+}
+
+.black{
+    color: black;
 }
 
 .game-button-drop{
@@ -47,14 +64,23 @@
     display: flex;
 }
 
-.register-input{
-    width: 300px;
-    height: 30px;
+input {
+    outline: none !important;
     font-size: 20px;
     border: solid;
     border-radius: 10px;
-    border-color: transparent;
     padding-left: 10px;
+    background-image: linear-gradient(90deg, #f7deff, #e7cbff);
+}
+
+.register-input {
+    max-width: 400px;
+    width: 90vw;
+    height: 30px;
+}
+
+input:focus {
+    border-color: #4299E1
 }
 
 .instructions-background{
@@ -79,7 +105,7 @@
 }
 
 .dice-border{
-    padding: 7px;
+    padding: 10px;
     font-weight: bold;
     border-radius: 8px;
 
@@ -88,7 +114,7 @@
     display: flex;
 
 
-    border: 3px solid transparent;
+    border: none;
 
     cursor: pointer;
 
@@ -100,7 +126,7 @@
 
     margin: 2px;
 
-    padding: 7px;
+    padding: 10px;
     font-weight: bold;
     border-radius: 8px;
 
@@ -108,68 +134,57 @@
 
     justify-content: center;
 
-    border: 3px solid transparent;
+    border: none;
 
     cursor: pointer;
 
     font-size: 15px;
 }
 
-.line1{
-    background: #c9ff8a;
-}
-.line2{
-    background: #83ffa6;
-}
-.line3{
-    background: #5cf0ff;
-}
-.line4{
-    background: #8999ff;
-}
-.line5{
-    background: #ff88d9;
-}
-.line6{
-    background: #ffa600;
+.line1 {
+    background-image: linear-gradient(90deg, #c9ff8a, #8affce);
 }
 
-.prim-color{
+.line2 {
+    background-image: linear-gradient(90deg, #83ffa6, #83ffee);
+}
+
+.line3 {
+    background-image: linear-gradient(90deg, #5cf0ff, #3b6fff);
+}
+
+.line4 {
+    background-image: linear-gradient(90deg, #8999ff, #c689ff);
+}
+
+.line5 {
+    background-image: linear-gradient(90deg, #ff88d9, #ff8888);
+}
+
+.line6 {
+    background-image: linear-gradient(90deg, #ffa600, #d9ff00);
+}
+
+.prim-color {
     color: #ffa600;
 }
 
-.prim-color-background{
-    background: #ffa600;
+.prim-color-background {
+    background-image: linear-gradient(90deg, #ff9100, #ffee00);
 
 }
 
-.powerup-grey{
-    background: #696969;
+.powerup-grey {
+    background-image: linear-gradient(90deg, #838383, #5f5f5f);
 
-}
-
-.sec-color{
-    background: #5cf0ff;
-}
-
-.third-color-background{
-    background: #c9ff8a;
-}
-
-.fourth-color-background{
-    background: #bfc7ff;
-}
-
-.fifth-color-background{
-    background: #ff88d9;;
 }
 
 .texture{
     background-image: url("./texture1.png");
 }
 
-.shadow{
-    box-shadow: 0px 0px 20px #000000;
+.shadow {
+    box-shadow: 0px 0px 20px #fffb00;
 }
 
 .sec-color-text{

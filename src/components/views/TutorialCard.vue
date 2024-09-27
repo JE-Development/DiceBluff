@@ -1,11 +1,18 @@
+<style>
+.tut-box {
+    width: 200px;
+}
+</style>
+
 <template>
 
-    <button class="game-button-default center" @click="click" :class="color">
-        <p style="margin-top: 0px; margin-bottom: 0px;" class="black">{{ title }}</p>
-    </button>
-    <button class="game-button-default center-horizontal shadow absolute on-bottom" @click="click">
+    <div class="tut-box">
+        <p>{{ text }}</p>
 
-    </button>
+        <button class="tutorial-button line1 center" @click="click" v-if="withButton">
+            <p style="margin-top: 0px; margin-bottom: 0px;" class="black">{{ lang.playerPage.tutorialNextButton }}</p>
+        </button>
+    </div>
 
 </template>
 
@@ -20,8 +27,9 @@ export default {
     },
 
     props: {
-        title: String,
-        color: String
+        text: String,
+        withButton: Boolean,
+        lang: Object
     },
 
     created() {
@@ -34,7 +42,7 @@ export default {
     methods: {
 
         click() {
-            this.$emit("click")
+            this.$emit("clicked")
         },
 
 

@@ -13,6 +13,10 @@
     "serverDown": "The Dice Bluff server is down",
     "noUsername": "You have to choose an username",
     "gameStarted": "Game already started",
+    "tutorialText": "Do you want to play the tutorial first?",
+    "tutorialAgainText": "You can always replay the tutorial in 'Game Instructions'",
+    "tutorialButton": "Play Tutorial",
+    "tutorialHide": "Hide Tutorial",
     "notOptimized": "This screen size is not optimized. Elements will be on the wrong location. For a better experience, enable 'Desktop site' and play in landscape.",
     "noRoomCode": "You have to enter a room code or create a room"
   },
@@ -26,6 +30,7 @@
     "allowGhostMode": "Allow Ghost Mode",
     "visibility": "Public Room",
     "powerups": "With Powerups",
+    "tutorialNextButton": "Next",
     "waitForPlayer": "Wait for Players...",
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
