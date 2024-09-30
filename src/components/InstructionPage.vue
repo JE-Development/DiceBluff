@@ -2,7 +2,7 @@
   <LangSelection @click="langClicked" :lang="lang.langVis"/>
   <AudioSettings/>
   <div class="center-horizontal" style="text-align: center" v-if="lang.lang === 'de'">
-    <div style="width: 80vw;" class="white instructions-background">
+    <div style="width: 80vw;" class="white">
       <h1 class="prim-color">Spielanleitung</h1>
       <h3>
         Die Anleitung gibt es auch als YouTube Video (nur auf Deutsch)
@@ -32,14 +32,14 @@
         und schiebt verdeckt den Becher weiter zu Spieler2. Spieler2 hat nun 3 Möglichkeiten:
       </p>
       <p>
-        1. Möglichkeit 'glauben': Spieler2 glaubt, dass das Gesagte (42) auch unter dem Becher ist und Würfelt
+        <strong>1. Möglichkeit</strong> 'glauben': Spieler2 glaubt, dass das Gesagte (42) auch unter dem Becher ist und Würfelt
       </p>
       <p>
-        2. Möglichkeit 'weiterschieben': Spieler2 glaubt, dass das Gesagte, sagt eine höhre Zahl und schiebt weiter.
+        <strong>2. Möglichkeit</strong> 'weiterschieben': Spieler2 glaubt, dass das Gesagte, sagt eine höhre Zahl und schiebt weiter.
         Das Prinzip des Weiterschiebens ohne zu Würflen wird nochmal später genauer erklärt.
       </p>
       <p>
-        3. Möglichkeit 'nicht glauben': Spieler2 glaubt nicht das Gesagte und deckt für alle Sichtbar auf. Ist nun die
+        <strong>3. Möglichkeit</strong> 'nicht glauben': Spieler2 glaubt nicht das Gesagte und deckt für alle Sichtbar auf. Ist nun die
         Zahl die unter dem Becher liegt kleiner als das Gesgate, verliert Spieler1 ein Leben. Ist die Zahl größer oder
         gleich als das Gesagte, verliert Spieler2 ein Leben.
       </p>
@@ -150,7 +150,7 @@
 
 
   <div class="center-horizontal" style="text-align: center" v-else-if="lang.lang === 'en'">
-    <div style="width: 80vw" class="white instructions-background">
+    <div style="width: 80vw">
       <h1 class="prim-color">Game Instructions</h1>
       <h3>
         The instructions are also as an YouTube video available (only in german)
@@ -170,13 +170,13 @@
         Let's assume we have Player1, Player2, and Player3 in the round. Player1 starts and rolls a 42. He can choose to announce any number, but for this example, let's say he also announces 42 and passes the dice cup discreetly to Player2. Player2 now has three options:
       </p>
       <p>
-        Option 1: "Believe" - Player2 believes that the announced number (42) is under the cup and rolls the dice.
+        <strong>Option 1</strong>: "Believe" - Player2 believes that the announced number (42) is under the cup and rolls the dice.
       </p>
       <p>
-        Option 2: "Pass" - Player2 believes that the announced number is incorrect, announces a higher number, and passes the cup to the next player. The concept of passing without rolling will be explained in more detail later.
+        <strong>Option 2</strong>: "Pass" - Player2 believes that the announced number is incorrect, announces a higher number, and passes the cup to the next player. The concept of passing without rolling will be explained in more detail later.
       </p>
       <p>
-        Option 3: "Don't Believe" - Player2 doesn't believe the announced number and openly reveals what is under the cup for everyone to see. If the number under the cup is smaller than the announced number, Player1 loses a life. If the number is greater than or equal to the announced number, Player2 loses a life.
+        <strong>Option 3</strong>: "Don't Believe" - Player2 doesn't believe the announced number and openly reveals what is under the cup for everyone to see. If the number under the cup is smaller than the announced number, Player1 loses a life. If the number is greater than or equal to the announced number, Player2 loses a life.
       </p>
       <h2>Why do you have to lie at all?</h2>
       <p>

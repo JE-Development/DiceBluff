@@ -3,7 +3,7 @@
     <button class="game-button-default center" @click="click" :class="color">
         <p style="margin-top: 0px; margin-bottom: 0px;" class="black">{{ title }}</p>
     </button>
-    <button class="game-button-default center-horizontal shadow absolute on-bottom" @click="click">
+    <button class="game-button-default center-horizontal absolute on-bottom" @click="click">
 
     </button>
 

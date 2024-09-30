@@ -7,6 +7,8 @@
     <Toast color="red" :text="unableMessage" v-if="showToast" />
   </transition>
 
+  <ChooseTutorialPopup :lang="lang" v-if="tutShow" :show="tutShow" @cancel="tutCancel" @tutorial="executeRoom(true)" @instruction="onClickInstruction"/>
+
   <div class="center-horizontal full-width">
     <div>
 
@@ -51,9 +53,9 @@
         <div class="center-horizontal">
           <UIButton :title="lang.register.tutorialButton" @click="onClickTutorial" color="line1" />
         </div>
-        <div class="center-horizontal">
+        <!--<div class="center-horizontal">
           <p><a class="link pointer" @click="onClickHideTutorial">{{ lang.register.tutorialHide }}</a></p>
-        </div>
+        </div>-->
       </div>
       <div style="height: 40px"></div>
     </div>
@@ -77,11 +79,12 @@ import AudioSettings from "@/components/views/AudioSettings.vue";
 import Toast from "@/components/views/Toast.vue";
 import PowerupView from "@/components/views/PowerupView.vue";
 import ShowPowerupPopup from "@/components/views/ShowPowerupPopup.vue";
+import ChooseTutorialPopup from "./views/ChooseTutorialPopup.vue";
 
 export default {
   //npm run dev | npm run build
   name: "Register",
-  components: { ShowPowerupPopup, PowerupView, Toast, AudioSettings, UIButton, LangSelection, ProfilePopup },
+  components: { ShowPowerupPopup, PowerupView, Toast, AudioSettings, UIButton, LangSelection, ProfilePopup, ChooseTutorialPopup },
   data() {
     return {
       username: "",
@@ -101,7 +104,8 @@ export default {
       showToast: false,
       allowJoin: false,
       powerupShow: true,
-      hideTutorial: false
+      hideTutorial: false,
+      tutShow: false
     };
   },
 
@@ -192,6 +196,10 @@ export default {
 
   methods: {
 
+    tutCancel(){
+      this.tutShow = false
+    },
+
 
     onClickJoin() {
       let username = this.$refs.usernameinput.value
@@ -220,7 +228,8 @@ export default {
     onClickTutorial() {
       //this.hideTutorial = true
       //this.setCookies("hideTutorial", "true")
-      this.executeRoom(true)
+      //this.executeRoom(true)
+      this.tutShow = true
     },
 
     onClickHideTutorial() {

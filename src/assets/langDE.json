@@ -13,12 +13,15 @@
     "serverDown": "Der Dice Bluff Server ist offline",
     "noUsername": "Du musst einen Nutzernamen festlegen",
     "gameStarted": "Spiel ist bereits gestartet",
+    "notOptimized": "Diese Bildschirmgröße ist nicht optimiert. Es kann zu unübersichtliche Verschiebung von Elementen kommen. Für ein besseres Erlebnis, aktiviere 'Desktopwebseite' und spiele in Querformat.",
+    "noRoomCode": "Du musst ein Raumcode eingeben oder ein Raum erstellen",
+
+
     "tutorialText": "Möchtest du zuerst das Tutorial spielen?",
-    "tutorialAgainText": "Du kannst jeder Zeit das Tutorial bei 'Spielanleitung' erneut spielen",
+    "tutorialAgainText": "Bei 'Spielanleitung' findest du eine ausführlichere Anleitung.",
     "tutorialButton": "Tutorial spielen",
     "tutorialHide": "Tutorial ausblenden",
-    "notOptimized": "Diese Bildschirmgröße ist nicht optimiert. Es kann zu unübersichtliche Verschiebung von Elementen kommen. Für ein besseres Erlebnis, aktiviere 'Desktopwebseite' und spiele in Querformat.",
-    "noRoomCode": "Du musst ein Raumcode eingeben oder ein Raum erstellen"
+    "tutorialInfo": "Lies dir erstmal die Speilanleitung durch bevor du das Tutorial spielst. So wird man das Tutorial einfacher verstehen."
   },
   "playerPage": {
     "kickEveryoneButton": "Raum schließen",
@@ -30,7 +33,6 @@
     "allowGhostMode": "Ghost Mode erlauben",
     "visibility": "Öffentlicher Raum",
     "powerups": "Mit Powerups",
-    "tutorialNextButton": "Weiter",
     "waitForPlayer": "Warte auf Spieler...",
     "heartErrorNaN": "Der Wert für die Herzenanzahl ist ungültig.",
     "heartErrorWrongNumber": "Der Wert für die Herzenanzahl darf nicht kleiner als '1' sein.",
@@ -40,13 +42,13 @@
     "botNotAllowed": "Du kannst keine Bots nutzen, während Powerups aktiviert sind.",
 
 
-
+    "tutorialNextButton": "Weiter",
     "tutorialLink": "Mit diesem Link können andere Spieler deinem Raum beitreten.",
     "tutorialClose": "Du kannst hier den Raum schließen. Wenn der Raum geschlossen wird, werden alle Spieler aus dem Raum entfernt.",
     "tutorialBot": "Wenn du keine weiteren Spieler findest, oder alleine Spielen möchtest, kannst du hier Bots hinzufügen oder entfernen.",
     "tutorialHeart": "Die Herzenanzahl sagt an wie viele Leben ein Spieler hat.",
     "tutorialGhostMode": "Wenn der Ghost Mode aktiv ist, können Spieler, die verloren haben, das Spiel mit X-Ray weiterverfolgen.",
-    "tutorialPublic": "Wenn der Raum öffentlich ist, können Spieler über 'Öffentliche Räume' dein Raum finden",
+    "tutorialPublic": "Wenn der Raum öffentlich ist, können Spieler über 'Öffentliche Räume' dein Raum finden.",
     "tutorialPowerups": "Du kannst das Spiel mit Powerups erweitern.",
     "tutorialAddBots": "Füge für das Tutorial 2 Bots hinzu.",
     "tutorialStartGame": "Jetzt starten wir mal ein Spiel."
@@ -73,10 +75,11 @@
     "tutorialToSay": "Hier sieht man alle Zahlen, die man sagen kann.",
     "tutorialDrop": "Um zu starten musst du die Würfel würfeln.",
     "tutorialView": "Gucke drunter, um zu wissen was du gewürfelt hast.",
-    "tutorialTypeIn": "Gebe die Zahl ein, die du gewürfelt hast.",
+    "tutorialTypeIn": "Du hast eine ';;;dice1;;;' und eine ';;;dice2;;;' gewürfelt. Man kombiniert die Zahlen und es entsteht ';;;komb;;;'. Gebe diese Zahl ein.",
+    "tutorialTypeInLie": "Du musst immer eine größere Zahl sagen als der vorheriger Spieler gesagt hat. Wenn du eine kleinere Zahl hast, musst du lügen. Dabei kannst du evtl. erwischt werden und ein Leben verlieren.",
     "tutorialMove": "Schiebe den Würfelbecher zum nächsten Spieler.",
     "tutorialSaid": "Hier oben siehst du die Zahl, welcher der Spieler gesagt hat.",
-    "tutorialLieOrNot": "Der Spieler sagt entweder die Wahrheit oder hat gelogen. Es ist erst dann eine Lüge wenn die gesagte Zahl HÖHER ist als was gewürfelt wurde.",
+    "tutorialLieOrNot": "Der Spieler sagt entweder die Wahrheit oder er hat gelogen. Es ist erst dann eine Lüge wenn die gesagte Zahl HÖHER ist als was gewürfelt wurde.",
     "tutorialChoose": "Wenn du ihm glaubst, musst du würfeln. Wenn du ihm nicht glaubst musst du den Würflebecher aufdecken."
   },
   "jwc": {

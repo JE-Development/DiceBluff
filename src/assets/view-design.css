@@ -143,27 +143,57 @@ input:focus {
 
 .line1 {
     background-image: linear-gradient(90deg, #c9ff8a, #8affce);
+    box-shadow: 0px 0px 20px #c9ff8a;
 }
 
 .line2 {
     background-image: linear-gradient(90deg, #83ffa6, #83ffee);
+    box-shadow: 0px 0px 20px #83ffee;
 }
 
 .line3 {
     background-image: linear-gradient(90deg, #5cf0ff, #3b6fff);
+    box-shadow: 0px 0px 20px #5cf0ff;
 }
 
 .line4 {
     background-image: linear-gradient(90deg, #8999ff, #c689ff);
+    box-shadow: 0px 0px 20px #8999ff;
 }
 
 .line5 {
     background-image: linear-gradient(90deg, #ff88d9, #ff8888);
+    box-shadow: 0px 0px 20px #ff88d9;
 }
 
 .line6 {
     background-image: linear-gradient(90deg, #ffa600, #d9ff00);
+    box-shadow: 0px 0px 20px #ffa600;
 }
+
+
+
+
+.dice-line1{
+    background: #c9ff8a;
+}
+.dice-line2{
+    background: #83ffa6;
+}
+.dice-line3{
+    background: #5cf0ff;
+}
+.dice-line4{
+    background: #8999ff;
+}
+.dice-line5{
+    background: #ff88d9;
+}
+.dice-line6{
+    background: #ffa600;
+}
+
+
 
 .prim-color {
     color: #ffa600;
@@ -171,7 +201,7 @@ input:focus {
 
 .prim-color-background {
     background-image: linear-gradient(90deg, #ff9100, #ffee00);
-
+    box-shadow: 0px 0px 20px #ff9100;
 }
 
 .powerup-grey {
@@ -184,7 +214,7 @@ input:focus {
 }
 
 .shadow {
-    box-shadow: 0px 0px 20px #fffb00;
+    box-shadow: 0px 0px 20px #ffa600;
 }
 
 .sec-color-text{

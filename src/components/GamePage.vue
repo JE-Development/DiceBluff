@@ -11,8 +11,7 @@
     <Toast color="red" :text="error" v-if="showToast" style="z-index: 9999" />
   </transition>
 
-  <div class="full-size absolute" v-if="isTutorial && tutPos > -1"
-    style="background-color: #00000055; z-index: 8000;">
+  <div class="full-size absolute" v-if="isTutorial && tutPos > -1" style="background-color: #00000055; z-index: 8000;">
 
   </div>
 
@@ -56,8 +55,8 @@
         <TutorialCard :lang="lang" :text="lang.gamePage.tutorialTurn" :withButton="true" @clicked="tutNext(1)" />
       </div>
       <div v-if="isTutorial && tutPos === 6" class="absolute on-top" style="transform: translate(0px, 170px);">
-          <TutorialCard :lang="lang" :text="lang.gamePage.tutorialSaid" :withButton="true" @clicked="tutNext(7)" />
-        </div>
+        <TutorialCard :lang="lang" :text="lang.gamePage.tutorialSaid" :withButton="true" @clicked="tutNext(7)" />
+      </div>
       <PlayerView v-for="(dat) in names" :name="dat.name" :turn="dat.turn" :loose="dat.loose" :heart="dat.heart"
         :img="dat.pb" :winner="dat.winner" :isSad="dat.sad" :winnerCount="dat.winnerCount" />
     </div>
@@ -67,12 +66,15 @@
     </div>
 
     <div class="relative">
-      <div class="absolute" v-if="isDiceMenu" :class="tutPos === 4 ? 'on-top' : ''">
+      <div class="absolute" v-if="isDiceMenu" :class="tutPos === 4 || tutPos === 9 ? 'on-top' : ''">
         <div v-if="isTutorial && tutPos === 1" class="absolute on-top" style="transform: translate(0px, 280px);">
           <TutorialCard :lang="lang" :text="lang.gamePage.tutorialToSay" :withButton="true" @clicked="tutNext(2)" />
         </div>
         <div v-if="isTutorial && tutPos === 4" class="absolute on-top" style="transform: translate(0px, 280px);">
-          <TutorialCard :lang="lang" :text="lang.gamePage.tutorialTypeIn" :withButton="false" />
+          <TutorialCard :lang="lang" :text="formatTutorialTypeIn(lang.gamePage.tutorialTypeIn)" :withButton="false" />
+        </div>
+        <div v-if="isTutorial && tutPos === 9" class="absolute on-top" style="transform: translate(0px, 280px);">
+          <TutorialCard :lang="lang" :text="lang.gamePage.tutorialTypeInLie" :withButton="false" />
         </div>
         <DiceLayout :center="false" class="dice-big-layout" />
       </div>
@@ -267,7 +269,8 @@ export default {
       epPid: "",
       epPlayer: "",
       isTutorial: false,
-      tutPos: -1
+      tutPos: -1,
+      dropedNum: ""
     };
   },
 
@@ -304,6 +307,9 @@ export default {
     EventBus.addEventListener('dice-num', (event) => {
       if (this.tutPos === 4) {
         this.tutPos = 5
+      }
+      if (this.tutPos === 9) {
+        this.tutPos = -7
       }
       this.loggedDiceNum = event.data
       if (!this.isDrop || this.isReveal) {
@@ -385,7 +391,7 @@ export default {
 
       } else if (message.func === "visSettings") {
         this.updateSettings(message)
-        
+
 
       } else if (message.func === "anim") {
         switch (message.type) {
@@ -404,6 +410,13 @@ export default {
         let base = "../src/assets/dice_"
         if (message.player === this.getCookies("username") || message.player === "--everyone--") {
           let word = message.dice.split(";")
+
+          let num1 = this.wordToString(word[0])
+          let num2 = this.wordToString(word[1])
+
+          this.dropedNum = num1 + ";" + num2
+
+
 
 
           this.src1 = base + word[0] + ".png"
@@ -580,6 +593,41 @@ export default {
 
     tutNext(num) {
       this.tutPos = num
+    },
+
+    formatTutorialTypeIn(text){
+      let split = this.dropedNum.split(";")
+      let word1 = split[0]
+      let word2 = split[1]
+      let format = text.replace(";;;dice1;;;", word1)
+      format = format.replace(";;;dice2;;;", word2)
+      format = format.replace(";;;komb;;;", word1 + word2)
+      return format
+    },
+
+    wordToString(word) {
+      let num1 = ""
+      switch (word) {
+        case "one":
+          num1 = "1"
+          break;
+        case "two":
+          num1 = "2"
+          break;
+        case "three":
+          num1 = "3"
+          break;
+        case "four":
+          num1 = "4"
+          break;
+        case "five":
+          num1 = "5"
+          break;
+        case "six":
+          num1 = "6"
+          break;
+      }
+      return num1
     },
 
     displayToast() {
@@ -778,6 +826,10 @@ export default {
           this.tutPos = 6
         }
 
+        if (message.revealButton && this.tutPos === -5) {
+          this.tutPos = -6
+        }
+
         this.isDiceMenu = message.diceMenu
         this.isDrop = message.dropButton
         this.isMove = message.moveButton
@@ -842,6 +894,9 @@ export default {
       if (this.tutPos === 2) {
         this.tutPos = 3
       }
+      if (this.tutPos === 8) {
+        this.tutPos = -3
+      }
       let dat = {
         type: "engine",
         func: "buttonClicked",
@@ -858,6 +913,9 @@ export default {
       }
       if (this.tutPos === 8) {
         this.tutPos = -2
+      }
+      if (this.tutPos === 9) {
+        this.tutPos = -4
       }
       if (this.loggedDiceNum === "") {
         this.error = this.lang.gamePage.errorNoNumberSelected
@@ -881,6 +939,10 @@ export default {
         this.tutPos = 4
       }
 
+      if (this.tutPos === -3 || this.tutPos === -6) {
+        this.tutPos = 9
+      }
+
       let dat = {
         type: "engine",
         func: "buttonClicked",
@@ -893,7 +955,7 @@ export default {
 
     onClickReveal() {
       if (this.tutPos === 8) {
-        this.tutPos = -2
+        this.tutPos = -5
       }
       let dat = {
         type: "engine",

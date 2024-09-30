@@ -13,12 +13,15 @@
     "serverDown": "The Dice Bluff server is down",
     "noUsername": "You have to choose an username",
     "gameStarted": "Game already started",
+    "notOptimized": "This screen size is not optimized. Elements will be on the wrong location. For a better experience, enable 'Desktop site' and play in landscape.",
+    "noRoomCode": "You have to enter a room code or create a room",
+
+
     "tutorialText": "Do you want to play the tutorial first?",
-    "tutorialAgainText": "You can always replay the tutorial in 'Game Instructions'",
+    "tutorialAgainText": "In 'Game Instructions' there is a more detailed explanation of the game.",
     "tutorialButton": "Play Tutorial",
     "tutorialHide": "Hide Tutorial",
-    "notOptimized": "This screen size is not optimized. Elements will be on the wrong location. For a better experience, enable 'Desktop site' and play in landscape.",
-    "noRoomCode": "You have to enter a room code or create a room"
+    "tutorialInfo": "Read the game instructions first. It helps to understand the tutorial better."
   },
   "playerPage": {
     "kickEveryoneButton": "Close Room",
@@ -30,14 +33,25 @@
     "allowGhostMode": "Allow Ghost Mode",
     "visibility": "Public Room",
     "powerups": "With Powerups",
-    "tutorialNextButton": "Next",
     "waitForPlayer": "Wait for Players...",
     "heartErrorNaN": "The value for the heart count is invalid.",
     "heartErrorWrongNumber": "The value for the heart count must not be less than '1'.",
     "heartErrorEmpty": "The text field for the heart count is empty!",
     "needMorePlayers": "You need at least 2 players.",
     "botLimitError": "You can only add 5 bots.",
-    "botNotAllowed": "You can't use bots with powerups enabled."
+    "botNotAllowed": "You can't use bots with powerups enabled.",
+
+
+    "tutorialNextButton": "Next",
+    "tutorialLink": "With this link other players can youn your room.",
+    "tutorialClose": "You can close the room here. When you close the room, every player will be removed.",
+    "tutorialBot": "When there is no one you can play with or you want to play alone, you can add or remove bots here.",
+    "tutorialHeart": "The heart count shows you how much life do you have.",
+    "tutorialGhostMode": "If the ghost mode is aktive, players, who loosed, can watch the game with X-Ray.",
+    "tutorialPublic": "If the room is public, other players will find your room via 'Public rooms'.",
+    "tutorialPowerups": "You can advance the game with powerups.",
+    "tutorialAddBots": "Now add 2 bots.",
+    "tutorialStartGame": "We can start a game now."
   },
   "gamePage": {
     "stopButton": "Stop Game",
@@ -54,7 +68,20 @@
     "stealNoPlayer": "No one has a powerup",
     "helperInfo": "Select a dice you want to remove",
     "errorNoNumberSelected": "You haven't selected a number.",
-    "errorNotBigger": "The number must be greater than what was previously announced."
+    "errorNotBigger": "The number must be greater than what was previously announced.",
+
+
+
+    "tutorialTurn": "The green name shows you, which player has the turn.",
+    "tutorialToSay": "Here you can see all numbers you can say",
+    "tutorialDrop": "To start you have to roll the dices.",
+    "tutorialView": "Look under the cup to see what number you rolled.",
+    "tutorialTypeIn": "You have a ';;;dice1;;;' and a ';;;dice2;;;. You havr to combine these numbers: ';;;komb;;;'. Type in this number.",
+    "tutorialTypeInLie": "You always have to type in a larger number than the previos player has said. If you have a smaller number you have to lie. You might get caught lying and then you losse a life.",
+    "tutorialMove": "Pass the cup to the next player.",
+    "tutorialSaid": "Here you can see the number the previos plaxer has said.",
+    "tutorialLieOrNot": "The player can said the truth or he lied. He lied when you revealed and the number under the cup is smaller than the number he said.",
+    "tutorialChoose": "If you believe him you havw to roll the dices. If you don't believe him, you can reveal the number."
   },
   "jwc": {
     "joinButton": "Join Game"

@@ -2,110 +2,54 @@
 
     <div v-if="center" class="center-horizontal" style="flex-wrap: wrap;">
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line1"
-                    :num="dat"
-                    mode="1"
-            />
+            <Dice v-for="(dat) in line1" :num="dat" mode="1" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line2"
-                    :num="dat"
-                    mode="2"
-            />
+            <Dice v-for="(dat) in line2" :num="dat" mode="2" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line3"
-                    :num="dat"
-                    mode="3"
-            />
+            <Dice v-for="(dat) in line3" :num="dat" mode="3" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line4"
-                    :num="dat"
-                    mode="4"
-            />
+            <Dice v-for="(dat) in line4" :num="dat" mode="4" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line5"
-                    :num="dat"
-                    mode="5"
-            />
+            <Dice v-for="(dat) in line5" :num="dat" mode="5" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                v-for="(dat) in line51"
-                :num="dat"
-                mode="5"
-            />
+            <Dice v-for="(dat) in line51" :num="dat" mode="5" />
         </div>
         <div class="flex center-horizontal">
-            <Dice
-                    v-for="(dat) in line6"
-                    :num="dat"
-                    mode="6"
-            />
+            <Dice v-for="(dat) in line6" :num="dat" mode="6" />
         </div>
 
     </div>
 
 
-  <div v-else>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line1"
-          :num="dat"
-          mode="1"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line2"
-          :num="dat"
-          mode="2"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line3"
-          :num="dat"
-          mode="3"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line4"
-          :num="dat"
-          mode="4"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line5"
-          :num="dat"
-          mode="5"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line51"
-          :num="dat"
-          mode="5"
-      />
-    </div>
-    <div class="flex">
-      <Dice
-          v-for="(dat) in line6"
-          :num="dat"
-          mode="6"
-      />
-    </div>
+    <div v-else>
+        <div class="flex">
+            <Dice v-for="(dat) in line1" :num="dat" mode="1" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line2" :num="dat" mode="2" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line3" :num="dat" mode="3" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line4" :num="dat" mode="4" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line5" :num="dat" mode="5" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line51" :num="dat" mode="5" />
+        </div>
+        <div class="flex">
+            <Dice v-for="(dat) in line6" :num="dat" mode="6" />
+        </div>
 
-  </div>
+    </div>
 
 </template>
 
@@ -116,21 +60,21 @@ import PlayerView from "@/components/views/PlayerView.vue";
 
 export default {
     name: "DiceLayout",
-    components: {PlayerView, Dice},
+    components: { PlayerView, Dice },
     data() {
         return {
-          line1: [],
-          line2: [],
-          line3: [],
-          line4: [],
-          line5: [],
-          line51: [],
-          line6: [],
+            line1: [],
+            line2: [],
+            line3: [],
+            line4: [],
+            line5: [],
+            line51: [],
+            line6: [],
         };
     },
 
-    props:{
-      center: Boolean
+    props: {
+        center: Boolean
     },
 
     created() {
@@ -166,10 +110,10 @@ export default {
     },
     methods: {
 
-        getCookies(key){
+        getCookies(key) {
             return this.$cookies.get(key);
         },
-        setCookies(key, value){
+        setCookies(key, value) {
             return this.$cookies.set(key, value, 2147483647);
         },
     }
