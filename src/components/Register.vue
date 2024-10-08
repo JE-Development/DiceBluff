@@ -226,6 +226,9 @@ export default {
     },
 
     onClickTutorial() {
+      let username = this.$refs.usernameinput.value
+      this.setCookies("username", username)
+      this.username = username
       //this.hideTutorial = true
       //this.setCookies("hideTutorial", "true")
       //this.executeRoom(true)
@@ -373,6 +376,8 @@ export default {
           this.unableMessage = this.lang.register.serverDown
           this.displayToast()
         }
+      }else{
+        this.tutShow = false
       }
     },
 
